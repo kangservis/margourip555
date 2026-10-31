@@ -1,0 +1,126 @@
+# Konsep Website Desa [Margourip]
+
+Dokumen acuan untuk agent. Berisi rincian halaman dan model konten. Aturan kerja, prinsip, dan palet warna ada di `.github/copilot-instructions.md`. Data yang belum ada ditandai [CONTOH] atau [ISI NANTI]; jangan mengarang isinya.
+
+## Tujuan dan pengunjung
+
+- Mengenalkan produk unggulan desa kepada pembeli di luar daerah (kelak luar negeri), memudahkan mereka menghubungi admin via WhatsApp, dan menjadi tempat berita resmi desa.
+- Pengunjung utama: pembeli dan calon mitra yang membuka lewat HP, serta warga yang mencari berita dan kontak desa.
+
+## Navigasi
+
+Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
+
+- Header berisi logo/nama desa + menu. Menu aktif ditandai jelas.
+- Tab di atas (desktop). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
+- Footer: nama desa, alamat singkat, tautan cepat, kontak.
+- Semua halaman publik statis dan berpindah instan.
+
+## Halaman
+
+### 1. Beranda (landing)
+
+Urutan bagian, dari atas ke bawah:
+
+1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Satu gambar utama yang ringan (WebP, dimuat prioritas).
+2. **Tentang desa:** 2-3 kalimat singkat + tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
+3. **Produk unggulan:** 3-6 kartu produk bertanda "unggulan", tombol "Lihat semua produk".
+4. **Berita terbaru:** 3 berita terbaru, tombol "Lihat semua berita".
+5. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
+6. **Lokasi singkat:** alamat kantor + tautan ke halaman Kontak.
+
+### 2. Produk
+
+- Daftar produk berupa kartu (foto, nama, kategori, harga atau "Hubungi admin").
+- Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
+- Halaman detail per produk (`/produk/[slug]`): galeri foto, deskripsi, rincian (satuan, minimal pesan, asal produsen/UMKM), tombol "Pesan via WhatsApp".
+- Tombol WhatsApp membuka `wa.me/<nomor>` dengan pesan awal yang sudah terisi: nama produk + tautan halaman produk. Nomor diambil dari `src/config/site.js`.
+- Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP).
+
+### 3. Berita Desa
+
+- Daftar berita dari yang terbaru: foto sampul kecil, judul, tanggal, ringkasan.
+- Halaman detail per berita (`/berita/[slug]`): judul, tanggal, foto sampul, isi.
+- Berita berstatus draf tidak tampil di publik.
+- Judul dan ringkasan jelas agar enak dibagikan di WhatsApp (pertimbangkan tag Open Graph).
+
+### 4. Struktur Organisasi
+
+- Menampilkan susunan perangkat desa (dan bila perlu komunitas Ikatan 555 sebagai bagian terpisah, tergantung keputusan saya).
+- Mobile: daftar vertikal berupa kartu (foto, nama, jabatan), dikelompokkan per tingkat.
+- Desktop: tata letak bertingkat memakai CSS grid. Tanpa library bagan.
+- Data diurutkan berdasarkan field `urutan` dan `tingkat`.
+
+### 5. Kontak
+
+- Alamat kantor desa, jam pelayanan [ISI NANTI].
+- Peta: tampilkan tombol "Buka di Google Maps" dan/atau peta yang baru dimuat saat diklik. Jangan memuat iframe peta otomatis.
+- Kontak admin: WhatsApp (tombol utama), email, dan media sosial [ISI NANTI]. Tampilkan hanya yang sudah terisi.
+- Semua nilai kontak dibaca dari `src/config/site.js`.
+
+## Dashboard admin
+
+Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan yang belum diambil"):
+
+- Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
+- Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
+- Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
+- Unggah foto: ukuran dikecilkan dan diubah ke WebP otomatis sebelum disimpan, dengan batas ukuran yang jelas.
+- Perubahan di admin harus tampil di halaman publik tanpa mengorbankan kecepatan halaman publik.
+- Tidak ada secret yang terlihat di browser. Jika memakai layanan pihak ketiga, aturan akses (rules/izin) wajib dibahas sebelum fitur admin dibuat.
+
+## Model konten (apa pun cara penyimpanannya)
+
+**Produk**
+| Field | Keterangan |
+|---|---|
+| nama | wajib |
+| slug | otomatis dari nama, unik |
+| kategori | dari daftar kategori [ISI NANTI] |
+| ringkasan | 1-2 kalimat untuk kartu |
+| deskripsi | teks lengkap untuk halaman detail |
+| foto | 1-5 foto, foto pertama = sampul |
+| harga | angka, atau kosong = "Hubungi admin" |
+| satuan | mis. kg, pcs, kotak |
+| minimalPesan | opsional |
+| produsen | nama UMKM/kelompok, opsional |
+| status | tersedia / pre-order / habis |
+| unggulan | ya/tidak (tampil di Beranda) |
+| urutan | angka untuk pengurutan manual |
+
+**Berita**
+| Field | Keterangan |
+|---|---|
+| judul | wajib |
+| slug | otomatis dari judul, unik |
+| tanggal | tanggal terbit |
+| ringkasan | 1-2 kalimat |
+| isi | teks lengkap |
+| fotoSampul | opsional tapi disarankan |
+| status | draf / terbit |
+
+**Struktur organisasi**
+| Field | Keterangan |
+|---|---|
+| nama | wajib |
+| jabatan | wajib |
+| foto | opsional |
+| tingkat | angka (1 = tertinggi) untuk pengelompokan |
+| urutan | urutan dalam satu tingkat |
+
+**Pengaturan situs** (satu dokumen)
+namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp, email, linkPeta, mediaSosial[].
+
+## SEO dasar
+
+- Judul dan deskripsi unik per halaman, `lang="id"`, tag Open Graph, `robots` yang benar (admin `noindex`).
+- Sitemap dan JSON-LD sederhana (nama desa, alamat) boleh diusulkan, tetapi pasang hanya setelah saya setujui dan dampaknya disebutkan.
+- Judul dan alt gambar memakai kata kunci alami (nama produk + nama desa).
+
+## Urutan pengerjaan yang disarankan (bahas dulu sebelum mulai)
+
+1. Fondasi: `Layout`, header/footer/navigasi, token warna, `src/config/site.js`.
+2. Halaman statis dengan data [CONTOH]: Beranda, Produk, Berita, Struktur Organisasi, Kontak.
+3. Keputusan penyimpanan konten + admin (opsi, perbandingan, pilihan saya).
+4. Hubungkan data nyata dan dashboard admin, satu jenis konten per langkah (mulai dari Produk).
+5. Optimasi akhir: ukur Lighthouse mobile, rapikan gambar, SEO dasar, deploy ke Cloudflare Pages.

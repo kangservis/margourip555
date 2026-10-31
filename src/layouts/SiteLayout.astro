@@ -1,0 +1,40 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import MobileNav from '../components/MobileNav.astro';
+import { siteConfig } from '../config/site.js';
+import '../styles/global.css';
+
+const {
+	title = siteConfig.name,
+	description = siteConfig.description,
+	currentPath = Astro.url.pathname,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+	</head>
+	<body class="min-h-screen bg-white font-sans text-ink antialiased">
+		<a
+			class="skip-link"
+			href="#main-content"
+		>
+			Lewati ke konten
+		</a>
+		<SiteHeader currentPath={currentPath} />
+		<main id="main-content">
+			<slot />
+		</main>
+		<SiteFooter />
+		<MobileNav currentPath={currentPath} />
+	</body>
+</html>

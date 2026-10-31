@@ -1,0 +1,20 @@
+---
+import { siteConfig } from '../config/site.js';
+---
+
+<footer class="border-t border-line bg-white">
+	<div class="mx-auto max-w-6xl px-5 py-8 pb-24 sm:px-8 md:pb-8">
+		<p class="font-semibold text-ink">{siteConfig.name}</p>
+		<p class="mt-2 text-sm text-ink-muted">Alamat: {siteConfig.address}</p>
+		{
+			siteConfig.whatsapp && (
+				<a
+					class="mt-3 inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					href={`https://wa.me/${siteConfig.whatsapp}`}
+				>
+					Hubungi via WhatsApp
+				</a>
+			)
+		}
+	</div>
+</footer>

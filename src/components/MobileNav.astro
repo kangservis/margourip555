@@ -1,0 +1,27 @@
+---
+import { navigationItems } from '../config/site.js';
+
+const { currentPath = '/' } = Astro.props;
+---
+
+<nav
+	class="mobile-nav fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-white pb-[env(safe-area-inset-bottom)] md:hidden"
+	aria-label="Navigasi bawah"
+>
+	{
+		navigationItems.map((item) => (
+			<a
+				class:list={[
+					'flex min-h-16 items-center justify-center px-1 text-center text-xs font-medium focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary',
+					currentPath === '/' && item.label === 'Beranda'
+						? 'bg-surface text-primary'
+						: 'text-ink hover:bg-surface hover:text-primary',
+				]}
+				href={item.href}
+				aria-current={currentPath === '/' && item.label === 'Beranda' ? 'page' : undefined}
+			>
+				{item.label}
+			</a>
+		))
+	}
+</nav>
