@@ -1,5 +1,5 @@
 ---
-import { navigationItems, siteConfig } from '../config/site.js';
+import { isActive, navigationItems, siteConfig } from '../config/site.js';
 
 const { currentPath = '/' } = Astro.props;
 ---
@@ -7,8 +7,8 @@ const { currentPath = '/' } = Astro.props;
 <header class="border-b border-line bg-white">
 	<div class="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
 		<a
-			class="rounded-sm text-lg font-bold text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-			href="/#beranda"
+			class="inline-flex min-h-11 items-center rounded-sm text-lg font-bold text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+			href="/"
 		>
 			{siteConfig.name}
 		</a>
@@ -18,12 +18,12 @@ const { currentPath = '/' } = Astro.props;
 					<a
 						class:list={[
 							'inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
-							currentPath === '/' && item.label === 'Beranda'
+							isActive(currentPath, item.href)
 								? 'bg-surface text-primary'
 								: 'text-ink hover:bg-surface hover:text-primary',
 						]}
 						href={item.href}
-						aria-current={currentPath === '/' && item.label === 'Beranda' ? 'page' : undefined}
+						aria-current={isActive(currentPath, item.href) ? 'page' : undefined}
 					>
 						{item.label}
 					</a>

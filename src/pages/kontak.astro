@@ -1,0 +1,45 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getWhatsAppLink, siteConfig } from '../config/site.js';
+---
+
+<SiteLayout
+	title={`Kontak - ${siteConfig.name}`}
+	description={`Informasi alamat dan kontak ${siteConfig.name}.`}
+>
+	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+		<h1 class="text-3xl font-bold text-ink">Kontak</h1>
+		<p class="mt-4 text-base leading-7 text-ink-muted">
+			Alamat: <span class="font-medium text-ink">{siteConfig.address}</span>
+		</p>
+
+		<div class="mt-4 flex flex-wrap gap-x-6 gap-y-1">
+			{
+				siteConfig.whatsapp && (
+					<a
+						class="inline-flex min-h-11 items-center rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						href={getWhatsAppLink()}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Hubungi via WhatsApp
+					</a>
+				)
+			}
+			{
+				siteConfig.email && (
+					<a
+						class="inline-flex min-h-11 items-center rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						href={`mailto:${siteConfig.email}`}
+					>
+						{siteConfig.email}
+					</a>
+				)
+			}
+		</div>
+
+		<p class="mt-6 text-base leading-7 text-ink-muted">
+			[ISI NANTI: jam pelayanan dan peta]
+		</p>
+	</div>
+</SiteLayout>

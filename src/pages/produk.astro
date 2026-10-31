@@ -1,0 +1,16 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { siteConfig } from '../config/site.js';
+---
+
+<SiteLayout
+	title={`Produk - ${siteConfig.name}`}
+	description={`Katalog produk unggulan ${siteConfig.name}.`}
+>
+	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+		<h1 class="text-3xl font-bold text-ink">Produk</h1>
+		<p class="mt-4 text-base leading-7 text-ink-muted">
+			[ISI NANTI: katalog produk akan tampil di sini.]
+		</p>
+	</div>
+</SiteLayout>
