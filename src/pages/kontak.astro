@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
 import { getWhatsAppLink, siteConfig } from '../config/site.js';
 ---
 
@@ -17,11 +18,12 @@ import { getWhatsAppLink, siteConfig } from '../config/site.js';
 			{
 				siteConfig.whatsapp && (
 					<a
-						class="inline-flex min-h-11 items-center rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						class="inline-flex min-h-11 items-center gap-2 rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 						href={getWhatsAppLink()}
 						target="_blank"
 						rel="noopener noreferrer"
 					>
+						<Icon name="whatsapp" class="size-5" />
 						Hubungi via WhatsApp
 					</a>
 				)
@@ -29,9 +31,10 @@ import { getWhatsAppLink, siteConfig } from '../config/site.js';
 			{
 				siteConfig.email && (
 					<a
-						class="inline-flex min-h-11 items-center rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						class="inline-flex min-h-11 items-center gap-2 rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 						href={`mailto:${siteConfig.email}`}
 					>
+						<Icon name="mail" class="size-5" />
 						{siteConfig.email}
 					</a>
 				)

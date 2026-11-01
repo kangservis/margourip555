@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import Icon from "../components/Icon.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 
 const products = Array.from({ length: 3 }, (_, index) => ({
@@ -73,20 +74,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
         <span
           class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
         >
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            class="size-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m4 7 8-4 8 4v10l-8 4-8-4V7Z"></path>
-            <path d="m4 7 8 4 8-4M12 11v10M8 5l8 4"></path>
-          </svg>
+          <Icon name="product" class="size-6" />
         </span>
         <span class="min-w-0 flex-1">
           <span class="block font-semibold text-ink">Produk</span>
@@ -94,19 +82,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
             >Katalog produk unggulan desa</span
           >
         </span>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          class="size-5 shrink-0 text-primary"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M5 12h14m-6-6 6 6-6 6"></path>
-        </svg>
+        <Icon name="arrow-right" class="size-5 shrink-0 text-primary" />
       </a>
 
       <a
@@ -116,20 +92,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
         <span
           class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
         >
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            class="size-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M6 3h9l4 4v14H6z"></path>
-            <path d="M14 3v5h5M9 12h7M9 16h7"></path>
-          </svg>
+          <Icon name="news" class="size-6" />
         </span>
         <span class="min-w-0 flex-1">
           <span class="block font-semibold text-ink">Berita</span>
@@ -137,19 +100,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
             >Kabar dan informasi resmi desa</span
           >
         </span>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          class="size-5 shrink-0 text-primary"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M5 12h14m-6-6 6 6-6 6"></path>
-        </svg>
+        <Icon name="arrow-right" class="size-5 shrink-0 text-primary" />
       </a>
 
       <a
@@ -159,20 +110,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
         <span
           class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
         >
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            class="size-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M4 5h16v12H9l-5 4V5Z"></path>
-            <path d="M8 10h8M8 13h5"></path>
-          </svg>
+          <Icon name="contact" class="size-6" />
         </span>
         <span class="min-w-0 flex-1">
           <span class="block font-semibold text-ink">Kontak</span>
@@ -180,19 +118,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
             >Alamat dan cara menghubungi admin</span
           >
         </span>
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          class="size-5 shrink-0 text-primary"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M5 12h14m-6-6 6 6-6 6"></path>
-        </svg>
+        <Icon name="arrow-right" class="size-5 shrink-0 text-primary" />
       </a>
     </div>
   </section>

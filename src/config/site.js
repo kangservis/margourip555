@@ -8,11 +8,11 @@ export const siteConfig = {
 };
 
 export const navigationItems = [
-	{ label: 'Beranda', href: '/' },
-	{ label: 'Produk', href: '/produk' },
-	{ label: 'Berita', href: '/berita' },
-	{ label: 'Struktur', href: '/struktur' },
-	{ label: 'Kontak', href: '/kontak' },
+	{ label: 'Beranda', href: '/', icon: 'home' },
+	{ label: 'Produk', href: '/produk', icon: 'product' },
+	{ label: 'Berita', href: '/berita', icon: 'news' },
+	{ label: 'Struktur', href: '/struktur', icon: 'structure' },
+	{ label: 'Kontak', href: '/kontak', icon: 'contact' },
 ];
 
 function normalizePath(path) {

@@ -35,8 +35,8 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 
 ## Tipografi dan ikon
 
-- Hanya system font stack (`--font-sans` di `@theme`). Tanpa font dari CDN. Jika butuh satu font khusus: self-host satu file saja dan bahas dulu.
-- Ikon berupa SVG inline sederhana (`stroke="currentColor"`) seperlunya. Tanpa icon font atau paket ikon.
+- Font lewat Astro Fonts API: Playfair Display untuk judul (h1-h4 dan nama desa lewat `font-serif`) dan Plus Jakarta Sans untuk teks isi (`font-sans`). Tanpa <link> ke CDN dan tanpa @font-face manual. Subset latin, style normal, weight seminimal mungkin. Preload hanya untuk font di bagian atas halaman (judul 700 dan isi 400). Menambah font atau weight: sebut dampak ukuran dan minta persetujuan.
+- Ikon hanya lewat `Icon.astro` (sumber: Remix Icon, varian `-line`). Jangan menulis SVG inline manual, jangan memakai icon font, dan jangan menambah paket ikon lain.
 - Teks isi minimal 16px. Label kecil seperti eyebrow, badge, dan teks menu bawah boleh lebih kecil (`text-xs`/`text-sm`) selama bukan teks bacaan utama.
 
 ## Performa (prioritas: HP kelas menengah, koneksi biasa)

@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import MobileNav from "../components/MobileNav.astro";
@@ -19,6 +20,8 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <Font cssVariable="--font-playfair-display" preload={[{ subset: 'latin', weight: 700, style: 'normal' }]} />
+    <Font cssVariable="--font-plus-jakarta-sans" preload={[{ subset: 'latin', weight: 400, style: 'normal' }]} />
     <title>{title}</title>
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

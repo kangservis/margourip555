@@ -1,5 +1,6 @@
 ---
 import { isActive, navigationItems } from '../config/site.js';
+import Icon from './Icon.astro';
 
 const { currentPath = '/' } = Astro.props;
 ---
@@ -12,7 +13,7 @@ const { currentPath = '/' } = Astro.props;
 		navigationItems.map((item) => (
 			<a
 				class:list={[
-					'flex min-h-16 items-center justify-center px-1 text-center text-xs font-medium focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary',
+					'flex min-h-16 flex-col items-center justify-center gap-1 px-1 text-center text-xs font-medium focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-primary',
 					isActive(currentPath, item.href)
 						? 'bg-surface text-primary'
 						: 'text-ink hover:bg-surface hover:text-primary',
@@ -20,7 +21,8 @@ const { currentPath = '/' } = Astro.props;
 				href={item.href}
 				aria-current={isActive(currentPath, item.href) ? 'page' : undefined}
 			>
-				{item.label}
+				<Icon name={item.icon} class="size-6" />
+				<span>{item.label}</span>
 			</a>
 		))
 	}

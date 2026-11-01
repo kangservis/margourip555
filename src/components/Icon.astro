@@ -1,0 +1,56 @@
+---
+// Satu-satunya pintu ikon. Sumber: Remix Icon (Apache License 2.0). Menambah ikon = tambah satu import dan satu entri di objek icons.
+import arrowRight from 'remixicon/icons/Arrows/arrow-right-line.svg?raw';
+import chat from 'remixicon/icons/Communication/chat-3-line.svg?raw';
+import mail from 'remixicon/icons/Business/mail-line.svg?raw';
+import mapPin from 'remixicon/icons/Map/map-pin-2-line.svg?raw';
+import home from 'remixicon/icons/Buildings/home-4-line.svg?raw';
+import newspaper from 'remixicon/icons/Document/newspaper-line.svg?raw';
+import box from 'remixicon/icons/Others/box-3-line.svg?raw';
+import team from 'remixicon/icons/User & Faces/team-line.svg?raw';
+import whatsapp from 'remixicon/icons/Logos/whatsapp-line.svg?raw';
+
+const icons = {
+	home,
+	product: box,
+	news: newspaper,
+	structure: team,
+	contact: chat,
+	'arrow-right': arrowRight,
+	whatsapp,
+	mail,
+	'map-pin': mapPin,
+};
+
+interface Props {
+	name: string;
+	class?: string;
+}
+
+const { name, class: className = 'size-5' } = Astro.props;
+const isIconName = (value: string): value is keyof typeof icons =>
+	Object.prototype.hasOwnProperty.call(icons, value);
+const svg = isIconName(name) ? icons[name] : undefined;
+
+if (!svg) {
+	throw new Error(`Ikon "${name}" tidak dikenal.`);
+}
+
+const contents = svg
+	.replace(/^<svg\b[^>]*>/, '')
+	.replace(/<\/svg>\s*$/, '')
+	.replace(/\sfill=(?:"([^"]*)"|'([^']*)')/g, (attribute, doubleQuotedValue, singleQuotedValue) => {
+		const value = doubleQuotedValue ?? singleQuotedValue;
+		return value === 'none' ? attribute : ' fill="currentColor"';
+	});
+---
+
+<svg
+	viewBox="0 0 24 24"
+	fill="currentColor"
+	aria-hidden="true"
+	focusable="false"
+	class={className}
+>
+	<Fragment set:html={contents} />
+</svg>

@@ -61,4 +61,4 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Aksesibilitas
 
 - `lang="id"`, skip link "Lewati ke konten", `aria-current="page"` pada menu aktif, `alt` bermakna pada gambar bermakna.
-- Ikon SVG inline yang dekoratif diberi `aria-hidden="true"` dan `focusable="false"`.
+- Ikon dipakai lewat `Icon.astro`, yang otomatis memberi `aria-hidden="true"` dan `focusable="false"`. Tombol atau tautan yang hanya berisi ikon wajib punya teks tersembunyi (`sr-only`).

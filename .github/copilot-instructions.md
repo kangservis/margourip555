@@ -34,8 +34,8 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
    - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript.
    - Perpindahan antar halaman harus terasa instan. Tanpa animasi transisi antar halaman, tanpa `ClientRouter`/View Transitions kecuali ada alasan kuat. Gunakan prefetch bawaan Astro bila membantu.
    - Gambar: format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `loading="lazy"` kecuali gambar paling atas (hero), maksimal sekitar 200 KB per foto. Gambar lokal diproses lewat `astro:assets`.
-   - Font: pakai system font stack. Tanpa font dari CDN. Jika butuh satu font khusus, self-host satu file saja dan bahas dulu.
-   - Ikon: SVG inline seperlunya. Tanpa icon font atau paket ikon penuh.
+   - Font: Playfair Display (judul) dan Plus Jakarta Sans (teks isi) lewat Astro Fonts API (`fonts` di astro.config.mjs), diunduh saat build dan disajikan dari domain sendiri. Tanpa font dari CDN saat runtime. Subset latin saja, style normal saja, weight seminimal mungkin (Playfair 700; Plus Jakarta Sans 400 dan 600). Menambah keluarga font, weight, atau subset: sebut dampak ukuran dan minta persetujuan.
+   - Ikon: satu sumber, yaitu paket Remix Icon (npm `remixicon`, Apache 2.0), dipakai hanya lewat komponen `src/components/Icon.astro` yang meng-inline SVG saat build. Gaya outline (`-line`). Tanpa icon font (`remixicon.css`, class `ri-*`), tanpa @remixicon/react atau /vue, tanpa paket ikon kedua. Ikon baru = tambah satu import dan satu entri di Icon.astro.
    - Hindari di mobile: `backdrop-blur`, bayangan besar, animasi yang memicu layout (pakai `transform`/`opacity` saja), elemen `fixed` berukuran besar (mis. watermark), `will-change` berlebihan, `transition: all`.
    - Embed peta (iframe) wajib dimuat malas (lazy) atau baru dimuat saat diklik.
 3. **Mobile-first.** Rancang dan uji mental di lebar 360px dulu. Target sentuh minimal 44px. Teks isi minimal 16px.
