@@ -1,273 +1,394 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
-import { getContactLink, siteConfig } from '../config/site.js';
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { getContactLink, siteConfig } from "../config/site.js";
 
 const products = Array.from({ length: 3 }, (_, index) => ({
-	number: String(index + 1).padStart(2, '0'),
+  number: String(index + 1).padStart(2, "0"),
 }));
 
 const news = Array.from({ length: 3 }, (_, index) => ({
-	number: String(index + 1).padStart(2, '0'),
+  number: String(index + 1).padStart(2, "0"),
 }));
 ---
 
 <SiteLayout title={siteConfig.name} description={siteConfig.description}>
-	<section id="beranda" class="hero-pattern bg-primary text-white">
-		<div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-24">
-			<div>
-				<p class="text-sm font-semibold uppercase tracking-wide text-white">
-					Profil dan katalog produk unggulan
-				</p>
-				<h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
-					{siteConfig.name}
-				</h1>
-				<div class="ornament" aria-hidden="true"></div>
-				<p class="mt-5 max-w-xl text-lg leading-8 text-white">
-					{
-						siteConfig.tagline.startsWith('[')
-							? 'Kenali produk unggulan desa dan hubungi admin untuk informasi, kerja sama, atau pemesanan.'
-							: siteConfig.tagline
-					}
-				</p>
-				<div class="mt-8 flex flex-wrap gap-3">
-					<a
-						class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-primary hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
-						href="/produk"
-					>
-						Lihat produk
-					</a>
-					<a
-						class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
-						href={getContactLink()}
-						target={siteConfig.whatsapp ? '_blank' : undefined}
-						rel={siteConfig.whatsapp ? 'noopener noreferrer' : undefined}
-					>
-						{siteConfig.whatsapp ? 'Hubungi via WhatsApp' : 'Hubungi admin'}
-					</a>
-				</div>
-			</div>
+  <section id="beranda" class="hero-pattern bg-primary text-white">
+    <div
+      class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-24"
+    >
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-white">
+          Profil dan katalog produk unggulan
+        </p>
+        <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
+          {siteConfig.name}
+        </h1>
+        <div class="ornament" aria-hidden="true"></div>
+        <p class="mt-5 max-w-xl text-lg leading-8 text-white">
+          {
+            siteConfig.tagline.startsWith("[")
+              ? "Kenali produk unggulan desa dan hubungi admin untuk informasi, kerja sama, atau pemesanan."
+              : siteConfig.tagline
+          }
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-primary hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+            href="/produk"
+          >
+            Lihat produk
+          </a>
+          <a
+            class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+            href={getContactLink()}
+            target={siteConfig.whatsapp ? "_blank" : undefined}
+            rel={siteConfig.whatsapp ? "noopener noreferrer" : undefined}
+          >
+            {siteConfig.whatsapp ? "Hubungi via WhatsApp" : "Hubungi admin"}
+          </a>
+        </div>
+      </div>
 
-			<!-- Saat foto asli tersedia, ganti dengan <Image> dari astro:assets tanpa lazy loading dan dengan width/height eksplisit. -->
-			<div
-				class="flex aspect-[4/3] items-center justify-center rounded-2xl border border-gold bg-primary-dark p-8 text-center"
-				role="img"
-				aria-label="Placeholder foto asli Desa Margourip"
-			>
-				<p class="text-base font-medium text-white">[ISI NANTI: foto asli Desa Margourip]</p>
-			</div>
-		</div>
-	</section>
+      <!-- Saat foto asli tersedia, ganti dengan <Image> dari astro:assets tanpa lazy loading dan dengan width/height eksplisit. -->
+      <div
+        class="flex aspect-[4/3] items-center justify-center rounded-2xl border border-gold bg-primary-dark p-8 text-center"
+        role="img"
+        aria-label="Placeholder foto asli Desa Margourip"
+      >
+        <p class="text-base font-medium text-white">
+          [ISI NANTI: foto asli Desa Margourip]
+        </p>
+      </div>
+    </div>
+  </section>
 
-	<section aria-label="Akses cepat" class="bg-white">
-		<div class="relative z-10 mx-auto grid max-w-6xl gap-4 px-5 py-8 sm:-mt-10 sm:grid-cols-3 sm:px-8 sm:pb-10">
-			<a
-				class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-				href="/produk"
-			>
-				<span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary">
-					<svg aria-hidden="true" focusable="false" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-						<path d="m4 7 8-4 8 4v10l-8 4-8-4V7Z" />
-						<path d="m4 7 8 4 8-4M12 11v10M8 5l8 4" />
-					</svg>
-				</span>
-				<span class="min-w-0 flex-1">
-					<span class="block font-semibold text-ink">Produk</span>
-					<span class="mt-1 block text-base leading-6 text-ink-muted">Katalog produk unggulan desa</span>
-				</span>
-				<svg aria-hidden="true" focusable="false" class="size-5 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M5 12h14m-6-6 6 6-6 6" />
-				</svg>
-			</a>
+  <section aria-label="Akses cepat" class="bg-white">
+    <div
+      class="relative z-10 mx-auto grid max-w-6xl gap-4 px-5 py-8 sm:-mt-10 sm:grid-cols-3 sm:px-8 sm:pb-10"
+    >
+      <a
+        class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        href="/produk"
+      >
+        <span
+          class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
+        >
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="size-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m4 7 8-4 8 4v10l-8 4-8-4V7Z"></path>
+            <path d="m4 7 8 4 8-4M12 11v10M8 5l8 4"></path>
+          </svg>
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block font-semibold text-ink">Produk</span>
+          <span class="mt-1 block text-base leading-6 text-ink-muted"
+            >Katalog produk unggulan desa</span
+          >
+        </span>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="size-5 shrink-0 text-primary"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14m-6-6 6 6-6 6"></path>
+        </svg>
+      </a>
 
-			<a
-				class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-				href="/berita"
-			>
-				<span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary">
-					<svg aria-hidden="true" focusable="false" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M6 3h9l4 4v14H6z" />
-						<path d="M14 3v5h5M9 12h7M9 16h7" />
-					</svg>
-				</span>
-				<span class="min-w-0 flex-1">
-					<span class="block font-semibold text-ink">Berita</span>
-					<span class="mt-1 block text-base leading-6 text-ink-muted">Kabar dan informasi resmi desa</span>
-				</span>
-				<svg aria-hidden="true" focusable="false" class="size-5 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M5 12h14m-6-6 6 6-6 6" />
-				</svg>
-			</a>
+      <a
+        class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        href="/berita"
+      >
+        <span
+          class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
+        >
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="size-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 3h9l4 4v14H6z"></path>
+            <path d="M14 3v5h5M9 12h7M9 16h7"></path>
+          </svg>
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block font-semibold text-ink">Berita</span>
+          <span class="mt-1 block text-base leading-6 text-ink-muted"
+            >Kabar dan informasi resmi desa</span
+          >
+        </span>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="size-5 shrink-0 text-primary"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14m-6-6 6 6-6 6"></path>
+        </svg>
+      </a>
 
-			<a
-				class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-				href="/kontak"
-			>
-				<span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary">
-					<svg aria-hidden="true" focusable="false" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M4 5h16v12H9l-5 4V5Z" />
-						<path d="M8 10h8M8 13h5" />
-					</svg>
-				</span>
-				<span class="min-w-0 flex-1">
-					<span class="block font-semibold text-ink">Kontak</span>
-					<span class="mt-1 block text-base leading-6 text-ink-muted">Alamat dan cara menghubungi admin</span>
-				</span>
-				<svg aria-hidden="true" focusable="false" class="size-5 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-					<path d="M5 12h14m-6-6 6 6-6 6" />
-				</svg>
-			</a>
-		</div>
-	</section>
+      <a
+        class="flex min-h-11 items-center gap-4 rounded-xl border border-line bg-white p-4 transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        href="/kontak"
+      >
+        <span
+          class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gold-soft text-primary"
+        >
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="size-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M4 5h16v12H9l-5 4V5Z"></path>
+            <path d="M8 10h8M8 13h5"></path>
+          </svg>
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block font-semibold text-ink">Kontak</span>
+          <span class="mt-1 block text-base leading-6 text-ink-muted"
+            >Alamat dan cara menghubungi admin</span
+          >
+        </span>
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="size-5 shrink-0 text-primary"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14m-6-6 6 6-6 6"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
 
-	<section id="tentang" class="bg-white">
-		<div class="mx-auto grid max-w-6xl gap-5 px-5 py-16 sm:px-8 sm:py-20 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:gap-12">
-			<div>
-				<p class="text-sm font-semibold uppercase tracking-wide text-primary">Mengenal desa</p>
-				<h2 class="mt-2 text-3xl font-bold text-ink">Tentang {siteConfig.name}</h2>
-				<div class="ornament" aria-hidden="true"></div>
-			</div>
-			<div>
-				<p class="text-base leading-7 text-ink-muted">
-					[ISI NANTI: tulis 2-3 kalimat tentang desa berdasarkan informasi dari pemilik.]
-				</p>
-				<div class="mt-6 flex flex-wrap gap-x-6 gap-y-1">
-					<a class="inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="/struktur">
-						Lihat struktur organisasi
-					</a>
-					<a class="inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="/kontak">
-						Lokasi dan kontak
-					</a>
-				</div>
-			</div>
-		</div>
-	</section>
+  <section id="tentang" class="bg-white">
+    <div
+      class="mx-auto grid max-w-6xl gap-5 px-5 py-16 sm:px-8 sm:py-20 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:gap-12"
+    >
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">
+          Mengenal desa
+        </p>
+        <h2 class="mt-2 text-3xl font-bold text-ink">
+          Tentang {siteConfig.name}
+        </h2>
+        <div class="ornament" aria-hidden="true"></div>
+      </div>
+      <div>
+        <p class="text-base leading-7 text-ink-muted">
+          Desa Margourip adalah sebuah desa yang terletak di Kecamatan Ngancar,
+          Kabupaten Kediri, Provinsi Jawa Timur. Berada di kawasan subur lereng
+          Gunung Kelud pada bagian ujung tenggara Kabupaten Kediri, desa ini
+          memadukan keindahan alam vulkanik yang asri dengan potensi agraris
+          yang melimpah. Secara administratif, Desa Margourip berbatasan
+          langsung dengan Kabupaten Blitar di sebelah selatan dan terbagi ke
+          dalam empat wilayah dusun, yaitu Dusun Margourip, Dusun Kaligedok,
+          Dusun Pohgunung, dan Dusun Sumberlumbu.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-x-6 gap-y-1">
+          <a
+            class="inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            href="/struktur"
+          >
+            Lihat struktur organisasi
+          </a>
+          <a
+            class="inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            href="/kontak"
+          >
+            Lokasi dan kontak
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<section class="bg-surface">
-		<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-			<div>
-				<p class="text-sm font-semibold uppercase tracking-wide text-primary">Potensi desa</p>
-				<h2 class="mt-2 text-3xl font-bold text-ink">Produk unggulan</h2>
-				<div class="ornament" aria-hidden="true"></div>
-			</div>
+  <section class="bg-surface">
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">
+          Potensi desa
+        </p>
+        <h2 class="mt-2 text-3xl font-bold text-ink">Produk unggulan</h2>
+        <div class="ornament" aria-hidden="true"></div>
+      </div>
 
-			<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-				{
-					products.map((product) => (
-						<article class="overflow-hidden rounded-xl border border-line bg-white">
-							<div
-								class="flex aspect-[4/3] items-center justify-center border-b border-line bg-surface px-4 text-center text-base font-medium text-ink-muted"
-								role="img"
-								aria-label={`Placeholder foto produk contoh ${product.number}`}
-							>
-								[ISI NANTI: foto produk]
-							</div>
-							<div class="p-5">
-								<span class="inline-flex min-h-7 items-center rounded-full bg-gold-soft px-3 text-xs font-semibold text-ink">
-									[CONTOH] Unggulan
-								</span>
-								<h3 class="mt-3 text-lg font-semibold text-ink">[NAMA PRODUK]</h3>
-								<p class="mt-1 text-base text-ink-muted">[KATEGORI]</p>
-								<p class="mt-3 text-base leading-6 text-ink-muted">[ISI NANTI: ringkasan produk]</p>
-								<p class="mt-4 border-t border-line pt-3 text-base font-medium text-ink">
-									[HARGA / HUBUNGI ADMIN]
-								</p>
-							</div>
-						</article>
-					))
-				}
-			</div>
-			<div class="mt-8 text-center">
-				<a
-					class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
-					href="/produk"
-				>
-					Lihat semua produk
-				</a>
-			</div>
-		</div>
-	</section>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          products.map((product) => (
+            <article class="overflow-hidden rounded-xl border border-line bg-white">
+              <div
+                class="flex aspect-[4/3] items-center justify-center border-b border-line bg-surface px-4 text-center text-base font-medium text-ink-muted"
+                role="img"
+                aria-label={`Placeholder foto produk contoh ${product.number}`}
+              >
+                [ISI NANTI: foto produk]
+              </div>
+              <div class="p-5">
+                <span class="inline-flex min-h-7 items-center rounded-full bg-gold-soft px-3 text-xs font-semibold text-ink">
+                  [CONTOH] Unggulan
+                </span>
+                <h3 class="mt-3 text-lg font-semibold text-ink">
+                  [NAMA PRODUK]
+                </h3>
+                <p class="mt-1 text-base text-ink-muted">[KATEGORI]</p>
+                <p class="mt-3 text-base leading-6 text-ink-muted">
+                  [ISI NANTI: ringkasan produk]
+                </p>
+                <p class="mt-4 border-t border-line pt-3 text-base font-medium text-ink">
+                  [HARGA / HUBUNGI ADMIN]
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <div class="mt-8 text-center">
+        <a
+          class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
+          href="/produk"
+        >
+          Lihat semua produk
+        </a>
+      </div>
+    </div>
+  </section>
 
-	<section class="bg-white">
-		<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-			<div>
-				<p class="text-sm font-semibold uppercase tracking-wide text-primary">Informasi desa</p>
-				<h2 class="mt-2 text-3xl font-bold text-ink">Berita terbaru</h2>
-				<div class="ornament" aria-hidden="true"></div>
-			</div>
+  <section class="bg-white">
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">
+          Informasi desa
+        </p>
+        <h2 class="mt-2 text-3xl font-bold text-ink">Berita terbaru</h2>
+        <div class="ornament" aria-hidden="true"></div>
+      </div>
 
-			<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-				{
-					news.map((item) => (
-						<article class="overflow-hidden rounded-xl border border-line bg-white">
-							<div
-								class="flex aspect-[16/10] items-center justify-center border-b border-line bg-surface px-4 text-center text-base font-medium text-ink-muted"
-								role="img"
-								aria-label={`Placeholder foto berita contoh ${item.number}`}
-							>
-								[ISI NANTI: foto berita]
-							</div>
-							<div class="p-5">
-								<p class="text-sm font-medium text-ink-muted">[TANGGAL]</p>
-								<h3 class="mt-2 text-lg font-semibold leading-7 text-ink">[JUDUL BERITA]</h3>
-								<p class="mt-3 text-base leading-7 text-ink-muted">
-									[ISI NANTI: ringkasan berita resmi.]
-								</p>
-							</div>
-						</article>
-					))
-				}
-			</div>
-			<div class="mt-8 text-center">
-				<a
-					class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
-					href="/berita"
-				>
-					Lihat semua berita
-				</a>
-			</div>
-		</div>
-	</section>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          news.map((item) => (
+            <article class="overflow-hidden rounded-xl border border-line bg-white">
+              <div
+                class="flex aspect-[16/10] items-center justify-center border-b border-line bg-surface px-4 text-center text-base font-medium text-ink-muted"
+                role="img"
+                aria-label={`Placeholder foto berita contoh ${item.number}`}
+              >
+                [ISI NANTI: foto berita]
+              </div>
+              <div class="p-5">
+                <p class="text-sm font-medium text-ink-muted">[TANGGAL]</p>
+                <h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
+                  [JUDUL BERITA]
+                </h3>
+                <p class="mt-3 text-base leading-7 text-ink-muted">
+                  [ISI NANTI: ringkasan berita resmi.]
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <div class="mt-8 text-center">
+        <a
+          class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors"
+          href="/berita"
+        >
+          Lihat semua berita
+        </a>
+      </div>
+    </div>
+  </section>
 
-	<section aria-labelledby="contact-cta-title" class="hero-pattern border-t-4 border-gold bg-primary">
-		<div class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 md:flex-row md:items-center md:justify-between">
-			<div class="max-w-2xl">
-				<p class="text-sm font-semibold uppercase tracking-wide text-white">Mari terhubung</p>
-				<h2 id="contact-cta-title" class="mt-2 text-3xl font-bold text-white">
-					Ada pertanyaan atau ingin bekerja sama?
-				</h2>
-				<p class="mt-3 text-base leading-7 text-white">
-					Hubungi admin untuk informasi produk, kerja sama, atau peluang pemasaran.
-				</p>
-			</div>
-			<a
-				class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-primary hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
-				href={getContactLink()}
-				target={siteConfig.whatsapp ? '_blank' : undefined}
-				rel={siteConfig.whatsapp ? 'noopener noreferrer' : undefined}
-			>
-				{siteConfig.whatsapp ? 'Hubungi via WhatsApp' : 'Hubungi admin'}
-			</a>
-		</div>
-	</section>
+  <section
+    aria-labelledby="contact-cta-title"
+    class="hero-pattern border-t-4 border-gold bg-primary"
+  >
+    <div
+      class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold uppercase tracking-wide text-white">
+          Mari terhubung
+        </p>
+        <h2 id="contact-cta-title" class="mt-2 text-3xl font-bold text-white">
+          Ada pertanyaan atau ingin bekerja sama?
+        </h2>
+        <p class="mt-3 text-base leading-7 text-white">
+          Hubungi admin untuk informasi produk, kerja sama, atau peluang
+          pemasaran.
+        </p>
+      </div>
+      <a
+        class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-primary hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+        href={getContactLink()}
+        target={siteConfig.whatsapp ? "_blank" : undefined}
+        rel={siteConfig.whatsapp ? "noopener noreferrer" : undefined}
+      >
+        {siteConfig.whatsapp ? "Hubungi via WhatsApp" : "Hubungi admin"}
+      </a>
+    </div>
+  </section>
 
-	<section class="bg-surface">
-		<div class="mx-auto grid max-w-6xl gap-5 px-5 py-16 sm:px-8 sm:py-20 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:gap-12">
-			<div>
-				<p class="text-sm font-semibold uppercase tracking-wide text-primary">Kunjungi</p>
-				<h2 class="mt-2 text-3xl font-bold text-ink">Lokasi dan kontak</h2>
-				<div class="ornament" aria-hidden="true"></div>
-			</div>
-			<div>
-				<p class="text-base leading-7 text-ink-muted">
-					Alamat kantor desa: <span class="font-medium text-ink">{siteConfig.address}</span>
-				</p>
-				<a
-					class="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-					href="/kontak"
-				>
-					Lihat halaman kontak
-				</a>
-			</div>
-		</div>
-	</section>
+  <section class="bg-surface">
+    <div
+      class="mx-auto grid max-w-6xl gap-5 px-5 py-16 sm:px-8 sm:py-20 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] md:gap-12"
+    >
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">
+          Kunjungi
+        </p>
+        <h2 class="mt-2 text-3xl font-bold text-ink">Lokasi dan kontak</h2>
+        <div class="ornament" aria-hidden="true"></div>
+      </div>
+      <div>
+        <p class="text-base leading-7 text-ink-muted">
+          Alamat kantor desa: <span class="font-medium text-ink"
+            >{siteConfig.address}</span
+          >
+        </p>
+        <a
+          class="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          href="/kontak"
+        >
+          Lihat halaman kontak
+        </a>
+      </div>
+    </div>
+  </section>
 </SiteLayout>
