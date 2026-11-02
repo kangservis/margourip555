@@ -8,41 +8,52 @@ import { getWhatsAppLink, siteConfig } from '../config/site.js';
 	title={`Kontak - ${siteConfig.name}`}
 	description={`Informasi alamat dan kontak ${siteConfig.name}.`}
 >
-	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-		<h1 class="text-3xl font-bold text-ink">Kontak</h1>
-		<p class="mt-4 text-base leading-7 text-ink-muted">
-			Alamat: <span class="font-medium text-ink">{siteConfig.address}</span>
-		</p>
+	<section class="bg-surface">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+			<h1 class="text-center text-3xl font-bold text-ink">Kontak</h1>
 
-		<div class="mt-4 flex flex-wrap gap-x-6 gap-y-1">
-			{
-				siteConfig.whatsapp && (
-					<a
-						class="inline-flex min-h-11 items-center gap-2 rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-						href={getWhatsAppLink()}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Icon name="whatsapp" class="size-5" />
-						Hubungi via WhatsApp
-					</a>
-				)
-			}
-			{
-				siteConfig.email && (
-					<a
-						class="inline-flex min-h-11 items-center gap-2 rounded-sm font-medium text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-						href={`mailto:${siteConfig.email}`}
-					>
-						<Icon name="mail" class="size-5" />
-						{siteConfig.email}
-					</a>
-				)
-			}
+			<section
+				class="mx-auto mt-8 max-w-2xl rounded-2xl border border-line bg-white p-6 text-center sm:p-8"
+				aria-labelledby="office-address-title"
+			>
+				<span class="mx-auto flex size-12 items-center justify-center rounded-xl bg-gold-soft text-primary">
+					<Icon name="map-pin" class="size-6" />
+				</span>
+				<h2 id="office-address-title" class="mt-4 text-xl font-bold text-ink">
+					Alamat Kantor Desa
+				</h2>
+				<p class="mt-2 text-base leading-7 text-ink-muted">
+					[ISI NANTI: alamat kantor desa]
+				</p>
+				{
+					siteConfig.whatsapp && (
+						<a
+							class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							href={getWhatsAppLink()}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Icon name="whatsapp" class="size-5" />
+							Hubungi via WhatsApp
+						</a>
+					)
+				}
+			</section>
+
+			<section class="mt-8" aria-labelledby="map-title">
+				<h2 id="map-title" class="mb-4 text-center text-2xl font-bold text-ink">
+					Lokasi Desa Margourip
+				</h2>
+				<div class="aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-white sm:aspect-[16/8]">
+					<iframe
+						class="size-full border-0"
+						src={siteConfig.mapEmbedUrl}
+						title="Peta lokasi Desa Margourip"
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+					></iframe>
+				</div>
+			</section>
 		</div>
-
-		<p class="mt-6 text-base leading-7 text-ink-muted">
-			[ISI NANTI: jam pelayanan dan peta]
-		</p>
-	</div>
+	</section>
 </SiteLayout>

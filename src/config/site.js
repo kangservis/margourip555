@@ -3,7 +3,9 @@ export const siteConfig = {
 	description: 'Profil dan katalog produk unggulan Desa Margourip.',
 	tagline: '[ISI NANTI]',
 	address: '[ISI NANTI]',
-	whatsapp: '',
+	whatsapp: '628518233200',
+	mapUrl: 'https://maps.app.goo.gl/oBWQuXdJeL276LLb7',
+	mapEmbedUrl: 'https://maps.google.com/maps?q=-7.9625863%2C112.1609056&z=14&output=embed',
 	email: '',
 };
 

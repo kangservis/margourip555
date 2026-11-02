@@ -27,7 +27,9 @@ Urutan bagian, dari atas ke bawah:
 3. **Produk unggulan:** 3-6 kartu produk bertanda "unggulan", tombol "Lihat semua produk".
 4. **Berita terbaru:** 3 berita terbaru, tombol "Lihat semua berita".
 5. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
-6. **Lokasi singkat:** alamat kantor + tautan ke halaman Kontak.
+6. **Lokasi singkat:** nama desa yang ditonjolkan dan tautan ke Google Maps; jangan tampilkan placeholder alamat.
+
+- Bidang merah di hero, kartu foto hero, dan ajakan bertindak memakai motif batik CSS yang halus serta garis emas di sisi atas dan bawah.
 
 ### 2. Produk
 
@@ -53,10 +55,11 @@ Urutan bagian, dari atas ke bawah:
 
 ### 5. Kontak
 
-- Alamat kantor desa, jam pelayanan [ISI NANTI].
-- Peta: tampilkan tombol "Buka di Google Maps" dan/atau peta yang baru dimuat saat diklik. Jangan memuat iframe peta otomatis.
-- Kontak admin: WhatsApp (tombol utama), email, dan media sosial [ISI NANTI]. Tampilkan hanya yang sudah terisi.
+- Kartu alamat kantor desa dengan placeholder `[ISI NANTI: alamat kantor desa]` sampai alamat asli diberikan.
+- Di bawah kartu alamat, tampilkan iframe peta Google Maps untuk lokasi Desa Margourip dengan `loading="lazy"`, judul deskriptif, dan wadah berasio tetap.
+- Semua ajakan kontak admin yang dapat diklik diarahkan ke WhatsApp melalui `getWhatsAppLink()` atau `getContactLink()` dan nomor di `src/config/site.js`; jangan gunakan tautan `mailto:`.
 - Semua nilai kontak dibaca dari `src/config/site.js`.
+- Tautan Google Maps dan URL embed peta disimpan di `src/config/site.js`; gunakan `mapUrl` untuk membuka Maps dan `mapEmbedUrl` sebagai sumber iframe.
 
 ## Dashboard admin
 
@@ -109,7 +112,7 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 | urutan | urutan dalam satu tingkat |
 
 **Pengaturan situs** (satu dokumen)
-namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp, email, linkPeta, mediaSosial[].
+namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp (angka internasional tanpa `+`, untuk `wa.me`), email, mapUrl, mediaSosial[].
 
 ## SEO dasar
 

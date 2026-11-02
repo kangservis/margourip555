@@ -13,7 +13,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
 ---
 
 <SiteLayout title={siteConfig.name} description={siteConfig.description}>
-  <section id="beranda" class="hero-pattern bg-primary text-white">
+  <section id="beranda" class="batik-pattern border-y-4 border-gold bg-primary text-white">
     <div
       class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-24"
     >
@@ -52,7 +52,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
 
       <!-- Saat foto asli tersedia, ganti dengan <Image> dari astro:assets tanpa lazy loading dan dengan width/height eksplisit. -->
       <div
-        class="flex aspect-[4/3] items-center justify-center rounded-2xl border border-gold bg-primary-dark p-8 text-center"
+        class="batik-pattern flex aspect-[4/3] items-center justify-center rounded-2xl border-x border-y-4 border-gold bg-primary-dark p-8 text-center"
         role="img"
         aria-label="Placeholder foto asli Desa Margourip"
       >
@@ -263,7 +263,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
 
   <section
     aria-labelledby="contact-cta-title"
-    class="hero-pattern border-t-4 border-gold bg-primary"
+    class="batik-pattern border-y-4 border-gold bg-primary"
   >
     <div
       class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-14 sm:px-8 sm:py-16 md:flex-row md:items-center md:justify-between"
@@ -303,16 +303,17 @@ const news = Array.from({ length: 3 }, (_, index) => ({
         <div class="ornament" aria-hidden="true"></div>
       </div>
       <div>
-        <p class="text-base leading-7 text-ink-muted">
-          Alamat kantor desa: <span class="font-medium text-ink"
-            >{siteConfig.address}</span
-          >
+        <p class="text-2xl font-bold leading-tight text-primary sm:text-3xl">
+          {siteConfig.name}
         </p>
         <a
-          class="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          href="/kontak"
+          class="mt-4 inline-flex min-h-11 items-center gap-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          href={siteConfig.mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Lihat halaman kontak
+          <Icon name="map-pin" class="size-5" />
+          Buka lokasi di Google Maps
         </a>
       </div>
     </div>

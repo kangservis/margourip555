@@ -56,6 +56,35 @@
 		);
 }
 
+.batik-pattern {
+	background-image:
+		radial-gradient(
+			ellipse 7px 12px at 50% 0%,
+			transparent 58%,
+			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
+			transparent 69%
+		),
+		radial-gradient(
+			ellipse 7px 12px at 50% 100%,
+			transparent 58%,
+			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
+			transparent 69%
+		),
+		radial-gradient(
+			ellipse 7px 12px at 0% 50%,
+			transparent 58%,
+			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
+			transparent 69%
+		),
+		radial-gradient(
+			ellipse 7px 12px at 100% 50%,
+			transparent 58%,
+			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
+			transparent 69%
+		);
+	background-size: 32px 32px;
+}
+
 .ornament {
 	position: relative;
 	width: 6rem;
