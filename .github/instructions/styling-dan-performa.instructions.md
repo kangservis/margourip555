@@ -32,6 +32,8 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - Gaya kartu: border 1px halus (`border-line`), sudut membulat sekitar 12px (`rounded-xl`), bayangan tipis atau tanpa bayangan.
 - Dekorasi hanya yang sudah ada (`batik-panel`, `ornament`, dan `hero-pattern` bila masih dipakai). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
 - **Bidang merah besar** (hero, kartu foto hero, band ajakan, footer, dan bidang merah lain di masa depan) WAJIB memakai `batik-panel` (garis emas tebal di atas dan bawah + corak batik CSS). Pakai `batik-panel-dark` untuk merah gelap dan `batik-panel-card` untuk kartu bersudut membulat. Tombol, badge, dan teks merah kecil tetap solid tanpa corak.
+- Garis emas atas dan bawah `batik-panel` harus selalu terlihat di semua lebar layar. Jangan menimpa tepi `batik-panel` dengan margin negatif atau elemen berlapis, dan jangan memberi latar pada elemen sesudahnya yang bisa menutupinya.
+- Garis dekoratif tipis (1px) diposisikan dengan nilai piksel bulat, bukan `transform: translate(-50%)`, agar tidak pudar di layar kerapatan 1x.
 - Minimalis, lapang, konsisten. Ritme bagian: latar selang-seling putih dan `surface`, padding bagian `py-16 sm:py-20`, pola judul bagian: eyebrow kecil, `<h2>`, lalu `ornament`.
 
 ## Tipografi dan ikon

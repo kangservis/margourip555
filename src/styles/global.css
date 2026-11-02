@@ -101,30 +101,31 @@
 .ornament {
 	position: relative;
 	width: 6rem;
-	height: 1rem;
+	height: 16px;
 	margin-top: 1.25rem;
 }
 
+/* Garis tipis dengan posisi piksel bulat agar tidak pudar di layar 1x */
 .ornament::before {
 	position: absolute;
-	top: 50%;
+	top: 7px;
 	right: 0;
 	left: 0;
 	height: 1px;
 	background: var(--color-gold);
 	content: "";
-	transform: translateY(-50%);
 }
 
+/* Berlian kecil di tengah (hanya diputar, tanpa translate) */
 .ornament::after {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 0.5rem;
-	height: 0.5rem;
+	top: 4px;
+	left: calc(50% - 4px);
+	width: 8px;
+	height: 8px;
 	background: var(--color-gold);
 	content: "";
-	transform: translate(-50%, -50%) rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .ornament-center {
