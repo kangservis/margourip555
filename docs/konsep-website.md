@@ -13,7 +13,7 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 - Header berisi logo/nama desa + menu. Menu aktif ditandai jelas.
 - Tab di atas (desktop). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
-- Footer: nama desa, alamat singkat, tautan cepat, kontak.
+- Footer: panel merah bercorak batik (`batik-panel-dark`) berisi nama desa sebagai teks utama (menaut ke Beranda), 4 tab (Produk, Berita, Struktur, Kontak) berupa ikon + teks, dan tombol WhatsApp admin. Tanpa alamat.
 - Semua halaman publik statis dan berpindah instan.
 
 ## Halaman
@@ -29,7 +29,7 @@ Urutan bagian, dari atas ke bawah:
 5. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
 6. **Lokasi singkat:** nama desa yang ditonjolkan dan tautan ke Google Maps; jangan tampilkan placeholder alamat.
 
-- Bidang merah di hero, kartu foto hero, dan ajakan bertindak memakai motif batik CSS yang halus serta garis emas di sisi atas dan bawah.
+- Semua bidang merah besar (hero, kartu foto hero, ajakan bertindak, footer) memakai `batik-panel`: motif batik CSS yang halus + garis emas di sisi atas dan bawah.
 
 ### 2. Produk
 

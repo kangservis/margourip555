@@ -10,7 +10,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 ## Tailwind CSS v4
 
 - CSS-first: `@import "tailwindcss"` di `src/styles/global.css`, token warna lewat `@theme`. **Jangan** membuat `tailwind.config.js`, dan jangan mengubah konfigurasi plugin `@tailwindcss/vite` di `astro.config.mjs` tanpa izin.
-- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `hero-pattern`, `ornament`, `ornament-center`.
+- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `hero-pattern`, `ornament`, `ornament-center`, `batik-panel`, `batik-panel-dark`, `batik-panel-card`.
 - Pakai **nama token** (`bg-primary`, `text-ink`, `border-line`, ...), bukan kode hex yang diulang-ulang.
 - Class dinamis harus ditulis **utuh** (mis. `"text-primary"`), jangan dirakit dari potongan (`"text-" + warna`), karena Tailwind hanya mengenali class yang tertulis lengkap.
 
@@ -30,7 +30,8 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - **Tombol utama** (termasuk "Pesan via WhatsApp"): latar `primary`, teks putih, di atas latar terang. **Di atas latar merah** (hero, band ajakan) tombol utama dibalik: latar putih, teks `primary`. Tombol sekunder di atas merah: outline putih. Jangan menambah warna hijau.
 - Tidak ada warna baru kecuali status fungsional (berhasil/galat) secukupnya.
 - Gaya kartu: border 1px halus (`border-line`), sudut membulat sekitar 12px (`rounded-xl`), bayangan tipis atau tanpa bayangan.
-- Dekorasi hanya yang sudah ada (`hero-pattern`, `ornament`). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
+- Dekorasi hanya yang sudah ada (`batik-panel`, `ornament`, dan `hero-pattern` bila masih dipakai). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
+- **Bidang merah besar** (hero, kartu foto hero, band ajakan, footer, dan bidang merah lain di masa depan) WAJIB memakai `batik-panel` (garis emas tebal di atas dan bawah + corak batik CSS). Pakai `batik-panel-dark` untuk merah gelap dan `batik-panel-card` untuk kartu bersudut membulat. Tombol, badge, dan teks merah kecil tetap solid tanpa corak.
 - Minimalis, lapang, konsisten. Ritme bagian: latar selang-seling putih dan `surface`, padding bagian `py-16 sm:py-20`, pola judul bagian: eyebrow kecil, `<h2>`, lalu `ornament`.
 
 ## Tipografi dan ikon

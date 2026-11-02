@@ -46,7 +46,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Layout dan sentuhan
 
 - Mobile-first, uji mental di lebar 360px dulu.
-- `MobileNav` bersifat fixed di bawah (hilang di `md:`), jadi `SiteFooter` wajib mempertahankan `pb-24` di mobile (`md:pb-8`) agar konten tidak tertutup.
+- `MobileNav` bersifat fixed di bawah (hilang di `md:`), jadi elemen `<footer>` terluar wajib memberi ruang bawah setinggi MobileNav di mobile (`pb-16 md:pb-0`), di luar panel merah, agar konten dan garis emas bawah tidak tertutup.
 - Target sentuh minimal 44px (`min-h-11`); tombol utama `min-h-12`.
 - Tautan internal tanpa `target="_blank"`. Tautan eksternal (wa.me, Google Maps) memakai `target="_blank" rel="noopener noreferrer"`.
 - Setiap `<a>` dan tombol punya fokus keyboard yang terlihat (`focus-visible:outline-2 focus-visible:outline-offset-2`, warna menyesuaikan latar).

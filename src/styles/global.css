@@ -56,7 +56,8 @@
 		);
 }
 
-.batik-pattern {
+.batik-panel {
+	background-color: var(--panel-bg, var(--color-primary));
 	background-image:
 		radial-gradient(
 			ellipse 7px 12px at 50% 0%,
@@ -83,6 +84,18 @@
 			transparent 69%
 		);
 	background-size: 32px 32px;
+	border-block: 4px solid var(--color-gold);
+	color: var(--color-white);
+}
+
+.batik-panel-dark {
+	--panel-bg: var(--color-primary-dark);
+}
+
+.batik-panel-card {
+	border-inline: 1px solid var(--color-gold);
+	border-radius: 1rem;
+	overflow: hidden;
 }
 
 .ornament {
