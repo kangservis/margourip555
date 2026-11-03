@@ -64,7 +64,7 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 ## Keputusan yang BELUM diambil (bahas di mode Plan sebelum membangun)
 1. Cara menyimpan dan mengelola konten + dashboard admin. Opsi yang akan dibahas, mis.: CMS berbasis Git (Decap/Sveltia CMS), Firebase (Firestore + Auth), atau kombinasi statis + deploy hook. Kriteria: gratis, bisa dipakai admin non-teknis dari HP, tanpa secret di klien, halaman publik tetap statis dan cepat, gambar terkelola dan terkompres. Jangan memulai fitur admin sebelum saya memilih.
 2. Penyimpanan dan optimasi foto produk/berita.
-3. Navigasi mobile: tab di atas atau bottom nav.
+3. Navigasi mobile: SUDAH diputuskan, memakai bottom nav (`MobileNav`); footer hanya tampil di desktop.
 4. Versi bahasa Inggris untuk keperluan ekspor (belum sekarang; cukup tulis teks agar mudah diterjemahkan nanti, jangan menambah sistem i18n).
 
 ## Gaya kode

@@ -7,6 +7,8 @@ export const siteConfig = {
 	mapUrl: 'https://maps.app.goo.gl/oBWQuXdJeL276LLb7',
 	mapEmbedUrl: 'https://maps.google.com/maps?q=-7.9625863%2C112.1609056&z=14&output=embed',
 	email: '',
+	// Kredit desain opsional untuk footer, mis. 'Design by ...'. Kosong = baris kredit tidak ditampilkan.
+	credit: '',
 };
 
 export const navigationItems = [

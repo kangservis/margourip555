@@ -33,7 +33,8 @@ const {
   <body class="min-h-screen bg-white font-sans text-ink antialiased">
     <a class="skip-link" href="#main-content"> Lewati ke konten </a>
     <SiteHeader currentPath={currentPath} />
-    <main id="main-content">
+    <!-- MobileNav fixed setinggi 4rem di mobile; ruang ini mencegah konten terakhir tertutup. -->
+    <main id="main-content" class="pb-16 md:pb-0">
       <slot />
     </main>
     <SiteFooter />
