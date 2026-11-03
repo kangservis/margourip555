@@ -6,8 +6,12 @@ import { siteConfig } from '../config/site.js';
 // Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
 const INTERVAL_MS = 5000;
 
+// Foto dengan rasio lebar/tinggi di bawah angka ini (potret atau hampir persegi) ditampilkan utuh (object-contain) dengan latar panel di sisinya. Foto lanskap memenuhi kotak (object-cover). Isi 0 agar semua foto selalu memenuhi kotak.
+const CONTAIN_BELOW_RATIO = 1.2;
+
 // Tambahkan foto ke src/assets/hero/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
 // Urutan mengikuti nama file; alt otomatis dibuat dari nama file. Rasio kotak 3:2 memotong sedikit foto 4:3 atau 16:9, jadi tempatkan objek utama di tengah.
+// Foto potret/persegi tampil utuh dengan latar panel di kiri-kanan; foto lanskap memenuhi kotak.
 // Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
 const modules = import.meta.glob<{ default: ImageMetadata }>(
 	'../assets/hero/*.{jpg,jpeg,png,webp,avif}',
@@ -23,11 +27,13 @@ const slides = Object.entries(modules)
 		return {
 			src: module.default,
 			alt: alt || `Foto ${siteConfig.name}`,
+			contain: module.default.width / module.default.height < CONTAIN_BELOW_RATIO,
 		};
 	});
 ---
 
-<div data-hero-slider data-interval={INTERVAL_MS}>
+<!-- Di desktop kotak foto digeser ke kanan melewati batas container (aman: tidak melebihi tepi layar, jadi tanpa scroll horizontal). Mobile tidak berubah. -->
+<div data-hero-slider data-interval={INTERVAL_MS} class="lg:-mr-8 xl:-mr-16">
 	{
 		slides.length > 0 ? (
 			<>
@@ -57,7 +63,7 @@ const slides = Object.entries(modules)
 									quality={75}
 									widths={[480, 720, 1080]}
 									sizes="(min-width: 1024px) 540px, 100vw"
-									class="h-full w-full object-cover object-center"
+									class={slide.contain ? 'h-full w-full object-contain object-center' : 'h-full w-full object-cover object-center'}
 									decoding="async"
 									loading={index === 0 ? 'eager' : 'lazy'}
 									fetchpriority={index === 0 ? 'high' : 'low'}
@@ -116,15 +122,12 @@ const slides = Object.entries(modules)
 
 		dotsContainer.classList.remove('invisible');
 
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		const configuredInterval = Number(root.dataset.interval);
 		const interval = Number.isFinite(configuredInterval) && configuredInterval > 0
 			? configuredInterval
 			: 5000;
 		let activeIndex = 0;
 		let timer = 0;
-		let isHovered = false;
-		let hasFocus = false;
 		let touchStartX: number | null = null;
 		let touchStartY: number | null = null;
 
@@ -160,39 +163,14 @@ const slides = Object.entries(modules)
 			});
 		}
 
+		// Autoplay sengaja tidak dijeda oleh hover/fokus/kurangi-gerakan. Untuk pengguna kurangi-gerakan, perpindahan foto instan (tanpa crossfade) lewat motion-reduce di markup.
 		function start() {
 			stop();
-
-			if (
-				reducedMotion ||
-				isHovered ||
-				hasFocus ||
-				document.visibilityState === 'hidden'
-			) {
-				return;
-			}
-
+			// Jeda hanya saat tab browser tidak aktif
+			if (document.visibilityState === 'hidden') return;
 			timer = setInterval(() => show(activeIndex + 1), interval);
 		}
 
-		root.addEventListener('mouseenter', () => {
-			isHovered = true;
-			stop();
-		});
-		root.addEventListener('mouseleave', () => {
-			isHovered = false;
-			start();
-		});
-		root.addEventListener('focusin', () => {
-			hasFocus = true;
-			stop();
-		});
-		root.addEventListener('focusout', (event) => {
-			if (!(event.relatedTarget instanceof Node) || !root.contains(event.relatedTarget)) {
-				hasFocus = false;
-				start();
-			}
-		});
 		document.addEventListener('visibilitychange', () => {
 			if (document.visibilityState === 'hidden') {
 				stop();
