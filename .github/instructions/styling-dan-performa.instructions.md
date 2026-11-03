@@ -10,7 +10,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 ## Tailwind CSS v4
 
 - CSS-first: `@import "tailwindcss"` di `src/styles/global.css`, token warna lewat `@theme`. **Jangan** membuat `tailwind.config.js`, dan jangan mengubah konfigurasi plugin `@tailwindcss/vite` di `astro.config.mjs` tanpa izin.
-- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `hero-pattern`, `ornament`, `ornament-center`, `batik-panel`, `batik-panel-dark`, `batik-panel-card`.
+- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `hero-pattern`, `ornament`, `ornament-center`, `batik-panel`, `batik-panel-dark`, `batik-panel-card`, `batik-panel-slim`.
 - Pakai **nama token** (`bg-primary`, `text-ink`, `border-line`, ...), bukan kode hex yang diulang-ulang.
 - Class dinamis harus ditulis **utuh** (mis. `"text-primary"`), jangan dirakit dari potongan (`"text-" + warna`), karena Tailwind hanya mengenali class yang tertulis lengkap.
 
@@ -33,7 +33,8 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - Dekorasi hanya yang sudah ada (`batik-panel`, `ornament`, dan `hero-pattern` bila masih dipakai). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
 - **Bidang merah besar** (hero, kartu foto hero, band ajakan, footer, dan bidang merah lain di masa depan) WAJIB memakai `batik-panel` (garis emas tebal di atas dan bawah + corak batik CSS). Pakai `batik-panel-dark` untuk merah gelap dan `batik-panel-card` untuk kartu bersudut membulat. Tombol, badge, dan teks merah kecil tetap solid tanpa corak.
 - Garis emas atas dan bawah `batik-panel` harus selalu terlihat di semua lebar layar. Jangan menimpa tepi `batik-panel` dengan margin negatif atau elemen berlapis, dan jangan memberi latar pada elemen sesudahnya yang bisa menutupinya.
-- Garis dekoratif tipis (1px) diposisikan dengan nilai piksel bulat, bukan `transform: translate(-50%)`, agar tidak pudar di layar kerapatan 1x.
+- Panel merah yang sangat pendek (mis. footer) memakai tambahan `batik-panel-slim` (garis emas 2px dan sedikit lebih tua) agar proporsinya sama dengan panel tinggi. Ini satu-satunya variasi ketebalan garis emas.
+- Garis dekoratif tipis (1px) diposisikan dengan nilai piksel bulat (bukan `transform: translate(-50%)`) dan digambar dengan `border` (bukan `height: 1px` + latar), karena border dipaku ke piksel perangkat dan tidak hilang atau pudar saat zoom atau skala layar pecahan.
 - Minimalis, lapang, konsisten. Ritme bagian: latar selang-seling putih dan `surface`, padding bagian `py-16 sm:py-20`, pola judul bagian: eyebrow kecil, `<h2>`, lalu `ornament`.
 
 ## Tipografi dan ikon

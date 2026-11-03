@@ -92,6 +92,12 @@
 	--panel-bg: var(--color-primary-dark);
 }
 
+/* Untuk panel merah yang sangat pendek (mis. footer): garis emas lebih tipis dan sedikit lebih tua agar proporsinya sama dengan panel tinggi */
+.batik-panel-slim {
+	border-block-width: 2px;
+	border-block-color: color-mix(in srgb, var(--color-gold) 80%, var(--color-primary-dark));
+}
+
 .batik-panel-card {
 	border-inline: 1px solid var(--color-gold);
 	border-radius: 1rem;
@@ -111,8 +117,8 @@
 	top: 7px;
 	right: 0;
 	left: 0;
-	height: 1px;
-	background: var(--color-gold);
+	height: 0;
+	border-top: 1px solid var(--color-gold);
 	content: "";
 }
 
