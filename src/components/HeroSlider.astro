@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { siteConfig } from '../config/site.js';
+
+// Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
+const INTERVAL_MS = 5000;
+
+// Tambahkan foto ke src/assets/hero/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
+// Urutan mengikuti nama file; alt otomatis dibuat dari nama file. Rasio kotak 3:2 memotong sedikit foto 4:3 atau 16:9, jadi tempatkan objek utama di tengah.
+// Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/hero/*.{jpg,jpeg,png,webp,avif}',
+	{ eager: true },
+);
+
+const slides = Object.entries(modules)
+	.sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
+	.map(([path, module]) => {
+		const fileName = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? '';
+		const alt = fileName.replace(/^\d+[-_ ]*/, '').replace(/[-_]/g, ' ').trim();
+
+		return {
+			src: module.default,
+			alt: alt || `Foto ${siteConfig.name}`,
+		};
+	});
+---
+
+<div data-hero-slider data-interval={INTERVAL_MS}>
+	{
+		slides.length > 0 ? (
+			<>
+				<div
+					class="batik-panel batik-panel-dark batik-panel-card relative aspect-[3/2] touch-pan-y"
+					role="region"
+					aria-roledescription="carousel"
+					aria-label={`Foto ${siteConfig.name}`}
+				>
+					{
+						slides.map((slide, index) => (
+							<div
+								data-slide
+								class:list={[
+									'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
+									index === 0 ? 'opacity-100' : 'opacity-0',
+								]}
+								role="group"
+								aria-roledescription="slide"
+								aria-label={`${index + 1} dari ${slides.length}`}
+								aria-hidden={index === 0 ? 'false' : 'true'}
+							>
+								<Image
+									src={slide.src}
+									alt={slide.alt}
+									format="webp"
+									quality={75}
+									widths={[480, 720, 1080]}
+									sizes="(min-width: 1024px) 540px, 100vw"
+									class="h-full w-full object-cover object-center"
+									decoding="async"
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : 'low'}
+								/>
+							</div>
+						))
+					}
+				</div>
+				{
+					slides.length > 1 && (
+						<div data-dots class="invisible mt-3 flex min-h-11 items-center justify-center">
+							{slides.map((_, index) => (
+								<button
+									type="button"
+									data-dot
+									class="flex size-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+									aria-label={`Tampilkan foto ${index + 1}`}
+									aria-current={index === 0 ? 'true' : undefined}
+								>
+									<span
+										class:list={[
+											'size-2.5 rounded-full',
+											index === 0 ? 'bg-gold' : 'bg-white/50',
+										]}
+									/>
+								</button>
+							))}
+						</div>
+					)
+				}
+			</>
+		) : (
+			<div
+				class="batik-panel batik-panel-dark batik-panel-card flex aspect-[3/2] items-center justify-center p-8 text-center"
+				role="img"
+				aria-label="Placeholder foto asli Desa Margourip"
+			>
+				<p class="text-base font-medium text-white">[ISI NANTI: foto asli Desa Margourip]</p>
+			</div>
+		)
+	}
+</div>
+
+<script>
+	function initializeHeroSlider() {
+		const root = document.querySelector<HTMLElement>('[data-hero-slider]');
+		if (!root) return;
+
+		const slides = root.querySelectorAll<HTMLElement>('[data-slide]');
+		const dots = root.querySelectorAll<HTMLButtonElement>('[data-dot]');
+		if (slides.length < 2) return;
+
+		const dotsContainer = root.querySelector<HTMLElement>('[data-dots]');
+		const frame = root.querySelector<HTMLElement>('[aria-roledescription="carousel"]');
+		if (!dotsContainer || !frame) return;
+
+		dotsContainer.classList.remove('invisible');
+
+		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const configuredInterval = Number(root.dataset.interval);
+		const interval = Number.isFinite(configuredInterval) && configuredInterval > 0
+			? configuredInterval
+			: 5000;
+		let activeIndex = 0;
+		let timer = 0;
+		let isHovered = false;
+		let hasFocus = false;
+		let touchStartX: number | null = null;
+		let touchStartY: number | null = null;
+
+		function stop() {
+			clearInterval(timer);
+			timer = 0;
+		}
+
+		function show(index: number) {
+			activeIndex = ((index % slides.length) + slides.length) % slides.length;
+
+			slides.forEach((slide, slideIndex) => {
+				const isActive = slideIndex === activeIndex;
+				slide.classList.toggle('opacity-100', isActive);
+				slide.classList.toggle('opacity-0', !isActive);
+				slide.setAttribute('aria-hidden', String(!isActive));
+			});
+
+			dots.forEach((dot, dotIndex) => {
+				const isActive = dotIndex === activeIndex;
+				const indicator = dot.querySelector('span');
+
+				if (indicator) {
+					indicator.classList.toggle('bg-gold', isActive);
+					indicator.classList.toggle('bg-white/50', !isActive);
+				}
+
+				if (isActive) {
+					dot.setAttribute('aria-current', 'true');
+				} else {
+					dot.removeAttribute('aria-current');
+				}
+			});
+		}
+
+		function start() {
+			stop();
+
+			if (
+				reducedMotion ||
+				isHovered ||
+				hasFocus ||
+				document.visibilityState === 'hidden'
+			) {
+				return;
+			}
+
+			timer = setInterval(() => show(activeIndex + 1), interval);
+		}
+
+		root.addEventListener('mouseenter', () => {
+			isHovered = true;
+			stop();
+		});
+		root.addEventListener('mouseleave', () => {
+			isHovered = false;
+			start();
+		});
+		root.addEventListener('focusin', () => {
+			hasFocus = true;
+			stop();
+		});
+		root.addEventListener('focusout', (event) => {
+			if (!(event.relatedTarget instanceof Node) || !root.contains(event.relatedTarget)) {
+				hasFocus = false;
+				start();
+			}
+		});
+		document.addEventListener('visibilitychange', () => {
+			if (document.visibilityState === 'hidden') {
+				stop();
+			} else {
+				start();
+			}
+		});
+
+		dots.forEach((dot, index) => {
+			dot.addEventListener('click', () => {
+				show(index);
+				start();
+			});
+		});
+
+		frame.addEventListener(
+			'touchstart',
+			(event) => {
+				if (event.touches.length !== 1) {
+					touchStartX = null;
+					touchStartY = null;
+					return;
+				}
+
+				touchStartX = event.touches[0].clientX;
+				touchStartY = event.touches[0].clientY;
+			},
+			{ passive: true },
+		);
+		frame.addEventListener(
+			'touchend',
+			(event) => {
+				const touch = event.changedTouches[0];
+				if (!touch || touchStartX === null || touchStartY === null) return;
+
+				const deltaX = touch.clientX - touchStartX;
+				const deltaY = touch.clientY - touchStartY;
+				touchStartX = null;
+				touchStartY = null;
+
+				if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+					show(activeIndex + (deltaX < 0 ? 1 : -1));
+					start();
+				}
+			},
+			{ passive: true },
+		);
+
+		frame.addEventListener('touchcancel', () => {
+			touchStartX = null;
+			touchStartY = null;
+		});
+
+		start();
+	}
+
+	initializeHeroSlider();
+</script>

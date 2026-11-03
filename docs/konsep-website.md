@@ -22,7 +22,7 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 Urutan bagian, dari atas ke bawah:
 
-1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Satu gambar utama yang ringan (WebP, dimuat prioritas).
+1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Slider foto utama (berganti otomatis tiap 5 detik, bisa digeser di HP, dijeda saat disentuh atau di-hover); foto ditaruh di `src/assets/hero/`, foto pertama dimuat prioritas dan lainnya lazy; tanpa foto tampil placeholder.
 2. **Tentang desa:** 2-3 kalimat singkat + tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
 3. **Produk unggulan:** 3-6 kartu produk bertanda "unggulan", tombol "Lihat semua produk".
 4. **Berita terbaru:** 3 berita terbaru, tombol "Lihat semua berita".

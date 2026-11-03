@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import HeroSlider from "../components/HeroSlider.astro";
 import Icon from "../components/Icon.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 
@@ -50,16 +51,7 @@ const news = Array.from({ length: 3 }, (_, index) => ({
         </div>
       </div>
 
-      <!-- Saat foto asli tersedia, ganti dengan <Image> dari astro:assets tanpa lazy loading dan dengan width/height eksplisit. -->
-      <div
-        class="batik-panel batik-panel-dark batik-panel-card flex aspect-[4/3] items-center justify-center p-8 text-center"
-        role="img"
-        aria-label="Placeholder foto asli Desa Margourip"
-      >
-        <p class="text-base font-medium text-white">
-          [ISI NANTI: foto asli Desa Margourip]
-        </p>
-      </div>
+      <HeroSlider />
     </div>
   </section>
 
