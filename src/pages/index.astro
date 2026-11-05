@@ -11,9 +11,9 @@ const latestNews = { number: "01" };
 <SiteLayout title={siteConfig.name} description={siteConfig.description}>
   <section id="beranda" class="batik-panel text-white">
     <div
-      class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-12 lg:py-24"
+      class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:py-24 xl:gap-x-28"
     >
-      <div>
+      <div class="w-full max-w-lg lg:justify-self-start xl:max-w-xl">
         <p class="text-sm font-semibold uppercase tracking-wide text-white">
           Profil dan katalog produk unggulan
         </p>
@@ -46,7 +46,9 @@ const latestNews = { number: "01" };
         </div>
       </div>
 
-      <HeroSlider />
+      <div class="w-full max-w-md lg:ml-auto lg:max-w-lg lg:justify-self-end">
+        <HeroSlider />
+      </div>
     </div>
   </section>
 
