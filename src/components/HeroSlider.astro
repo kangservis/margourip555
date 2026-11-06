@@ -6,20 +6,28 @@ import { siteConfig } from '../config/site.js';
 // Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
 const INTERVAL_MS = 5000;
 
+// Jumlah foto maksimal di slider. Foto ke-6 dan seterusnya (menurut urutan nama file) diabaikan.
+const MAX_SLIDES = 5;
+
 // Foto dengan rasio lebar/tinggi di bawah angka ini (potret atau hampir persegi) ditampilkan utuh (object-contain) dengan latar panel di sisinya. Foto lanskap memenuhi kotak (object-cover). Isi 0 agar semua foto selalu memenuhi kotak.
 const CONTAIN_BELOW_RATIO = 1.2;
 
-// Tambahkan foto ke src/assets/hero/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
+// Tambahkan maksimal 5 foto ke src/assets/slider-depan/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
 // Urutan mengikuti nama file; alt otomatis dibuat dari nama file. Rasio kotak 3:2 memotong sedikit foto 4:3 atau 16:9, jadi tempatkan objek utama di tengah.
 // Foto potret/persegi tampil utuh dengan latar panel di kiri-kanan; foto lanskap memenuhi kotak.
 // Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
 const modules = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/hero/*.{jpg,jpeg,png,webp,avif}',
+	'../assets/slider-depan/*.{jpg,jpeg,png,webp,avif}',
 	{ eager: true },
 );
 
+if (Object.keys(modules).length > MAX_SLIDES) {
+	console.warn(`Folder src/assets/slider-depan berisi ${Object.keys(modules).length} foto; hanya ${MAX_SLIDES} foto pertama (menurut urutan nama file) yang dipakai.`);
+}
+
 const slides = Object.entries(modules)
 	.sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
+	.slice(0, MAX_SLIDES)
 	.map(([path, module]) => {
 		const fileName = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? '';
 		const alt = fileName.replace(/^\d+[-_ ]*/, '').replace(/[-_]/g, ' ').trim();
@@ -71,14 +79,22 @@ const slides = Object.entries(modules)
 						))
 					}
 				</div>
+				<!-- Lebar tombol titik dikecilkan saat 5 foto agar titik lebih rapat (28px, di atas minimum aksesibilitas 24px). -->
 				{
-					slides.length > 1 && (
+					slides.length === 1 ? (
+						<div class="mt-3 flex min-h-11 items-center justify-center" aria-hidden="true">
+							<span class="size-2.5 rounded-full bg-gold"></span>
+						</div>
+					) : slides.length >= 2 ? (
 						<div data-dots class="invisible mt-3 flex min-h-11 items-center justify-center">
 							{slides.map((_, index) => (
 								<button
 									type="button"
 									data-dot
-									class="flex size-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+									class:list={[
+										'flex h-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
+										slides.length >= 5 ? 'w-7' : 'w-11',
+									]}
 									aria-label={`Tampilkan foto ${index + 1}`}
 									aria-current={index === 0 ? 'true' : undefined}
 								>
@@ -91,7 +107,7 @@ const slides = Object.entries(modules)
 								</button>
 							))}
 						</div>
-					)
+					) : null
 				}
 			</>
 		) : (
