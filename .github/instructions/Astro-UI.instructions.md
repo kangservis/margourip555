@@ -29,12 +29,13 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Pakai `SiteLayout` dengan `title` unik berformat `"<Halaman> - <nama desa>"` dan `description` unik.
 - Container standar: kelas `site-container` (di `global.css`). Satu `<h1>` per halaman, urutan heading logis.
 - Data yang belum ada diisi placeholder `[ISI NANTI]` atau `[CONTOH]`. Jangan mengarang fakta desa (sejarah, penduduk, pejabat, harga, alamat, kontak).
+- Band judul halaman dalam memakai komponen `PageHeader.astro` (eyebrow opsional, `<h1>`, ornament, deskripsi opsional).
 - Teks ditulis agar mudah diterjemahkan nanti, tetapi jangan menambah sistem i18n.
 - Kategori produk dan status (tersedia / pre-order / habis) didefinisikan di satu tempat. Sebelum daftar kategori ditetapkan pemilik, jangan mengarang kategori.
 
 ## JavaScript (vanilla, seminimal mungkin)
 
-- Hanya untuk interaksi kecil yang benar-benar perlu: menu, filter chip, "Muat lebih banyak", slider foto hero, memuat peta saat diklik.
+- Hanya untuk interaksi kecil yang benar-benar perlu: menu, filter chip, "Muat lebih banyak", slider foto hero, memuat peta saat diklik, popup foto (`<dialog>` bawaan browser).
 - Tanpa ClientRouter, setiap pindah halaman adalah muat penuh. `<script>` di Astro berjalan sekali per halaman, jadi tidak perlu pola `astro:page-load` atau `astro:after-swap`. Jangan menambahkannya.
 - **Progressive enhancement**: isi (misalnya daftar produk) sudah ada di HTML. JavaScript hanya menyaring atau menyembunyikan, sehingga tanpa JavaScript daftar tetap terlihat.
 - Pasang listener lewat `addEventListener` di dalam `<script>` (boleh event delegation). Jangan memakai fungsi global `window.*` dan `onclick="..."` inline.
@@ -57,6 +58,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Gambar lokal diproses lewat `astro:assets` (`<Image>`), format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `decoding="async"`, dan `loading="lazy"` kecuali gambar paling atas (hero) yang dimuat prioritas.
 - Maksimal sekitar 200 KB per foto.
 - Placeholder foto berupa `<div>` dengan `role="img"` dan `aria-label` yang deskriptif, berisi teks `[ISI NANTI: ...]`.
+- Foto anggota struktur ada di `src/assets/struktur/`; nama berkas = field `kunci` anggota (huruf kecil); tanpa berkas tampil placeholder.
 - Aturan untuk foto yang berasal dari layanan penyimpanan luar menunggu keputusan penyimpanan foto.
 
 ## Aksesibilitas

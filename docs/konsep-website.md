@@ -49,7 +49,8 @@ Urutan bagian, dari atas ke bawah:
 
 ### 4. Struktur Organisasi
 
-- Menampilkan susunan perangkat desa (dan bila perlu komunitas Ikatan 555 sebagai bagian terpisah, tergantung keputusan saya).
+- Halaman memakai band judul (`PageHeader`) dan kartu bergaya kertas berisi foto, nama, serta jabatan, dikelompokkan per tingkat dengan garis penghubung antar tingkat.
+- Data anggota berada di frontmatter `src/pages/struktur.astro`. Foto disimpan di `src/assets/struktur/` dengan nama berkas sama dengan `kunci` anggota (misalnya `ketua.jpg`); foto dapat diklik untuk membuka popup, dan tanpa foto tampil placeholder.
 - Mobile: daftar vertikal berupa kartu (foto, nama, jabatan), dikelompokkan per tingkat.
 - Desktop: tata letak bertingkat memakai CSS grid. Tanpa library bagan.
 - Data diurutkan berdasarkan field `urutan` dan `tingkat`.
