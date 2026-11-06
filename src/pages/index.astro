@@ -9,19 +9,23 @@ const latestNews = { number: "01" };
 ---
 
 <SiteLayout title={siteConfig.name} description={siteConfig.description}>
-  <section id="beranda" class="batik-panel text-white">
+  <!-- Di desktop hero memenuhi satu layar: tinggi layar dikurangi tinggi header (65px = min-h-16 + border). Jika tinggi header berubah, perbarui angka 65px ini. -->
+  <section
+    id="beranda"
+    class="batik-panel text-white relative lg:flex lg:min-h-[calc(100svh-65px)] lg:items-center"
+  >
     <div
-      class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:py-24 xl:gap-x-28"
+      class="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:max-w-[90rem] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-x-12 lg:px-12 lg:pb-24 lg:pt-12 xl:gap-x-16 xl:px-16"
     >
       <div class="w-full max-w-lg lg:justify-self-start xl:max-w-xl">
         <p class="text-sm font-semibold uppercase tracking-wide text-white">
           Profil dan katalog produk unggulan
         </p>
-        <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl">
+        <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl xl:text-6xl">
           {siteConfig.name}
         </h1>
         <div class="ornament" aria-hidden="true"></div>
-        <p class="mt-5 max-w-xl text-lg leading-8 text-white">
+        <p class="mt-5 max-w-xl text-lg leading-8 text-white lg:text-xl lg:leading-9">
           {
             siteConfig.tagline.startsWith("[")
               ? "Kenali produk unggulan desa dan hubungi admin untuk informasi, kerja sama, atau pemesanan."
@@ -46,13 +50,21 @@ const latestNews = { number: "01" };
         </div>
       </div>
 
-      <div class="w-full max-w-md lg:ml-auto lg:max-w-lg lg:justify-self-end">
+      <!-- Di desktop lebar slider dibatasi agar tinggi kotak 3:2 tidak melebihi tinggi layar (cadangan 16rem untuk header, padding, dan titik navigasi). -->
+      <div class="w-full max-w-md lg:ml-auto lg:max-w-[min(100%,calc((100svh_-_16rem)*1.5))] lg:justify-self-end">
         <HeroSlider />
       </div>
     </div>
+    <a
+      href="#akses-cepat"
+      class="absolute inset-x-0 bottom-6 mx-auto hidden size-11 items-center justify-center rounded-full bg-white text-primary transition-colors hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:flex"
+      aria-label="Gulir ke bagian bawah"
+    >
+      <Icon name="arrow-down" class="size-5" />
+    </a>
   </section>
 
-  <section aria-label="Akses cepat" class="bg-white">
+  <section id="akses-cepat" aria-label="Akses cepat" class="bg-white">
     <div
       class="mx-auto grid max-w-6xl gap-4 px-5 py-8 sm:grid-cols-3 sm:px-8 sm:py-10"
     >

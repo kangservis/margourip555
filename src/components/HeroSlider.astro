@@ -32,8 +32,7 @@ const slides = Object.entries(modules)
 	});
 ---
 
-<!-- Di desktop kotak foto digeser ke kanan melewati batas container (aman: tidak melebihi tepi layar, jadi tanpa scroll horizontal). Mobile tidak berubah. -->
-<div data-hero-slider data-interval={INTERVAL_MS} class="lg:-mr-8 xl:-mr-16">
+<div data-hero-slider data-interval={INTERVAL_MS}>
 	{
 		slides.length > 0 ? (
 			<>
@@ -62,7 +61,7 @@ const slides = Object.entries(modules)
 									format="webp"
 									quality={75}
 									widths={[480, 720, 1080]}
-									sizes="(min-width: 1024px) 540px, 100vw"
+									sizes="(min-width: 1024px) 760px, 100vw"
 									class={slide.contain ? 'h-full w-full object-contain object-center' : 'h-full w-full object-cover object-center'}
 									decoding="async"
 									loading={index === 0 ? 'eager' : 'lazy'}
