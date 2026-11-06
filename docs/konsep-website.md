@@ -22,7 +22,7 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 Urutan bagian, dari atas ke bawah:
 
-1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Slider foto utama (berganti otomatis tiap 5 detik tanpa henti; klik titik atau geser di HP mengulang hitungan 5 detik); foto ditaruh di `src/assets/hero/`, foto pertama dimuat prioritas dan lainnya lazy; foto potret/persegi tampil utuh, foto lanskap memenuhi kotak; tanpa foto tampil placeholder. Di desktop (lg ke atas) hero memenuhi satu layar penuh (tinggi layar dikurangi header), teks di kiri dan slider besar di kanan, dengan tombol panah gulir di dasar hero; di mobile tinggi mengikuti isi.
+1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Slider foto utama (berganti otomatis tiap 5 detik tanpa henti; klik titik atau geser di HP mengulang hitungan 5 detik); foto ditaruh di `src/assets/hero/`, foto pertama dimuat prioritas dan lainnya lazy; foto potret/persegi tampil utuh, foto lanskap memenuhi kotak; tanpa foto tampil placeholder. Di desktop (lg ke atas) hero memenuhi satu layar penuh (tinggi layar dikurangi header), teks di kiri dan slider besar di kanan; di mobile tinggi mengikuti isi.
 2. **Tentang desa:** 2-3 kalimat singkat + tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
 3. **Produk unggulan:** 1 kartu produk bertanda "unggulan" (yang pertama menurut urutan) bersama blok judul bergaya etalase (dua kolom di desktop, selang-seling dengan bagian Berita), tombol "Lihat semua produk".
 4. **Berita terbaru:** 1 berita terbaru dengan tata letak dua kolom yang dicerminkan, tombol "Lihat semua berita".

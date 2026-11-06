@@ -56,34 +56,19 @@
 		);
 }
 
+/* Corak segitiga bertingkat (bergaya tumpal), murni CSS.
+   --s = ukuran ubin. --batik-strength = seberapa terlihat corak (persen emas yang dicampur ke warna dasar merah); naikkan bila terlalu samar, turunkan bila terlalu ramai. */
 .batik-panel {
-	background-color: var(--panel-bg, var(--color-primary));
+	--s: 26px;
+	--batik-strength: 14%;
+	--c1: var(--panel-bg, var(--color-primary));
+	--c2: color-mix(in srgb, var(--color-gold) var(--batik-strength), var(--c1));
+	background-color: var(--c1);
 	background-image:
-		radial-gradient(
-			ellipse 7px 12px at 50% 0%,
-			transparent 58%,
-			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
-			transparent 69%
-		),
-		radial-gradient(
-			ellipse 7px 12px at 50% 100%,
-			transparent 58%,
-			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
-			transparent 69%
-		),
-		radial-gradient(
-			ellipse 7px 12px at 0% 50%,
-			transparent 58%,
-			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
-			transparent 69%
-		),
-		radial-gradient(
-			ellipse 7px 12px at 100% 50%,
-			transparent 58%,
-			color-mix(in srgb, var(--color-gold) 18%, transparent) 61% 66%,
-			transparent 69%
-		);
-	background-size: 32px 32px;
+		conic-gradient(from -45deg, var(--c1) 90deg, #0000 0 180deg, var(--c2) 0 270deg, #0000 0),
+		conic-gradient(from 135deg at 50% 0, var(--c1) 90deg, var(--c2) 0);
+	background-position: 0 calc(var(--s) / 2), 0 0;
+	background-size: var(--s) var(--s), calc(2 * var(--s)) var(--s);
 	border-block: 4px solid var(--color-gold);
 	color: var(--color-white);
 }
