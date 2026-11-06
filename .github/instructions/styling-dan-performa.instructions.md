@@ -51,7 +51,7 @@ Target Lighthouse mobile: LCP < 2,5 dtk, CLS mendekati 0, INP < 200 ms.
 
 - **Hindari di mobile**: `backdrop-blur`, bayangan besar, elemen `fixed` berukuran besar (mis. watermark), `will-change` berlebihan, `transition: all`, dan animasi yang memicu layout.
 - Animasi hanya bila benar-benar perlu, hanya `transform` dan `opacity`, singkat. Untuk hover cukup `transition-colors`.
-- Satu-satunya animasi yang ada: crossfade `opacity` 500 ms pada slider foto hero, dimatikan oleh `motion-reduce` (foto berganti instan, autoplay tetap berjalan). Autoplay tidak dijeda oleh hover atau fokus; klik titik atau geser hanya mengulang hitungan.
+- Satu-satunya animasi yang ada: crossfade `opacity` 500 ms dan transisi `aspect-ratio` 500 ms pada slider foto hero, dimatikan oleh `motion-reduce` (foto berganti instan dan kartu langsung berubah ukuran, autoplay tetap berjalan). Autoplay tidak dijeda oleh hover atau fokus; klik titik atau geser hanya mengulang hitungan.
 - Tanpa animasi transisi antar halaman. Perpindahan halaman harus terasa instan.
 - Gambar: `astro:assets`, WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit (atau wadah dengan rasio tetap seperti `aspect-[4/3]`) agar tidak ada layout shift, `loading="lazy"` kecuali gambar paling atas.
 - Jangan menambah font, ikon, library, atau skrip CDN baru. Jika benar-benar perlu: sebut ukurannya (KB gzip), alasannya, alternatif vanilla, dan minta persetujuan. Versi CDN wajib dipin (bukan `@latest`).

@@ -11,8 +11,13 @@ const MAX_SLIDES = 5;
 
 // Tambahkan maksimal 5 foto ke src/assets/slider-depan/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
 // Urutan mengikuti nama file; alt otomatis dibuat dari nama file.
-// Semua foto tampil utuh (fit to card / object-contain) di dalam kartu berasio 3:2 dengan latar panel batik jika rasio foto berbeda.
+// Kartu slider menyesuaikan rasio setiap foto (transisi halus 500 ms saat berganti).
+// Rasio diklem: minimal 3:4 (potret), maksimal 2:1 (lanskap lebar).
+// Foto di luar rentang itu sedikit terpotong (object-cover).
+// Untuk tampilan terbaik, gunakan foto dengan rasio serupa (misal semua lanskap 16:9 atau 3:2).
 // Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
+const MIN_RATIO = 3 / 4;
+const MAX_RATIO = 2 / 1;
 const modules = import.meta.glob<{ default: ImageMetadata }>(
 	'../assets/slider-depan/*.{jpg,jpeg,png,webp,avif}',
 	{ eager: true },
@@ -32,6 +37,7 @@ const slides = Object.entries(modules)
 		return {
 			src: module.default,
 			alt: alt || `Foto ${siteConfig.name}`,
+			ratio: Math.min(MAX_RATIO, Math.max(MIN_RATIO, module.default.width / module.default.height)),
 		};
 	});
 ---
@@ -41,7 +47,8 @@ const slides = Object.entries(modules)
 		slides.length > 0 ? (
 			<>
 				<div
-					class="batik-panel batik-panel-dark batik-panel-card relative aspect-[3/2] touch-pan-y"
+					class="batik-panel batik-panel-dark batik-panel-card relative touch-pan-y transition-[aspect-ratio] duration-500 ease-in-out motion-reduce:transition-none"
+					style={`aspect-ratio: ${slides[0].ratio}`}
 					role="region"
 					aria-roledescription="carousel"
 					aria-label={`Foto ${siteConfig.name}`}
@@ -50,6 +57,7 @@ const slides = Object.entries(modules)
 						slides.map((slide, index) => (
 							<div
 								data-slide
+								data-ratio={slide.ratio}
 								class:list={[
 									'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
 									index === 0 ? 'opacity-100' : 'opacity-0',
@@ -66,7 +74,7 @@ const slides = Object.entries(modules)
 									quality={75}
 									widths={[480, 720, 1080]}
 									sizes="(min-width: 1024px) 900px, 100vw"
-									class="h-full w-full object-contain object-center"
+									class="h-full w-full object-cover object-center"
 									decoding="async"
 									loading={index === 0 ? 'eager' : 'lazy'}
 									fetchpriority={index === 0 ? 'high' : 'low'}
@@ -149,6 +157,12 @@ const slides = Object.entries(modules)
 
 		function show(index: number) {
 			activeIndex = ((index % slides.length) + slides.length) % slides.length;
+
+			// Sesuaikan rasio kartu dengan foto aktif
+			const ratio = slides[activeIndex]?.dataset.ratio;
+			if (ratio) {
+				frame.style.aspectRatio = ratio;
+			}
 
 			slides.forEach((slide, slideIndex) => {
 				const isActive = slideIndex === activeIndex;
