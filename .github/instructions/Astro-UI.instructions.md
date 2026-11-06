@@ -27,7 +27,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Halaman baru
 
 - Pakai `SiteLayout` dengan `title` unik berformat `"<Halaman> - <nama desa>"` dan `description` unik.
-- Container standar: `mx-auto max-w-6xl px-5 sm:px-8`. Satu `<h1>` per halaman, urutan heading logis.
+- Container standar: kelas `site-container` (di `global.css`). Satu `<h1>` per halaman, urutan heading logis.
 - Data yang belum ada diisi placeholder `[ISI NANTI]` atau `[CONTOH]`. Jangan mengarang fakta desa (sejarah, penduduk, pejabat, harga, alamat, kontak).
 - Teks ditulis agar mudah diterjemahkan nanti, tetapi jangan menambah sistem i18n.
 - Kategori produk dan status (tersedia / pre-order / habis) didefinisikan di satu tempat. Sebelum daftar kategori ditetapkan pemilik, jangan mengarang kategori.
@@ -46,7 +46,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Layout dan sentuhan
 
 - Mobile-first, uji mental di lebar 360px dulu.
-- Hero Beranda di desktop memakai tinggi minimal `calc(100svh-65px)` (65px = tinggi header). Jika tinggi `SiteHeader` berubah, perbarui angka itu di `index.astro`.
+- Hero Beranda memakai tinggi minimal satu layar: `calc(100svh-65px)` di md ke atas dan `calc(100svh-65px-4rem)` di mobile (65px = tinggi header, 4rem = tinggi MobileNav). Jika tinggi `SiteHeader` atau `MobileNav` berubah, perbarui angka itu di `index.astro`.
 - `MobileNav` bersifat fixed di bawah (hilang di `md:`) dan menggantikan footer di mobile; `SiteFooter` hanya tampil di desktop (`hidden md:block`). Karena itu `<main>` di `SiteLayout` wajib memberi ruang bawah setinggi MobileNav di mobile (`pb-16 md:pb-0`) agar konten terakhir tidak tertutup.
 - Target sentuh minimal 44px (`min-h-11`); tombol utama `min-h-12`.
 - Tautan internal tanpa `target="_blank"`. Tautan eksternal (wa.me, Google Maps) memakai `target="_blank" rel="noopener noreferrer"`.

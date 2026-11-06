@@ -15,6 +15,7 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 - Tab di atas (desktop). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
 - Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): satu baris hak cipta (tahun + nama desa) dan, bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
 - Semua halaman publik statis dan berpindah instan.
+- Semua bagian memakai kelas `site-container` (lebar maksimal 1280px, 1440px mulai lg, 1760px mulai 2xl).
 
 ## Halaman
 
@@ -22,8 +23,8 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 Urutan bagian, dari atas ke bawah:
 
-1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Slider foto utama (berganti otomatis tiap 5 detik tanpa henti; klik titik atau geser di HP mengulang hitungan 5 detik); foto ditaruh di `src/assets/hero/`, foto pertama dimuat prioritas dan lainnya lazy; foto potret/persegi tampil utuh, foto lanskap memenuhi kotak; tanpa foto tampil placeholder. Di desktop (lg ke atas) hero memenuhi satu layar penuh (tinggi layar dikurangi header), teks di kiri dan slider besar di kanan; di mobile tinggi mengikuti isi.
-2. **Tentang desa:** 2-3 kalimat singkat + tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
+1. **Hero:** nama desa, satu kalimat tagline, dua tombol: "Lihat Produk" dan "Hubungi via WhatsApp". Slider foto utama (berganti otomatis tiap 5 detik tanpa henti; klik titik atau geser di HP mengulang hitungan 5 detik); foto ditaruh di `src/assets/hero/`, foto pertama dimuat prioritas dan lainnya lazy; foto potret/persegi tampil utuh, foto lanskap memenuhi kotak; tanpa foto tampil placeholder. Hero memenuhi satu layar penuh di semua ukuran: tinggi layar dikurangi header di desktop dan dikurangi header serta bottom nav di mobile. Di desktop (lg ke atas) teks dan slider berdampingan, di mobile bertumpuk.
+2. **Tentang desa:** judul di sisi kiri dan isi dalam kartu bergaya kertas di sisi kanan (desktop), dengan tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
 3. **Produk unggulan:** 1 kartu produk bertanda "unggulan" (yang pertama menurut urutan) bersama blok judul bergaya etalase (dua kolom di desktop, selang-seling dengan bagian Berita), tombol "Lihat semua produk".
 4. **Berita terbaru:** 1 berita terbaru dengan tata letak dua kolom yang dicerminkan, tombol "Lihat semua berita".
 5. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
