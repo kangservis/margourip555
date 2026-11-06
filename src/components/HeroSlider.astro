@@ -9,12 +9,9 @@ const INTERVAL_MS = 5000;
 // Jumlah foto maksimal di slider. Foto ke-6 dan seterusnya (menurut urutan nama file) diabaikan.
 const MAX_SLIDES = 5;
 
-// Foto dengan rasio lebar/tinggi di bawah angka ini (potret atau hampir persegi) ditampilkan utuh (object-contain) dengan latar panel di sisinya. Foto lanskap memenuhi kotak (object-cover). Isi 0 agar semua foto selalu memenuhi kotak.
-const CONTAIN_BELOW_RATIO = 1.2;
-
 // Tambahkan maksimal 5 foto ke src/assets/slider-depan/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
-// Urutan mengikuti nama file; alt otomatis dibuat dari nama file. Rasio kotak 3:2 memotong sedikit foto 4:3 atau 16:9, jadi tempatkan objek utama di tengah.
-// Foto potret/persegi tampil utuh dengan latar panel di kiri-kanan; foto lanskap memenuhi kotak.
+// Urutan mengikuti nama file; alt otomatis dibuat dari nama file.
+// Semua foto tampil utuh (fit to card / object-contain) di dalam kartu berasio 3:2 dengan latar panel batik jika rasio foto berbeda.
 // Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
 const modules = import.meta.glob<{ default: ImageMetadata }>(
 	'../assets/slider-depan/*.{jpg,jpeg,png,webp,avif}',
@@ -35,7 +32,6 @@ const slides = Object.entries(modules)
 		return {
 			src: module.default,
 			alt: alt || `Foto ${siteConfig.name}`,
-			contain: module.default.width / module.default.height < CONTAIN_BELOW_RATIO,
 		};
 	});
 ---
@@ -70,7 +66,7 @@ const slides = Object.entries(modules)
 									quality={75}
 									widths={[480, 720, 1080]}
 									sizes="(min-width: 1024px) 900px, 100vw"
-									class={slide.contain ? 'h-full w-full object-contain object-center' : 'h-full w-full object-cover object-center'}
+									class="h-full w-full object-contain object-center"
 									decoding="async"
 									loading={index === 0 ? 'eager' : 'lazy'}
 									fetchpriority={index === 0 ? 'high' : 'low'}
