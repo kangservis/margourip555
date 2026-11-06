@@ -42,12 +42,17 @@ const slides = Object.entries(modules)
 	});
 ---
 
-<div data-hero-slider data-interval={INTERVAL_MS}>
+<div
+	data-hero-slider
+	data-interval={INTERVAL_MS}
+	class="mx-auto w-full transition-[max-width] duration-500 ease-in-out motion-reduce:transition-none lg:ml-auto lg:mr-0 [--slider-max-h:260px] sm:[--slider-max-h:320px] lg:[--slider-max-h:min(420px,calc(100svh-16rem))]"
+	style={`max-width: min(100%, calc(var(--slider-max-h) * ${slides[0]?.ratio ?? 1.5}));`}
+>
 	{
 		slides.length > 0 ? (
 			<>
 				<div
-					class="batik-panel batik-panel-dark batik-panel-card relative touch-pan-y transition-[aspect-ratio] duration-500 ease-in-out motion-reduce:transition-none"
+					class="batik-panel batik-panel-dark batik-panel-card relative w-full touch-pan-y transition-[aspect-ratio] duration-500 ease-in-out motion-reduce:transition-none"
 					style={`aspect-ratio: ${slides[0].ratio}`}
 					role="region"
 					aria-roledescription="carousel"
@@ -162,6 +167,7 @@ const slides = Object.entries(modules)
 			const ratio = slides[activeIndex]?.dataset.ratio;
 			if (ratio) {
 				frame.style.aspectRatio = ratio;
+				root.style.maxWidth = `min(100%, calc(var(--slider-max-h) * ${ratio}))`;
 			}
 
 			slides.forEach((slide, slideIndex) => {
