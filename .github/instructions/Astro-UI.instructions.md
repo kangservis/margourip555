@@ -20,7 +20,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Satu sumber kebenaran: `src/config/site.js`
 
 - Nama desa, deskripsi, tagline, alamat, nomor WhatsApp, email, `navigationItems`, serta fungsi `isActive`, `getWhatsAppLink`, dan `getContactLink` hanya ada di `site.js`. Jangan menyalinnya ke file lain.
-- Tautan WhatsApp selalu lewat helper. Tombol "Hubungi" memakai `getContactLink()` (otomatis ke `/kontak` bila nomor belum diisi). Tombol pesan produk memakai `getWhatsAppLink(pesan)` dengan pesan awal berisi nama produk + tautan halaman produk.
+- Tautan WhatsApp selalu lewat helper. Tombol "Hubungi" memakai `getContactLink()` (otomatis ke `/kontak` bila nomor belum diisi). Tombol konsultasi produk memakai `getContactLink(pesan)` dengan pesan awal berisi nama produk; tautan halaman produk ditambahkan nanti setelah `site` diatur.
 - Menambah atau mengubah menu cukup dengan mengubah `navigationItems`. `SiteHeader` dan `MobileNav` sama-sama membaca daftar itu dan memakai `isActive`. Jangan menulis logika "menu aktif" sendiri di komponen, dan jangan menggantungkannya pada teks label.
 - Jika mengganti nama atau parameter fungsi/field di `site.js`, cari dan perbarui SEMUA pemakainya (header, footer, mobile nav, halaman).
 

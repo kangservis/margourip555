@@ -14,6 +14,7 @@ Cara menyimpan dan mengelola konten + dashboard admin **BELUM diputuskan**. Sela
 - Jangan membuat fitur admin, skema database, koleksi, atau folder `functions/` untuk upload.
 - Jangan memasang SDK, CMS, atau layanan database apa pun, dan jangan menambah variabel `PUBLIC_*`.
 - Data tampil di halaman memakai placeholder `[CONTOH]` di kode. Jangan mengarang data asli.
+- Data contoh produk sementara ada di `src/config/products.js`. Saat sumber data dipilih, ganti isi `getProduk()` saja.
 
 Setelah keputusan diambil, bagian "Aturan khusus layanan terpilih" di bagian bawah file ini diisi lebih dulu (bersama pemilik), baru kode ditulis.
 
