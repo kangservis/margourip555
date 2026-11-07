@@ -61,8 +61,10 @@ Urutan bagian, dari atas ke bawah:
 
 ### 5. Kontak
 
+- Halaman memakai band judul `PageHeader` (dengan judul dan ornamen di tengah).
 - Kartu alamat kantor desa dengan placeholder `[ISI NANTI: alamat kantor desa]` sampai alamat asli diberikan.
-- Di bawah kartu alamat, tampilkan iframe peta Google Maps untuk lokasi Desa Margourip dengan `loading="lazy"`, judul deskriptif, dan wadah berasio tetap.
+- Kartu alamat kantor desa memiliki tombol "Buka di Google Maps" yang mengarah ke `siteConfig.mapUrl`.
+- Di bawah kartu alamat, tampilkan iframe peta Google Maps berukuran ringkas (`max-w-2xl` dengan rasio tetap) agar ringan.
 - Semua ajakan kontak admin yang dapat diklik diarahkan ke WhatsApp melalui `getWhatsAppLink()` atau `getContactLink()` dan nomor di `src/config/site.js`; jangan gunakan tautan `mailto:`.
 - Semua nilai kontak dibaca dari `src/config/site.js`.
 - Tautan Google Maps dan URL embed peta disimpan di `src/config/site.js`; gunakan `mapUrl` untuk membuka Maps dan `mapEmbedUrl` sebagai sumber iframe.

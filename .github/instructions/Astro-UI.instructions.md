@@ -29,7 +29,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Pakai `SiteLayout` dengan `title` unik berformat `"<Halaman> - <nama desa>"` dan `description` unik.
 - Container standar: kelas `site-container` (di `global.css`). Satu `<h1>` per halaman, urutan heading logis.
 - Data yang belum ada diisi placeholder `[ISI NANTI]` atau `[CONTOH]`. Jangan mengarang fakta desa (sejarah, penduduk, pejabat, harga, alamat, kontak).
-- Band judul halaman dalam memakai komponen `PageHeader.astro` (eyebrow opsional, `<h1>`, ornament, deskripsi opsional).
+- Band judul halaman dalam memakai komponen `PageHeader.astro` (eyebrow opsional, `<h1>`, `ornament-center`, deskripsi opsional; tata letak rata tengah).
 - Teks ditulis agar mudah diterjemahkan nanti, tetapi jangan menambah sistem i18n.
 - Kategori produk dan status (tersedia / pre-order / habis) didefinisikan di satu tempat. Sebelum daftar kategori ditetapkan pemilik, jangan mengarang kategori.
 

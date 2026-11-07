@@ -1,59 +1,70 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
-import Icon from '../components/Icon.astro';
-import { getWhatsAppLink, siteConfig } from '../config/site.js';
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Icon from "../components/Icon.astro";
+import { siteConfig } from "../config/site.js";
 ---
 
 <SiteLayout
-	title={`Kontak - ${siteConfig.name}`}
-	description={`Informasi alamat dan kontak ${siteConfig.name}.`}
+  title={`Kontak - ${siteConfig.name}`}
+  description={`Informasi alamat dan kontak ${siteConfig.name}.`}
 >
-	<section class="bg-surface">
-		<div class="site-container py-12 sm:py-16">
-			<h1 class="text-center text-3xl font-bold text-ink">Kontak</h1>
+  <PageHeader
+    eyebrow="Hubungi kami"
+    title="Kontak"
+    description={`Informasi alamat dan kontak ${siteConfig.name}.`}
+  />
+  <section class="bg-surface">
+    <div class="site-container py-16 sm:py-20">
+      <section
+        class="mx-auto max-w-2xl rounded-2xl border border-line bg-white p-6 text-center sm:p-8"
+        aria-labelledby="office-address-title"
+      >
+        <span
+          class="mx-auto flex size-12 items-center justify-center rounded-xl bg-gold-soft text-primary"
+        >
+          <Icon name="map-pin" class="size-6" />
+        </span>
+        <h2 id="office-address-title" class="mt-4 text-xl font-bold text-ink">
+          Alamat Kantor
+        </h2>
+        <p class="mt-2 text-base leading-7 text-ink-muted">
+          {
+            siteConfig.address && !siteConfig.address.startsWith("[")
+              ? siteConfig.address
+              : "[ISI NANTI: alamat kantor desa]"
+          }
+        </p>
+        {
+          siteConfig.mapUrl && (
+            <a
+              class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              href={siteConfig.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="map-pin" class="size-5" />
+              Buka di Google Maps
+            </a>
+          )
+        }
+      </section>
 
-			<section
-				class="mx-auto mt-8 max-w-2xl rounded-2xl border border-line bg-white p-6 text-center sm:p-8"
-				aria-labelledby="office-address-title"
-			>
-				<span class="mx-auto flex size-12 items-center justify-center rounded-xl bg-gold-soft text-primary">
-					<Icon name="map-pin" class="size-6" />
-				</span>
-				<h2 id="office-address-title" class="mt-4 text-xl font-bold text-ink">
-					Alamat Kantor Desa
-				</h2>
-				<p class="mt-2 text-base leading-7 text-ink-muted">
-					[ISI NANTI: alamat kantor desa]
-				</p>
-				{
-					siteConfig.whatsapp && (
-						<a
-							class="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-							href={getWhatsAppLink()}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<Icon name="whatsapp" class="size-5" />
-							Hubungi via WhatsApp
-						</a>
-					)
-				}
-			</section>
-
-			<section class="mt-8" aria-labelledby="map-title">
-				<h2 id="map-title" class="mb-4 text-center text-2xl font-bold text-ink">
-					Lokasi Desa Margourip
-				</h2>
-				<div class="aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-white sm:aspect-[16/8]">
-					<iframe
-						class="size-full border-0"
-						src={siteConfig.mapEmbedUrl}
-						title="Peta lokasi Desa Margourip"
-						loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"
-					></iframe>
-				</div>
-			</section>
-		</div>
-	</section>
+      <section class="mx-auto mt-12 max-w-2xl" aria-labelledby="map-title">
+        <h2 id="map-title" class="mb-4 text-center text-2xl font-bold text-ink">
+          Lokasi {siteConfig.name}
+        </h2>
+        <div
+          class="aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-white sm:aspect-[16/9]"
+        >
+          <iframe
+            class="size-full border-0"
+            src={siteConfig.mapEmbedUrl}
+            title={`Peta lokasi ${siteConfig.name}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </section>
+    </div>
+  </section>
 </SiteLayout>

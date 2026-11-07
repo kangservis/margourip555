@@ -8,12 +8,12 @@ interface Props {
 const { title, eyebrow, description } = Astro.props;
 ---
 
-<!-- Band judul untuk halaman dalam. Dipakai Struktur; Produk, Berita, Kontak dapat memakainya nanti. -->
+<!-- Band judul untuk halaman dalam. Dipakai di Produk, Berita, Struktur, dan Kontak. -->
 <section class="batik-panel">
-	<div class="site-container py-14 sm:py-16">
+	<div class="site-container flex flex-col items-center py-14 text-center sm:py-16">
 		{eyebrow && <p class="text-sm font-semibold uppercase tracking-wide text-white">{eyebrow}</p>}
 		<h1 class={eyebrow ? 'mt-3 text-4xl font-bold text-white sm:text-5xl' : 'text-4xl font-bold text-white sm:text-5xl'}>{title}</h1>
-		<div class="ornament" aria-hidden="true"></div>
+		<div class="ornament ornament-center" aria-hidden="true"></div>
 		{description && <p class="mt-5 max-w-2xl text-lg leading-8 text-white">{description}</p>}
 	</div>
 </section>
