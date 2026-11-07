@@ -12,7 +12,7 @@ Dokumen acuan untuk agent. Berisi rincian halaman dan model konten. Aturan kerja
 Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 - Header berisi logo/nama desa + menu. Menu aktif ditandai jelas.
-- Tab di atas (desktop). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
+- Tab di atas (desktop) dan menempel di bagian atas saat halaman digulir (*sticky*). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
 - Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): satu baris hak cipta (tahun + nama desa) dan, bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
 - Semua halaman publik statis dan berpindah instan.
 - Semua bagian memakai kelas `site-container` (lebar maksimal 1280px, 1440px mulai lg, 1760px mulai 2xl).

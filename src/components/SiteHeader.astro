@@ -4,7 +4,7 @@ import { isActive, navigationItems, siteConfig } from '../config/site.js';
 const { currentPath = '/' } = Astro.props;
 ---
 
-<header class="border-b border-line bg-white">
+<header class="border-b border-line bg-white md:sticky md:top-0 md:z-30">
 	<div class="site-container flex min-h-16 items-center justify-between gap-6">
 		<a
 			class="inline-flex min-h-11 items-center rounded-sm font-serif text-lg font-bold text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"

@@ -47,6 +47,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Layout dan sentuhan
 
 - Mobile-first, uji mental di lebar 360px dulu.
+- `SiteHeader` memakai `md:sticky md:top-0 md:z-30`: menempel di atas layar saat discroll pada tampilan desktop (`md:` ke atas). Pada mobile tetap statis agar tidak mempersempit ruang pandang layar HP bersama `MobileNav`.
 - Hero Beranda memakai tinggi minimal satu layar: `calc(100svh-65px)` di md ke atas dan `calc(100svh-65px-4rem)` di mobile (65px = tinggi header, 4rem = tinggi MobileNav). Jika tinggi `SiteHeader` atau `MobileNav` berubah, perbarui angka itu di `index.astro`.
 - `MobileNav` bersifat fixed di bawah (hilang di `md:`) dan menggantikan footer di mobile; `SiteFooter` hanya tampil di desktop (`hidden md:block`). Karena itu `<main>` di `SiteLayout` wajib memberi ruang bawah setinggi MobileNav di mobile (`pb-16 md:pb-0`) agar konten terakhir tidak tertutup.
 - Target sentuh minimal 44px (`min-h-11`); tombol utama `min-h-12`.
