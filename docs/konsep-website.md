@@ -37,7 +37,7 @@ Urutan bagian, dari atas ke bawah:
 - Kartu produk yang seragam dipakai di Beranda dan halaman Produk: foto, kategori, nama, harga atau "Hubungi admin", badge (Unggulan, Pre-order, Habis), dan tombol konsultasi via WhatsApp (label mengikuti status). Ringkasan hanya tampil di popup detail.
 - Hanya satu produk boleh bertanda unggulan.
 - Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
-- Detail produk saat ini berupa popup (bukan halaman `/produk/[slug]`): galeri foto, ringkasan, deskripsi, rincian (satuan, minimal pesan, asal produsen/UMKM), dan tombol konsultasi.
+- Klik di mana saja pada kartu produk (kecuali tombol WhatsApp) membuka popup detail berisi galeri foto (hingga 5), ringkasan, deskripsi, rincian, dan tombol WhatsApp; foto utama di popup dapat diklik untuk membuka popup foto yang lebih besar. Detail produk memakai popup, bukan halaman `/produk/[slug]`.
 - Tombol WhatsApp memakai nomor dari `src/config/site.js` dan pesan awal berisi nama produk. Tautan halaman produk di dalam pesan ditunda sampai `site` URL diatur.
 - Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP).
 

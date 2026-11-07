@@ -29,8 +29,8 @@ const produkContoh = [
 	},
 	// Harga 10000 hanya angka contoh untuk menguji format, BUKAN harga asli.
 	{
-		nama: '[CONTOH] Produk olahan A',
-		kategori: '[CONTOH] Olahan',
+		nama: '[CONTOH] Tebu glondongan',
+		kategori: '[CONTOH] Buah segar',
 		ringkasan: '[ISI NANTI: ringkasan produk]',
 		deskripsi: '[ISI NANTI: deskripsi lengkap produk]',
 		harga: 10000,

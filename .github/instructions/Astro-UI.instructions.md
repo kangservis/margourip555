@@ -35,7 +35,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 
 ## JavaScript (vanilla, seminimal mungkin)
 
-- Hanya untuk interaksi kecil yang benar-benar perlu: menu, filter chip, "Muat lebih banyak", slider foto hero, memuat peta saat diklik, popup foto (`<dialog>` bawaan browser).
+- Hanya untuk interaksi kecil yang benar-benar perlu: menu, filter chip, "Muat lebih banyak", slider foto hero, memuat peta saat diklik, popup foto (`<dialog>` bawaan browser), popup detail produk dan popup foto produk (`<dialog>` bawaan browser).
 - Tanpa ClientRouter, setiap pindah halaman adalah muat penuh. `<script>` di Astro berjalan sekali per halaman, jadi tidak perlu pola `astro:page-load` atau `astro:after-swap`. Jangan menambahkannya.
 - **Progressive enhancement**: isi (misalnya daftar produk) sudah ada di HTML. JavaScript hanya menyaring atau menyembunyikan, sehingga tanpa JavaScript daftar tetap terlihat.
 - Pasang listener lewat `addEventListener` di dalam `<script>` (boleh event delegation). Jangan memakai fungsi global `window.*` dan `onclick="..."` inline.

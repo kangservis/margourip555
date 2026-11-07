@@ -3,6 +3,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroSlider from "../components/HeroSlider.astro";
 import Icon from "../components/Icon.astro";
 import ProductCard from "../components/ProductCard.astro";
+import ProductDialogs from "../components/ProductDialogs.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 import { getProduk } from "../config/products.js";
 
@@ -289,4 +290,5 @@ const latestNews = { number: "01" };
       </div>
     </div>
   </section>
+  <ProductDialogs />
 </SiteLayout>

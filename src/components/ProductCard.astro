@@ -2,6 +2,7 @@
 // Kartu produk. Dipakai di Beranda (produk unggulan) dan halaman Produk agar tampil seragam. Ringkasan hanya tampil di popup detail.
 import { Image } from "astro:assets";
 import Icon from "./Icon.astro";
+import ProductDetail from "./ProductDetail.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 
 const { produk } = Astro.props;
@@ -65,7 +66,16 @@ const adaWa = Boolean(siteConfig.whatsapp);
     <p class="text-sm font-semibold uppercase tracking-wide text-primary">
       {produk.kategori}
     </p>
-    <h3 class="mt-2 text-lg font-semibold leading-7 text-ink">{produk.nama}</h3>
+    <h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
+      <button
+        type="button"
+        data-produk-buka
+        aria-haspopup="dialog"
+        class="cursor-pointer text-left after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-primary"
+      >
+        {produk.nama}
+      </button>
+    </h3>
     {
       produk.hargaTampil ? (
         <p class="mt-3 text-xl font-bold text-primary">
@@ -92,4 +102,5 @@ const adaWa = Boolean(siteConfig.whatsapp);
       </a>
     </div>
   </div>
+  <template data-produk-detail><ProductDetail produk={produk} /></template>
 </article>

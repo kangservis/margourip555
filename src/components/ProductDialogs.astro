@@ -1,0 +1,142 @@
+---
+import Icon from './Icon.astro';
+---
+
+<dialog
+	id="produk-dialog"
+	aria-labelledby="produk-dialog-judul"
+	class="m-auto max-h-[calc(100svh-2rem)] w-[calc(100%-2.5rem)] max-w-4xl overflow-y-auto rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70"
+>
+	<div class="sticky top-0 z-10 flex justify-end bg-white p-2">
+		<button
+			type="button"
+			data-dialog-tutup
+			class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+			aria-label="Tutup detail produk"
+		>
+			<Icon name="close" class="size-6" />
+		</button>
+	</div>
+	<div data-dialog-isi></div>
+</dialog>
+
+<dialog
+	id="produk-foto-dialog"
+	aria-label="Foto produk"
+	class="m-auto max-h-[calc(100svh-2rem)] w-[calc(100%-2.5rem)] max-w-3xl overflow-y-auto rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70"
+>
+	<div class="p-4 sm:p-5">
+		<div class="flex justify-end">
+			<button
+				type="button"
+				data-dialog-tutup
+				class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+				aria-label="Tutup foto"
+			>
+				<Icon name="close" class="size-6" />
+			</button>
+		</div>
+		<img data-lightbox-gambar alt="" class="mx-auto max-h-[75svh] w-auto max-w-full rounded-lg object-contain" />
+		<p data-lightbox-caption class="mt-4 text-center font-serif text-xl font-bold text-ink"></p>
+	</div>
+</dialog>
+
+<script>
+	function initializeProductDialogs() {
+		const detail = document.querySelector<HTMLDialogElement>('#produk-dialog');
+		const lightbox = document.querySelector<HTMLDialogElement>('#produk-foto-dialog');
+		const isi = detail?.querySelector<HTMLElement>('[data-dialog-isi]');
+		const gambarLightbox = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-gambar]');
+		const captionLightbox = lightbox?.querySelector<HTMLElement>('[data-lightbox-caption]');
+		if (!detail || !lightbox || !isi || !gambarLightbox || !captionLightbox) return;
+
+		function kunciScroll() {
+			document.documentElement.classList.toggle(
+				'overflow-hidden',
+				Boolean(document.querySelector('dialog[open]')),
+			);
+		}
+
+		document.addEventListener('click', (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+
+			const pemicuDetail = target.closest<HTMLButtonElement>('[data-produk-buka]');
+			if (pemicuDetail) {
+				const kartu = pemicuDetail.closest<HTMLElement>('[data-produk-kartu]');
+				const template = kartu?.querySelector<HTMLTemplateElement>('template[data-produk-detail]');
+				if (!template) return;
+
+				isi.replaceChildren(template.content.cloneNode(true));
+				detail.scrollTop = 0;
+				detail.showModal();
+				kunciScroll();
+				return;
+			}
+
+			const thumbnail = target.closest<HTMLButtonElement>('[data-thumb]');
+			if (thumbnail) {
+				const root = thumbnail.closest<HTMLElement>('[data-detail-root]');
+				const gambarDetail = root?.querySelector<HTMLImageElement>('[data-detail-gambar]');
+				const pemicuLightbox = root?.querySelector<HTMLButtonElement>('[data-lightbox-buka]');
+				if (!root || !gambarDetail || !pemicuLightbox) return;
+
+				const besar = thumbnail.dataset.besar;
+				const alt = thumbnail.dataset.alt;
+				if (!besar || alt === undefined) return;
+
+				gambarDetail.src = besar;
+				gambarDetail.alt = alt;
+				pemicuLightbox.dataset.besar = besar;
+				pemicuLightbox.dataset.alt = alt;
+				root.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((item) => {
+					if (item === thumbnail) {
+						item.setAttribute('aria-current', 'true');
+					} else {
+						item.removeAttribute('aria-current');
+					}
+				});
+				return;
+			}
+
+			const pemicuLightbox = target.closest<HTMLButtonElement>('[data-lightbox-buka]');
+			if (pemicuLightbox) {
+				const besar = pemicuLightbox.dataset.besar;
+				const alt = pemicuLightbox.dataset.alt;
+				if (!besar || alt === undefined) return;
+
+				gambarLightbox.src = besar;
+				gambarLightbox.alt = alt;
+				captionLightbox.textContent = pemicuLightbox.dataset.nama ?? '';
+				lightbox.showModal();
+				kunciScroll();
+				return;
+			}
+
+			const tombolTutup = target.closest<HTMLButtonElement>('[data-dialog-tutup]');
+			if (tombolTutup) {
+				tombolTutup.closest('dialog')?.close();
+				return;
+			}
+
+			if (target === detail || target === lightbox) {
+				if (target === detail) {
+					detail.close();
+				} else {
+					lightbox.close();
+				}
+			}
+		});
+
+		detail.addEventListener('close', () => {
+			isi.replaceChildren();
+			kunciScroll();
+		});
+		lightbox.addEventListener('close', () => {
+			gambarLightbox.removeAttribute('src');
+			kunciScroll();
+		});
+	}
+
+	initializeProductDialogs();
+</script>
