@@ -35,6 +35,7 @@ Urutan bagian, dari atas ke bawah:
 ### 2. Produk
 
 - Kartu produk yang seragam dipakai di Beranda dan halaman Produk: foto, kategori, nama, harga atau "Hubungi admin", badge (Unggulan, Pre-order, Habis), dan tombol konsultasi via WhatsApp (label mengikuti status). Ringkasan hanya tampil di popup detail.
+- Foto di kartu produk ditampilkan utuh (fit) di dalam kotak berasio tetap.
 - Hanya satu produk boleh bertanda unggulan.
 - Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
 - Klik di mana saja pada kartu produk (kecuali tombol WhatsApp) membuka popup detail berisi galeri foto (hingga 5), ringkasan, deskripsi, rincian, dan tombol WhatsApp; foto utama di popup dapat diklik untuk membuka popup foto yang lebih besar. Detail produk memakai popup, bukan halaman `/produk/[slug]`.
@@ -43,10 +44,11 @@ Urutan bagian, dari atas ke bawah:
 
 ### 3. Berita Desa
 
-- Daftar berita dari yang terbaru: foto sampul kecil, judul, tanggal, ringkasan.
-- Halaman detail per berita (`/berita/[slug]`): judul, tanggal, foto sampul, isi.
+- Daftar berita terbaru berupa kartu dengan foto sampul utuh/fit, tanggal, judul, dan ringkasan.
 - Berita berstatus draf tidak tampil di publik.
-- Judul dan ringkasan jelas agar enak dibagikan di WhatsApp (pertimbangkan tag Open Graph).
+- Detail berita saat ini berupa popup bergaya blog (bukan halaman `/berita/[slug]`).
+- Tag Open Graph per berita ditunda sampai `site` URL diatur dan tiap berita punya alamat sendiri.
+- Judul dan ringkasan jelas agar enak dibagikan di WhatsApp.
 
 ### 4. Struktur Organisasi
 

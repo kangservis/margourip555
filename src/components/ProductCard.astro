@@ -17,6 +17,7 @@ const adaWa = Boolean(siteConfig.whatsapp);
   <div class="relative aspect-[4/3] border-b border-line bg-surface">
     {
       foto ? (
+        // Foto ditampilkan utuh (fit); sisa ruang berlatar surface.
         <Image
           src={foto.src}
           alt={foto.alt}
@@ -24,7 +25,7 @@ const adaWa = Boolean(siteConfig.whatsapp);
           quality={75}
           widths={[320, 480, 640]}
           sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-contain object-center"
           decoding="async"
           loading="lazy"
         />

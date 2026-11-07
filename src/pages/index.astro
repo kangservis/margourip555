@@ -3,13 +3,16 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroSlider from "../components/HeroSlider.astro";
 import Icon from "../components/Icon.astro";
 import ProductCard from "../components/ProductCard.astro";
+import NewsCard from "../components/NewsCard.astro";
 import ProductDialogs from "../components/ProductDialogs.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 import { getProduk } from "../config/products.js";
+import { getBerita } from "../config/news.js";
 
 const semuaProduk = await getProduk();
 const produkUnggulan = semuaProduk.find((p) => p.unggulan) ?? semuaProduk[0];
-const latestNews = { number: "01" };
+const semuaBerita = await getBerita();
+const beritaTerbaru = semuaBerita[0];
 ---
 
 <SiteLayout title={siteConfig.name} description={siteConfig.description}>
@@ -200,26 +203,11 @@ const latestNews = { number: "01" };
         <div
           class="relative isolate mx-auto w-full max-w-xl lg:mx-0 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:justify-self-start before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:-translate-x-3 before:translate-y-3 before:rounded-xl before:border before:border-gold before:content-['']"
         >
-          <article
-            class="overflow-hidden rounded-xl border border-line bg-white"
-          >
-            <div
-              class="flex aspect-[16/10] items-center justify-center border-b border-line bg-surface px-4 text-center text-base font-medium text-ink-muted"
-              role="img"
-              aria-label={`Placeholder foto berita contoh ${latestNews.number}`}
-            >
-              [ISI NANTI: foto berita]
-            </div>
-            <div class="p-5">
-              <p class="text-sm font-medium text-ink-muted">[TANGGAL]</p>
-              <h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
-                [JUDUL BERITA]
-              </h3>
-              <p class="mt-3 text-base leading-7 text-ink-muted">
-                [ISI NANTI: ringkasan berita resmi.]
-              </p>
-            </div>
-          </article>
+          {beritaTerbaru ? (
+            <NewsCard berita={beritaTerbaru} />
+          ) : (
+            <p class="text-base text-ink-muted">[ISI NANTI: belum ada berita]</p>
+          )}
         </div>
 
         <div
