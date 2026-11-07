@@ -5,6 +5,7 @@ import Icon from "../components/Icon.astro";
 import ProductCard from "../components/ProductCard.astro";
 import NewsCard from "../components/NewsCard.astro";
 import ProductDialogs from "../components/ProductDialogs.astro";
+import NewsDialogs from "../components/NewsDialogs.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 import { getProduk } from "../config/products.js";
 import { getBerita } from "../config/news.js";
@@ -279,4 +280,5 @@ const beritaTerbaru = semuaBerita[0];
     </div>
   </section>
   <ProductDialogs />
+  <NewsDialogs />
 </SiteLayout>

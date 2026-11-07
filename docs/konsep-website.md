@@ -47,6 +47,7 @@ Urutan bagian, dari atas ke bawah:
 - Daftar berita terbaru berupa kartu dengan foto sampul utuh/fit, tanggal, judul, dan ringkasan.
 - Berita berstatus draf tidak tampil di publik.
 - Detail berita saat ini berupa popup bergaya blog (bukan halaman `/berita/[slug]`).
+- Klik di mana saja pada kartu membuka popup baca bergaya blog yang menampilkan tanggal, judul, foto utuh, dan isi dalam paragraf; foto di popup dapat diklik untuk membuka popup foto yang lebih besar.
 - Tag Open Graph per berita ditunda sampai `site` URL diatur dan tiap berita punya alamat sendiri.
 - Judul dan ringkasan jelas agar enak dibagikan di WhatsApp.
 

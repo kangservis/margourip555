@@ -1,6 +1,8 @@
 ---
 // Kartu berita. Dipakai di Beranda (berita terbaru) dan halaman Berita agar tampil seragam.
 import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import NewsDetail from './NewsDetail.astro';
 
 const { berita } = Astro.props;
 const foto = berita.foto;
@@ -32,9 +34,26 @@ const foto = berita.foto;
 	</div>
 	<div class="flex flex-1 flex-col p-5">
 		<time datetime={berita.tanggalISO} class="text-sm font-medium text-ink-muted">{berita.tanggalTampil}</time>
-		<h3 class="mt-2 text-lg font-semibold leading-7 text-ink">{berita.judul}</h3>
+		<h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
+			<button
+				type="button"
+				data-berita-buka
+				aria-haspopup="dialog"
+				class="cursor-pointer text-left after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-primary"
+			>
+				{berita.judul}
+			</button>
+		</h3>
 		{berita.ringkasan && (
 			<p class="mt-3 line-clamp-3 text-base leading-7 text-ink-muted">{berita.ringkasan}</p>
 		)}
+		<div class="mt-auto pt-4">
+			<span class="inline-flex items-center gap-1 text-sm font-semibold text-primary">
+				Baca selengkapnya <Icon name="arrow-right" class="size-4" />
+			</span>
+		</div>
 	</div>
+	<template data-berita-detail>
+		<NewsDetail berita={berita} />
+	</template>
 </article>

@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import NewsCard from '../components/NewsCard.astro';
+import NewsDialogs from '../components/NewsDialogs.astro';
 import { siteConfig } from '../config/site.js';
 import { getBerita } from '../config/news.js';
 
@@ -32,4 +33,5 @@ const berita = await getBerita();
 			)}
 		</div>
 	</section>
+	<NewsDialogs />
 </SiteLayout>
