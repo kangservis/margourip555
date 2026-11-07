@@ -25,7 +25,7 @@ const beritaTerbaru = semuaBerita[0];
     <div
       class="site-container grid grid-cols-1 gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-x-16 lg:py-14 xl:gap-x-24 2xl:gap-x-40"
     >
-      <div class="w-full max-w-lg lg:justify-self-start xl:max-w-xl">
+      <div class="mx-auto w-full max-w-lg text-center lg:mx-0 lg:text-left lg:justify-self-start xl:max-w-xl">
         <p class="text-sm font-semibold uppercase tracking-wide text-white">
           Profil dan katalog produk unggulan
         </p>
@@ -34,9 +34,9 @@ const beritaTerbaru = semuaBerita[0];
         >
           {siteConfig.name}
         </h1>
-        <div class="ornament" aria-hidden="true"></div>
+        <div class="ornament mx-auto lg:ml-0 lg:mr-auto" aria-hidden="true"></div>
         <p
-          class="mt-5 max-w-xl text-lg leading-8 text-white lg:text-xl lg:leading-9"
+          class="mx-auto mt-5 max-w-xl text-lg leading-8 text-white lg:mx-0 lg:text-xl lg:leading-9"
         >
           {
             siteConfig.tagline.startsWith("[")
@@ -44,20 +44,21 @@ const beritaTerbaru = semuaBerita[0];
               : siteConfig.tagline
           }
         </p>
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:justify-start">
           <a
-            class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-5 py-3 font-semibold text-primary hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+            class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 font-semibold text-primary shadow-sm transition-colors hover:bg-gold-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             href="/produk"
           >
             Lihat produk
           </a>
           <a
-            class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white px-5 py-3 font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
+            class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/80 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:border-white hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             href={getContactLink()}
             target={siteConfig.whatsapp ? "_blank" : undefined}
             rel={siteConfig.whatsapp ? "noopener noreferrer" : undefined}
           >
-            {siteConfig.whatsapp ? "Hubungi via WhatsApp" : "Hubungi admin"}
+            {siteConfig.whatsapp && <Icon name="whatsapp" class="size-5 shrink-0" />}
+            <span>{siteConfig.whatsapp ? "Hubungi via WhatsApp" : "Hubungi admin"}</span>
           </a>
         </div>
       </div>

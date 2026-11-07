@@ -1,7 +1,7 @@
 export const siteConfig = {
 	name: 'Desa Margourip',
 	description: 'Profil dan katalog produk unggulan Desa Margourip.',
-	tagline: 'Bindut JOSJISS',
+	tagline: 'Pusat Komoditas Pertanian Unggulan dan Hasil Bumi Alami dari Jantung Kecamatan Ngancar.',
 	address: 'Dsn.Sumberlumbu, Ds.Margourip, Kec.Ngancar',
 	whatsapp: '6285158233200',
 	mapUrl: 'https://maps.app.goo.gl/oBWQuXdJeL276LLb7',
