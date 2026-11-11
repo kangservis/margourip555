@@ -31,7 +31,7 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 ## Prinsip utama (TIDAK BOLEH DILANGGAR)
 1. **Clean look.** Minimalis, lapang, konsisten. Jangan menambah dekorasi, animasi, atau warna baru tanpa alasan kuat.
 2. **Cepat dan ringan** (prioritas: HP kelas menengah, koneksi biasa). Target: LCP < 2,5 dtk, CLS mendekati 0, INP < 200 ms; JavaScript halaman publik sekecil mungkin (idealnya hanya untuk menu dan hal interaktif yang benar-benar perlu).
-   - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript.
+   - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript. Pengecualian yang disetujui pemilik: daftar produk dan berita dimuat dari Firestore di browser (agar perubahan admin langsung tampil), dengan kotak penunggu berukuran tetap; semua bagian lain tetap statis.
    - Perpindahan antar halaman harus terasa instan. Tanpa animasi transisi antar halaman, tanpa `ClientRouter`/View Transitions kecuali ada alasan kuat. Gunakan prefetch bawaan Astro bila membantu.
    - Gambar: format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `loading="lazy"` kecuali gambar paling atas (hero), maksimal sekitar 200 KB per foto. Gambar lokal diproses lewat `astro:assets`.
    - Font: Playfair Display (judul) dan Plus Jakarta Sans (teks isi) lewat Astro Fonts API (`fonts` di astro.config.mjs), diunduh saat build dan disajikan dari domain sendiri. Tanpa font dari CDN saat runtime. Subset latin saja, style normal saja, weight seminimal mungkin (Playfair 700; Plus Jakarta Sans 400 dan 600). Menambah keluarga font, weight, atau subset: sebut dampak ukuran dan minta persetujuan.
@@ -55,15 +55,15 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 - Aksesibilitas dasar: `lang="id"`, `alt` pada semua gambar bermakna, fokus keyboard terlihat, kontras teks memadai.
 
 ## Pelajaran dari proyek sebelumnya (hindari)
-- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari).
+- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari). (Pengecualian terbatas yang disetujui pemilik hanya untuk produk dan berita; lihat Prinsip 2 dan data-dan-keamanan.instructions.md.)
 - Jangan menaruh kunci layanan sebagai `PUBLIC_*` bila seharusnya rahasia.
 - Jangan membungkus semua halaman dengan transisi/animasi antar halaman.
 - Jangan memakai icon font penuh, banyak keluarga font dari CDN, dan `backdrop-blur` di elemen yang berulang.
 - Jangan menyalin nilai penting (nomor WhatsApp, nama desa) di banyak file. Simpan di satu tempat: `src/config/site.js`.
 
-## Keputusan yang BELUM diambil (bahas di mode Plan sebelum membangun)
-1. Cara menyimpan dan mengelola konten + dashboard admin. Opsi yang akan dibahas, mis.: CMS berbasis Git (Decap/Sveltia CMS), Firebase (Firestore + Auth), atau kombinasi statis + deploy hook. Kriteria: gratis, bisa dipakai admin non-teknis dari HP, tanpa secret di klien, halaman publik tetap statis dan cepat, gambar terkelola dan terkompres. Jangan memulai fitur admin sebelum saya memilih.
-2. Penyimpanan dan optimasi foto produk/berita.
+## Keputusan proyek (bahas yang belum diputuskan di mode Plan sebelum membangun)
+1. Penyimpanan konten + admin: SUDAH diputuskan, Firebase (Firestore + Authentication). Dashboard admin dikerjakan setelah lapisan baca selesai.
+2. Penyimpanan foto: SUDAH diputuskan, ImgBB (lewat fungsi server) dengan proxy wsrv.nl.
 3. Navigasi mobile: SUDAH diputuskan, memakai bottom nav (`MobileNav`); footer hanya tampil di desktop.
 4. Versi bahasa Inggris untuk keperluan ekspor (belum sekarang; cukup tulis teks agar mudah diterjemahkan nanti, jangan menambah sistem i18n).
 

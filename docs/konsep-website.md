@@ -14,7 +14,7 @@ Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 - Header berisi logo/nama desa + menu. Menu aktif ditandai jelas.
 - Tab di atas (desktop) dan menempel di bagian atas saat halaman digulir (*sticky*). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
 - Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): satu baris hak cipta (tahun + nama desa) dan, bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
-- Semua halaman publik statis dan berpindah instan.
+- Kerangka semua halaman publik dihasilkan statis dan berpindah instan; daftar produk dan berita dimuat di browser.
 - Semua bagian memakai kelas `site-container` (lebar maksimal 1280px, 1440px mulai lg, 1760px mulai 2xl).
 - Band judul halaman dalam berukuran ramping (*compact*).
 
@@ -80,10 +80,12 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
 - Unggah foto: ukuran dikecilkan dan diubah ke WebP otomatis sebelum disimpan, dengan batas ukuran yang jelas.
-- Perubahan di admin harus tampil di halaman publik tanpa mengorbankan kecepatan halaman publik.
+- Perubahan di admin langsung tampil di halaman publik (daftar produk dan berita dimuat dari Firestore di browser dengan kotak penunggu berukuran tetap).
 - Tidak ada secret yang terlihat di browser. Jika memakai layanan pihak ketiga, aturan akses (rules/izin) wajib dibahas sebelum fitur admin dibuat.
 
-## Model konten (apa pun cara penyimpanannya)
+## Model konten
+
+Sumber data: Firebase Firestore (koleksi `produk`, `berita`, `struktur`, `pengaturan`); foto di ImgBB lewat proxy wsrv.nl. Rincian ada di `data-dan-keamanan.instructions.md`.
 
 **Produk**
 | Field | Keterangan |
@@ -135,6 +137,6 @@ namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp (angka internasional tanp
 
 1. Fondasi: `Layout`, header/footer/navigasi, token warna, `src/config/site.js`.
 2. Halaman statis dengan data [CONTOH]: Beranda, Produk, Berita, Struktur Organisasi, Kontak.
-3. Keputusan penyimpanan konten + admin (opsi, perbandingan, pilihan saya).
-4. Hubungkan data nyata dan dashboard admin, satu jenis konten per langkah (mulai dari Produk).
+3. Selesaikan lapisan baca Firestore untuk produk dan berita.
+4. Bangun dashboard admin dan hubungkan penulisan data, satu jenis konten per langkah (mulai dari Produk).
 5. Optimasi akhir: ukur Lighthouse mobile, rapikan gambar, SEO dasar, deploy ke Cloudflare Pages.

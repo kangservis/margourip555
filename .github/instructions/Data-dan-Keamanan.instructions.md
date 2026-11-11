@@ -7,17 +7,12 @@ applyTo: "src/config/**,src/content/**,src/lib/**,src/pages/admin/**,functions/*
 
 File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.md`. Folder seperti `src/content`, `src/lib`, `src/pages/admin`, dan `functions` mungkin belum ada; aturan ini berlaku saat folder itu dibuat.
 
-## Status keputusan (baca dulu)
+## Status keputusan
 
-Cara menyimpan dan mengelola konten + dashboard admin **BELUM diputuskan**. Selama belum diputuskan pemilik proyek:
-
-- Jangan membuat fitur admin, skema database, koleksi, atau folder `functions/` untuk upload.
-- Jangan memasang SDK, CMS, atau layanan database apa pun, dan jangan menambah variabel `PUBLIC_*`.
-- Data tampil di halaman memakai placeholder `[CONTOH]` di kode. Jangan mengarang data asli.
-- Data contoh produk sementara ada di `src/config/products.js`. Saat sumber data dipilih, ganti isi `getProduk()` saja.
-- Data contoh berita sementara ada di `src/config/news.js`. Saat sumber data dipilih, ganti isi `getBerita()` saja.
-
-Setelah keputusan diambil, bagian "Aturan khusus layanan terpilih" di bagian bawah file ini diisi lebih dulu (bersama pemilik), baru kode ditulis.
+Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authentication, paket Spark/gratis)**, foto di **ImgBB** (diunggah lewat fungsi server), dan URL foto dibungkus proxy **wsrv.nl**. Dashboard admin dibuat di `/admin` (belum dibuat; dikerjakan setelah lapisan baca selesai dan atas permintaan pemilik).
+- Halaman publik membaca Firestore lewat REST (`fetch`), TANPA package `firebase`. SDK hanya boleh dipakai di halaman `/admin`, dan hanya setelah pemilik menyetujui.
+- Variabel `PUBLIC_*` yang diizinkan hanya `PUBLIC_FIREBASE_API_KEY` dan `PUBLIC_FIREBASE_PROJECT_ID` (kunci browser dibatasi ke domain situs di Google Cloud Console). Jangan menambah yang lain tanpa persetujuan.
+- Jangan membuat folder `functions/` atau fungsi upload sebelum pemilik memintanya.
 
 ## Model konten
 
@@ -28,16 +23,19 @@ Setelah keputusan diambil, bagian "Aturan khusus layanan terpilih" di bagian baw
 - Berita berstatus draf tidak tampil di publik dan tidak dibuatkan halaman. Produk berstatus habis tetap tampil dengan penanda.
 - Nilai identitas dan kontak (nama desa, WhatsApp, email, alamat) tetap satu sumber di `src/config/site.js` (kelak dari "Pengaturan situs"), tidak disalin ke file lain.
 
-## Halaman publik tetap statis
+## Pembacaan data di halaman publik
 
-- Data dibaca saat build. Jangan mengambil data dari database di browser setiap pindah halaman: terasa loading, boros kuota gratis, dan tidak terbaca mesin pencari.
-- Cara agar perubahan dari admin tampil di halaman publik tanpa mengorbankan kecepatan (mis. build ulang otomatis) diputuskan lewat rencana, bukan ditentukan sendiri oleh agent.
-- Hemat kuota layanan gratis: tanpa listener real-time dan tanpa pembacaan data dalam perulangan, kecuali ada alasan kuat dan persetujuan.
+Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produk dan berita dimuat dari Firestore di browser. Aturannya:
+- Hanya data produk dan berita (kartu Beranda, halaman Produk, halaman Berita) yang dimuat di browser. Kerangka halaman, header, judul, dan bagian lain tetap statis (HTML hasil build).
+- Semua akses Firestore lewat `src/lib/firestore.js` (REST `runQuery`) dan `src/lib/data.js`. Jangan memanggil `fetch` ke Firestore langsung dari halaman atau komponen.
+- Selalu tampilkan kotak penunggu berukuran tetap (tanpa animasi) agar tidak ada layout shift, serta pesan galat dan tombol "Muat ulang" bila gagal.
+- Tanpa cache persisten, tanpa listener real-time, tanpa membaca dalam perulangan, dan selalu memakai batas (`limit`). Kuota gratis Firestore 50.000 pembacaan per hari per project: Beranda hanya membaca 1 produk unggulan dan 1 berita terbaru.
+- Query berita publik WAJIB menyertakan filter `status == 'terbit'` (Rules menolak query tanpa filter itu) dan membutuhkan indeks komposit `berita`: `status` naik, `tanggal` turun.
 
 ## Rahasia dan variabel lingkungan
 
 - Jangan membuka, meminta, atau menampilkan isi `.env`, password admin, token, kunci API, atau service account.
-- `.env` dan `.env.*` harus tetap ada di `.gitignore`.
+- `.env`, `.env.production`, dan file `.env.*` selain `.env.example` harus tetap di-ignore oleh Git.
 - Variabel `PUBLIC_*` terlihat siapa saja di browser. Pakai hanya untuk nilai yang memang aman dipublikasikan.
 - Kunci yang bersifat rahasia disimpan sebagai secret di server (di Cloudflare Pages: variabel tanpa awalan `PUBLIC_`, dipakai dari Pages Function), tidak pernah di kode sisi klien. Jika fitur membutuhkan rahasia, jelaskan dulu cara menyimpannya dengan aman.
 - Nomor WhatsApp dan email admin memang publik; boleh ada di `site.js`.
@@ -64,8 +62,15 @@ Setelah keputusan diambil, bagian "Aturan khusus layanan terpilih" di bagian baw
 - Foto produk 1-5 per item (foto pertama = sampul), berita 1 foto sampul.
 - Foto dikecilkan dan diubah ke WebP otomatis sebelum disimpan, dengan batas ukuran jelas (sekitar 200 KB per foto).
 - Kunci layanan penyimpanan foto tidak pernah ada di kode browser. Upload yang memakai kunci harus lewat sisi server, dan server wajib memverifikasi bahwa pemanggilnya admin yang login sebelum endpoint itu dianggap aman.
-- Pilihan tempat penyimpanan foto belum diputuskan; jangan memilih sendiri.
+- Penyimpanan foto sudah diputuskan: ImgBB, dengan URL publik dibungkus proxy wsrv.nl.
 
 ## Aturan khusus layanan terpilih
 
-[ISI SETELAH KEPUTUSAN: nama layanan/CMS yang dipilih, struktur koleksi atau folder konten, aturan akses (rules), cara perubahan admin sampai ke halaman publik, dan tempat penyimpanan foto.]
+- Koleksi dan bidang (bahasa Indonesia):
+  - `produk`: nama, slug, kategori, ringkasan, deskripsi, harga (angka atau null), satuan, minimalPesan, produsen, foto (array URL string, maksimal 5; pertama = sampul), status (tersedia / pre-order / habis), unggulan (boolean; hanya satu yang boleh true), urutan (angka).
+  - `berita`: judul, slug, tanggal (string YYYY-MM-DD), ringkasan, isi (paragraf dipisah satu baris kosong), fotoSampul (URL string), status (draf / terbit).
+  - `struktur`: nama, jabatan, foto (URL string), tingkat (angka), urutan (angka).
+  - `pengaturan`: satu dokumen dengan ID `situs` (namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp, email, mapUrl, mediaSosial).
+- Firestore Rules: baca publik untuk `produk`, `struktur`, `pengaturan`; `berita` hanya yang berstatus terbit untuk publik; tulis hanya UID admin yang terdaftar di Rules (bukan sekadar sudah login). Rules dikelola di console Firebase, bukan di repo; ingatkan pemilik mengeceknya setiap ada koleksi atau fitur baru.
+- Foto: URL ImgBB disimpan sebagai string di dokumen dan SELALU ditampilkan lewat `urlFoto()` / `srcsetFoto()` di `src/lib/foto.js` (proxy wsrv.nl). Kunci ImgBB disimpan sebagai secret `IMGBB_API_KEY` di Cloudflare Pages (tanpa awalan PUBLIC_), dipakai hanya dari fungsi server yang memverifikasi admin yang login; `delete_url` ImgBB tidak pernah disimpan di dokumen yang bisa dibaca publik.
+- Foto produk/berita tidak lagi diproses `astro:assets`; folder `src/assets/produk` dan `src/assets/berita` tidak dipakai lagi.

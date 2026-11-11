@@ -10,10 +10,10 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Arsitektur
 
 - Pola: **Layout + komponen + halaman**. Halaman publik memakai `src/layouts/SiteLayout.astro`. Komponen statis dibuat sebagai `.astro`.
-- Struktur folder tetap: `src/layouts`, `src/components`, `src/pages`, `src/config`, `src/styles`. Jangan menambah folder atau mengganti struktur tanpa izin.
-- Mode statis (multi-halaman). Halaman publik harus sudah berisi konten saat dikirim (HTML hasil build), bukan kosong lalu diisi JavaScript.
+- Struktur folder tetap: `src/layouts`, `src/components`, `src/pages`, `src/config`, `src/styles`, `src/lib` (untuk logika data dan helper klien). Jangan menambah folder atau mengganti struktur tanpa izin.
+- Mode statis (multi-halaman). Halaman publik harus sudah berisi konten saat dikirim (HTML hasil build), bukan kosong lalu diisi JavaScript. Pengecualian: daftar produk dan berita dimuat dari Firestore di browser lewat `src/lib/data.js`.
 - Tanpa UI framework (React/Vue/Svelte), tanpa `client:*`, tanpa `ClientRouter`/View Transitions, tanpa SSR atau adapter.
-- Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser.
+- Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser, kecuali data produk dan berita yang harus segera menampilkan perubahan dari Firestore sesuai keputusan pemilik.
 - Halaman dinamis (`/produk/[slug]`, `/berita/[slug]`) memakai `getStaticPaths`. Slug unik dan huruf kecil. Berita berstatus draf tidak dibuatkan halaman.
 - Dashboard admin (jika kelak dibuat): berdiri sendiri di `/admin`, tidak memakai `SiteLayout` (tanpa SiteHeader/SiteFooter/MobileNav), `noindex`, dan tidak masuk sitemap. Jangan mulai sebelum keputusan penyimpanan konten diambil (lihat `data-dan-keamanan.instructions.md`).
 
@@ -37,7 +37,8 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 
 - Hanya untuk interaksi kecil yang benar-benar perlu: menu, filter chip, "Muat lebih banyak", slider foto hero, memuat peta saat diklik, popup foto (`<dialog>` bawaan browser), popup detail produk dan popup foto produk (`<dialog>` bawaan browser), popup baca berita dan popup foto berita (`<dialog>` bawaan browser).
 - Tanpa ClientRouter, setiap pindah halaman adalah muat penuh. `<script>` di Astro berjalan sekali per halaman, jadi tidak perlu pola `astro:page-load` atau `astro:after-swap`. Jangan menambahkannya.
-- **Progressive enhancement**: isi (misalnya daftar produk) sudah ada di HTML. JavaScript hanya menyaring atau menyembunyikan, sehingga tanpa JavaScript daftar tetap terlihat.
+- Kartu produk/berita yang dimuat dari data berupa `<template>` ber-`data-slot`; JavaScript hanya mengisi teks dan atribut serta menampilkan/menyembunyikan elemen dengan class `hidden` (`classList.toggle`), tanpa `innerHTML`.
+- **Progressive enhancement**: isi yang tersedia saat build tetap ada di HTML. Data produk dan berita yang dimuat dari Firestore memakai placeholder awal dan pesan galat yang jelas bila JavaScript atau jaringan tidak tersedia.
 - Pasang listener lewat `addEventListener` di dalam `<script>` (boleh event delegation). Jangan memakai fungsi global `window.*` dan `onclick="..."` inline.
 - Wajib guard `if (!el) return` sebelum menyentuh elemen.
 - Jangan menaruh teks bebas ke `innerHTML`. Pakai `textContent` atau `createElement`. Jika terpaksa memakai `innerHTML`, lakukan escaping.
