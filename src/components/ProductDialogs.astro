@@ -74,28 +74,40 @@ import Icon from './Icon.astro';
 				return;
 			}
 
-			const thumbnail = target.closest<HTMLButtonElement>('[data-thumb]');
-			if (thumbnail) {
-				const root = thumbnail.closest<HTMLElement>('[data-detail-root]');
+			const tombolPrev = target.closest<HTMLButtonElement>('[data-galeri-prev]');
+			const tombolNext = target.closest<HTMLButtonElement>('[data-galeri-next]');
+			if (tombolPrev || tombolNext) {
+				const root = (tombolPrev || tombolNext)?.closest<HTMLElement>('[data-galeri-root]');
 				const gambarDetail = root?.querySelector<HTMLImageElement>('[data-detail-gambar]');
 				const pemicuLightbox = root?.querySelector<HTMLButtonElement>('[data-lightbox-buka]');
 				if (!root || !gambarDetail || !pemicuLightbox) return;
 
-				const besar = thumbnail.dataset.besar;
-				const alt = thumbnail.dataset.alt;
-				if (!besar || alt === undefined) return;
+				const fotosStr = root.dataset.fotos;
+				if (!fotosStr) return;
 
-				gambarDetail.src = besar;
-				gambarDetail.alt = alt;
-				pemicuLightbox.dataset.besar = besar;
-				pemicuLightbox.dataset.alt = alt;
-				root.querySelectorAll<HTMLButtonElement>('[data-thumb]').forEach((item) => {
-					if (item === thumbnail) {
-						item.setAttribute('aria-current', 'true');
-					} else {
-						item.removeAttribute('aria-current');
-					}
-				});
+				let fotos: Array<{ besar: string; alt: string }> = [];
+				try {
+					fotos = JSON.parse(fotosStr);
+				} catch {
+					return;
+				}
+				if (fotos.length <= 1) return;
+
+				let index = parseInt(root.dataset.index ?? '0', 10);
+				if (isNaN(index)) index = 0;
+
+				if (tombolPrev) {
+					index = (index - 1 + fotos.length) % fotos.length;
+				} else {
+					index = (index + 1) % fotos.length;
+				}
+
+				root.dataset.index = index.toString();
+				const fotoBaru = fotos[index];
+				gambarDetail.src = fotoBaru.besar;
+				gambarDetail.alt = fotoBaru.alt;
+				pemicuLightbox.dataset.besar = fotoBaru.besar;
+				pemicuLightbox.dataset.alt = fotoBaru.alt;
 				return;
 			}
 

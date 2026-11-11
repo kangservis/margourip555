@@ -40,6 +40,7 @@ Urutan bagian, dari atas ke bawah:
 - Hanya satu produk boleh bertanda unggulan.
 - Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
 - Klik di mana saja pada kartu produk (kecuali tombol WhatsApp) membuka popup detail berisi galeri foto (hingga 5), ringkasan, deskripsi, rincian, dan tombol WhatsApp; foto utama di popup dapat diklik untuk membuka popup foto yang lebih besar. Detail produk memakai popup, bukan halaman `/produk/[slug]`.
+- Jika produk memiliki lebih dari satu foto, popup detail memakai tombol panah kiri/kanan (*hover to see*) di atas foto utama untuk menavigasi foto.
 - Tombol WhatsApp memakai nomor dari `src/config/site.js` dan pesan awal berisi nama produk. Tautan halaman produk di dalam pesan ditunda sampai `site` URL diatur.
 - Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP).
 
