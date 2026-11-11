@@ -36,19 +36,48 @@ import Icon from './Icon.astro';
 				<Icon name="close" class="size-6" />
 			</button>
 		</div>
-		<img data-lightbox-gambar alt="" class="mx-auto max-h-[75svh] w-auto max-w-full rounded-lg object-contain" />
+		<div data-lightbox-swipe class="group relative flex items-center justify-center select-none touch-pan-y">
+			<img
+				data-lightbox-gambar
+				alt=""
+				class="pointer-events-none mx-auto max-h-[75svh] w-auto max-w-full rounded-lg object-contain select-none"
+			/>
+			<button
+				type="button"
+				data-lightbox-prev
+				aria-label="Foto sebelumnya"
+				class="absolute left-2 top-1/2 z-10 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-primary shadow-md opacity-0 transition-opacity duration-200 hover:bg-white focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary group-hover:opacity-100 sm:flex"
+			>
+				<Icon name="arrow-left" class="size-6" />
+			</button>
+			<button
+				type="button"
+				data-lightbox-next
+				aria-label="Foto berikutnya"
+				class="absolute right-2 top-1/2 z-10 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-primary shadow-md opacity-0 transition-opacity duration-200 hover:bg-white focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary group-hover:opacity-100 sm:flex"
+			>
+				<Icon name="arrow-right" class="size-6" />
+			</button>
+		</div>
 		<p data-lightbox-caption class="mt-4 text-center font-serif text-xl font-bold text-ink"></p>
 	</div>
 </dialog>
 
 <script>
 	function initializeProductDialogs() {
+		type FotoProduk = { besar: string; alt: string };
+
 		const detail = document.querySelector<HTMLDialogElement>('#produk-dialog');
 		const lightbox = document.querySelector<HTMLDialogElement>('#produk-foto-dialog');
 		const isi = detail?.querySelector<HTMLElement>('[data-dialog-isi]');
 		const gambarLightbox = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-gambar]');
 		const captionLightbox = lightbox?.querySelector<HTMLElement>('[data-lightbox-caption]');
-		if (!detail || !lightbox || !isi || !gambarLightbox || !captionLightbox) return;
+		const tombolPanahLightboxPrev = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+		const tombolPanahLightboxNext = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+		const areaSwipeLightbox = lightbox?.querySelector<HTMLElement>('[data-lightbox-swipe]');
+		if (!detail || !lightbox || !isi || !gambarLightbox || !captionLightbox || !tombolPanahLightboxPrev || !tombolPanahLightboxNext || !areaSwipeLightbox) return;
+
+		let waktuSwipeTerakhir = 0;
 
 		function kunciScroll() {
 			document.documentElement.classList.toggle(
@@ -56,6 +85,169 @@ import Icon from './Icon.astro';
 				Boolean(document.querySelector('dialog[open]')),
 			);
 		}
+
+		function bacaFoto(data: string): FotoProduk[] {
+			let hasil: unknown;
+			try {
+				hasil = JSON.parse(data);
+			} catch (error) {
+				throw new Error('Data foto produk tidak valid.', { cause: error });
+			}
+			if (!Array.isArray(hasil)) throw new Error('Data foto produk harus berupa daftar.');
+
+			return hasil.map((foto: unknown) => {
+				if (
+					typeof foto !== 'object' ||
+					foto === null ||
+					!('besar' in foto) ||
+					!('alt' in foto) ||
+					typeof foto.besar !== 'string' ||
+					typeof foto.alt !== 'string'
+				) {
+					throw new Error('Data foto produk tidak memiliki URL atau teks alternatif yang valid.');
+				}
+				return { besar: foto.besar, alt: foto.alt };
+			});
+		}
+
+		function gantiFotoDetail(root: HTMLElement, arah: 'prev' | 'next') {
+			const gambarDetail = root.querySelector<HTMLImageElement>('[data-detail-gambar]');
+			const pemicuLightbox = root.querySelector<HTMLButtonElement>('[data-lightbox-buka]');
+			const fotosStr = root.dataset.fotos;
+			if (!gambarDetail || !pemicuLightbox || !fotosStr) return;
+
+			const fotos = bacaFoto(fotosStr);
+			if (fotos.length <= 1) return;
+
+			let index = parseInt(root.dataset.index ?? '0', 10);
+			if (isNaN(index)) index = 0;
+			index = arah === 'prev'
+				? (index - 1 + fotos.length) % fotos.length
+				: (index + 1) % fotos.length;
+
+			root.dataset.index = index.toString();
+			gambarDetail.src = fotos[index].besar;
+			gambarDetail.alt = fotos[index].alt;
+			pemicuLightbox.dataset.besar = fotos[index].besar;
+			pemicuLightbox.dataset.alt = fotos[index].alt;
+		}
+
+		function gantiFotoLightbox(arah: 'prev' | 'next') {
+			const fotosStr = lightbox.dataset.fotos;
+			if (!fotosStr) return;
+
+			const fotos = bacaFoto(fotosStr);
+			if (fotos.length <= 1) return;
+
+			let index = parseInt(lightbox.dataset.index ?? '0', 10);
+			if (isNaN(index)) index = 0;
+			index = arah === 'prev'
+				? (index - 1 + fotos.length) % fotos.length
+				: (index + 1) % fotos.length;
+
+			lightbox.dataset.index = index.toString();
+			const fotoBaru = fotos[index];
+			gambarLightbox.src = fotoBaru.besar;
+			gambarLightbox.alt = fotoBaru.alt;
+
+			const detailRoot = detail.querySelector<HTMLElement>('[data-galeri-root]');
+			if (!detailRoot) return;
+			detailRoot.dataset.index = index.toString();
+
+			const gambarDetail = detailRoot.querySelector<HTMLImageElement>('[data-detail-gambar]');
+			const pemicuLightbox = detailRoot.querySelector<HTMLButtonElement>('[data-lightbox-buka]');
+			if (gambarDetail) {
+				gambarDetail.src = fotoBaru.besar;
+				gambarDetail.alt = fotoBaru.alt;
+			}
+			if (pemicuLightbox) {
+				pemicuLightbox.dataset.besar = fotoBaru.besar;
+				pemicuLightbox.dataset.alt = fotoBaru.alt;
+			}
+		}
+
+		function pasangSwipe(elemen: HTMLElement, saatBerikutnya: () => void, saatSebelumnya: () => void) {
+			let mulaiX = 0;
+			let mulaiY = 0;
+			let akhirX = 0;
+			let akhirY = 0;
+			let sedangDisentuh = false;
+
+			elemen.addEventListener('touchstart', (event) => {
+				if (event.touches.length !== 1) {
+					sedangDisentuh = false;
+					return;
+				}
+				sedangDisentuh = true;
+				mulaiX = event.touches[0].clientX;
+				mulaiY = event.touches[0].clientY;
+				akhirX = mulaiX;
+				akhirY = mulaiY;
+			}, { passive: true });
+
+			elemen.addEventListener('touchmove', (event) => {
+				if (!sedangDisentuh) return;
+				if (event.touches.length !== 1) {
+					sedangDisentuh = false;
+					return;
+				}
+				akhirX = event.touches[0].clientX;
+				akhirY = event.touches[0].clientY;
+			}, { passive: true });
+
+			elemen.addEventListener('touchend', (event) => {
+				if (!sedangDisentuh) return;
+				sedangDisentuh = false;
+
+				const sentuhanAkhir = event.changedTouches[0];
+				if (sentuhanAkhir) {
+					akhirX = sentuhanAkhir.clientX;
+					akhirY = sentuhanAkhir.clientY;
+				}
+
+				const deltaX = akhirX - mulaiX;
+				const deltaY = akhirY - mulaiY;
+				if (Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+					waktuSwipeTerakhir = Date.now();
+					event.preventDefault();
+					if (deltaX < 0) {
+						saatBerikutnya();
+					} else {
+						saatSebelumnya();
+					}
+				}
+
+				mulaiX = 0;
+				mulaiY = 0;
+				akhirX = 0;
+				akhirY = 0;
+			}, { passive: false });
+
+			elemen.addEventListener('touchcancel', () => {
+				sedangDisentuh = false;
+				mulaiX = 0;
+				mulaiY = 0;
+				akhirX = 0;
+				akhirY = 0;
+			});
+		}
+
+		pasangSwipe(
+			areaSwipeLightbox,
+			() => gantiFotoLightbox('next'),
+			() => gantiFotoLightbox('prev'),
+		);
+
+		document.addEventListener('keydown', (event) => {
+			if (!lightbox.open) return;
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				gantiFotoLightbox('prev');
+			} else if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				gantiFotoLightbox('next');
+			}
+		});
 
 		document.addEventListener('click', (event) => {
 			const target = event.target;
@@ -69,54 +261,51 @@ import Icon from './Icon.astro';
 
 				isi.replaceChildren(template.content.cloneNode(true));
 				detail.scrollTop = 0;
+
+				const rootGaleri = isi.querySelector<HTMLElement>('[data-galeri-root]');
+				if (rootGaleri) {
+					pasangSwipe(
+						rootGaleri,
+						() => gantiFotoDetail(rootGaleri, 'next'),
+						() => gantiFotoDetail(rootGaleri, 'prev'),
+					);
+				}
+
 				detail.showModal();
 				kunciScroll();
 				return;
 			}
 
-			const tombolPrev = target.closest<HTMLButtonElement>('[data-galeri-prev]');
-			const tombolNext = target.closest<HTMLButtonElement>('[data-galeri-next]');
-			if (tombolPrev || tombolNext) {
-				const root = (tombolPrev || tombolNext)?.closest<HTMLElement>('[data-galeri-root]');
-				const gambarDetail = root?.querySelector<HTMLImageElement>('[data-detail-gambar]');
-				const pemicuLightbox = root?.querySelector<HTMLButtonElement>('[data-lightbox-buka]');
-				if (!root || !gambarDetail || !pemicuLightbox) return;
+			const tombolPanahDetailPrev = target.closest<HTMLButtonElement>('[data-galeri-prev]');
+			const tombolPanahDetailNext = target.closest<HTMLButtonElement>('[data-galeri-next]');
+			if (tombolPanahDetailPrev || tombolPanahDetailNext) {
+				const root = (tombolPanahDetailPrev || tombolPanahDetailNext)?.closest<HTMLElement>('[data-galeri-root]');
+				if (root) gantiFotoDetail(root, tombolPanahDetailPrev ? 'prev' : 'next');
+				return;
+			}
 
-				const fotosStr = root.dataset.fotos;
-				if (!fotosStr) return;
-
-				let fotos: Array<{ besar: string; alt: string }> = [];
-				try {
-					fotos = JSON.parse(fotosStr);
-				} catch {
-					return;
-				}
-				if (fotos.length <= 1) return;
-
-				let index = parseInt(root.dataset.index ?? '0', 10);
-				if (isNaN(index)) index = 0;
-
-				if (tombolPrev) {
-					index = (index - 1 + fotos.length) % fotos.length;
-				} else {
-					index = (index + 1) % fotos.length;
-				}
-
-				root.dataset.index = index.toString();
-				const fotoBaru = fotos[index];
-				gambarDetail.src = fotoBaru.besar;
-				gambarDetail.alt = fotoBaru.alt;
-				pemicuLightbox.dataset.besar = fotoBaru.besar;
-				pemicuLightbox.dataset.alt = fotoBaru.alt;
+			const tombolLightboxPrev = target.closest<HTMLButtonElement>('[data-lightbox-prev]');
+			const tombolLightboxNext = target.closest<HTMLButtonElement>('[data-lightbox-next]');
+			if (tombolLightboxPrev || tombolLightboxNext) {
+				gantiFotoLightbox(tombolLightboxPrev ? 'prev' : 'next');
 				return;
 			}
 
 			const pemicuLightbox = target.closest<HTMLButtonElement>('[data-lightbox-buka]');
 			if (pemicuLightbox) {
+				if (Date.now() - waktuSwipeTerakhir < 400) return;
 				const besar = pemicuLightbox.dataset.besar;
 				const alt = pemicuLightbox.dataset.alt;
 				if (!besar || alt === undefined) return;
 
+				const root = pemicuLightbox.closest<HTMLElement>('[data-galeri-root]');
+				const fotosStr = root?.dataset.fotos ?? '[]';
+				const fotos = bacaFoto(fotosStr);
+				lightbox.dataset.fotos = fotosStr;
+				lightbox.dataset.index = root?.dataset.index ?? '0';
+				const fotoBanyak = fotos.length > 1;
+				tombolPanahLightboxPrev.classList.toggle('sm:!hidden', !fotoBanyak);
+				tombolPanahLightboxNext.classList.toggle('sm:!hidden', !fotoBanyak);
 				gambarLightbox.src = besar;
 				gambarLightbox.alt = alt;
 				captionLightbox.textContent = pemicuLightbox.dataset.nama ?? '';
@@ -144,8 +333,11 @@ import Icon from './Icon.astro';
 			isi.replaceChildren();
 			kunciScroll();
 		});
+
 		lightbox.addEventListener('close', () => {
 			gambarLightbox.removeAttribute('src');
+			lightbox.removeAttribute('data-fotos');
+			lightbox.removeAttribute('data-index');
 			kunciScroll();
 		});
 	}
