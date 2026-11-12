@@ -2,11 +2,9 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import NewsCard from '../components/NewsCard.astro';
+import NewsDetail from '../components/NewsDetail.astro';
 import NewsDialogs from '../components/NewsDialogs.astro';
 import { siteConfig } from '../config/site.js';
-import { getBerita } from '../config/news.js';
-
-const berita = await getBerita();
 ---
 
 <SiteLayout
@@ -20,18 +18,54 @@ const berita = await getBerita();
 	/>
 	<section class="bg-surface">
 		<div class="site-container py-16 sm:py-20">
-			{berita.length === 0 ? (
-				<p class="text-center text-base text-ink-muted">[ISI NANTI: belum ada berita]</p>
-			) : (
-				<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-					{berita.map((b) => (
-						<li>
-							<NewsCard berita={b} />
-						</li>
-					))}
+			<div data-berita-wadah>
+				<ul data-berita-daftar aria-busy="true" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[16/10] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-4 w-full rounded bg-surface"></div>
+						</div>
+					</li>
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[16/10] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-4 w-full rounded bg-surface"></div>
+						</div>
+					</li>
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[16/10] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-4 w-full rounded bg-surface"></div>
+						</div>
+					</li>
 				</ul>
-			)}
+				<p data-berita-pesan role="status" hidden class="text-center text-base text-ink-muted"></p>
+				<div class="mt-4 text-center">
+					<button
+						type="button"
+						data-berita-ulang
+						hidden
+						class="min-h-11 rounded-xl border border-primary px-5 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					>
+						Muat ulang
+					</button>
+				</div>
+			</div>
 		</div>
 	</section>
+	<NewsCard />
+	<NewsDetail />
 	<NewsDialogs />
+	<script>
+		import { tampilkanDaftarBerita } from '../lib/tampil-berita.js';
+
+		const wadah = document.querySelector('[data-berita-wadah]');
+		if (wadah) tampilkanDaftarBerita(wadah);
+	</script>
 </SiteLayout>

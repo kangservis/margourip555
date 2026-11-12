@@ -48,6 +48,7 @@ Urutan bagian, dari atas ke bawah:
 
 ### 3. Berita Desa
 
+- Data berita dimuat dari Firestore di browser (hanya berstatus terbit, terbaru lebih dulu; kotak penunggu berukuran tetap; bila gagal tampil pesan dan tombol Muat ulang).
 - Daftar berita terbaru berupa kartu dengan foto sampul utuh/fit, tanggal, judul, dan ringkasan.
 - Berita berstatus draf tidak tampil di publik.
 - Detail berita saat ini berupa popup bergaya blog (bukan halaman `/berita/[slug]`).

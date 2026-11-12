@@ -1,59 +1,48 @@
 ---
-// Kartu berita. Dipakai di Beranda (berita terbaru) dan halaman Berita agar tampil seragam.
-import { Image } from 'astro:assets';
+// Template kartu berita. Diisi oleh src/lib/tampil-berita.js.
 import Icon from './Icon.astro';
-import NewsDetail from './NewsDetail.astro';
-
-const { berita } = Astro.props;
-const foto = berita.foto;
 ---
 
-<article class="relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-primary" data-berita-kartu>
-	<div class="aspect-[16/10] border-b border-line bg-surface">
-		{foto ? (
-			<Image
-				src={foto.src}
-				alt={foto.alt}
-				format="webp"
-				quality={75}
-				widths={[320, 480, 640]}
+<template id="tpl-berita-kartu">
+	<article data-berita-kartu class="relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-primary">
+		<div class="aspect-[16/10] border-b border-line bg-surface">
+			<img
+				data-slot="foto"
+				alt=""
+				width="640"
+				height="400"
 				sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw"
-				class="h-full w-full object-contain object-center"
 				decoding="async"
 				loading="lazy"
+				class="h-full w-full object-contain object-center"
 			/>
-		) : (
 			<div
+				data-slot="foto-kosong"
 				role="img"
-				aria-label={`Placeholder foto ${berita.judul}`}
+				aria-label=""
 				class="flex size-full items-center justify-center px-4 text-center text-base font-medium text-ink-muted"
 			>
 				[ISI NANTI: foto berita]
 			</div>
-		)}
-	</div>
-	<div class="flex flex-1 flex-col p-5">
-		<time datetime={berita.tanggalISO} class="text-sm font-medium text-ink-muted">{berita.tanggalTampil}</time>
-		<h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
-			<button
-				type="button"
-				data-berita-buka
-				aria-haspopup="dialog"
-				class="cursor-pointer text-left after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-primary"
-			>
-				{berita.judul}
-			</button>
-		</h3>
-		{berita.ringkasan && (
-			<p class="mt-3 line-clamp-3 text-base leading-7 text-ink-muted">{berita.ringkasan}</p>
-		)}
-		<div class="mt-auto pt-4">
-			<span class="inline-flex items-center gap-1 text-sm font-semibold text-primary">
-				Baca selengkapnya <Icon name="arrow-right" class="size-4" />
-			</span>
 		</div>
-	</div>
-	<template data-berita-detail>
-		<NewsDetail berita={berita} />
-	</template>
-</article>
+		<div class="flex flex-1 flex-col p-5">
+			<time data-slot="tanggal" class="text-sm font-medium text-ink-muted"></time>
+			<h3 class="mt-2 text-lg font-semibold leading-7 text-ink">
+				<button
+					type="button"
+					data-berita-buka
+					data-slot="judul"
+					aria-haspopup="dialog"
+					class="cursor-pointer text-left after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-primary"
+				></button>
+			</h3>
+			<p data-slot="ringkasan" class="mt-3 line-clamp-3 text-base leading-7 text-ink-muted"></p>
+			<div class="mt-auto pt-4">
+				<span class="inline-flex items-center gap-1 text-sm font-semibold text-primary">
+					Baca selengkapnya <Icon name="arrow-right" class="size-4" />
+				</span>
+			</div>
+		</div>
+		<template data-berita-detail></template>
+	</article>
+</template>
