@@ -35,6 +35,7 @@ Urutan bagian, dari atas ke bawah:
 
 ### 2. Produk
 
+- Data produk dimuat dari Firestore di browser (kotak penunggu berukuran tetap; bila gagal tampil pesan dan tombol Muat ulang). Filter kategori dibuat dari kategori yang ada di data dan hanya tampil bila ada 2 kategori atau lebih.
 - Kartu produk yang seragam dipakai di Beranda dan halaman Produk: foto, kategori, nama, harga atau "Hubungi admin", badge (Unggulan, Pre-order, Habis), dan tombol konsultasi via WhatsApp (label mengikuti status). Ringkasan hanya tampil di popup detail.
 - Foto di kartu produk ditampilkan utuh (fit) di dalam kotak berasio tetap.
 - Hanya satu produk boleh bertanda unggulan.

@@ -3,15 +3,13 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroSlider from "../components/HeroSlider.astro";
 import Icon from "../components/Icon.astro";
 import ProductCard from "../components/ProductCard.astro";
+import ProductDetail from "../components/ProductDetail.astro";
 import NewsCard from "../components/NewsCard.astro";
 import ProductDialogs from "../components/ProductDialogs.astro";
 import NewsDialogs from "../components/NewsDialogs.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
-import { getProduk } from "../config/products.js";
 import { getBerita } from "../config/news.js";
 
-const semuaProduk = await getProduk();
-const produkUnggulan = semuaProduk.find((p) => p.unggulan) ?? semuaProduk[0];
 const semuaBerita = await getBerita();
 const beritaTerbaru = semuaBerita[0];
 ---
@@ -173,7 +171,27 @@ const beritaTerbaru = semuaBerita[0];
         <div
           class="relative isolate mx-auto w-full max-w-xl lg:mx-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:justify-self-end before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:translate-x-3 before:translate-y-3 before:rounded-xl before:border before:border-gold before:content-['']"
         >
-          {produkUnggulan && <ProductCard produk={produkUnggulan} />}
+          <div data-produk-unggulan>
+            <div data-produk-isi>
+              <div aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+                <div class="aspect-[4/3] border-b border-line bg-surface"></div>
+                <div class="space-y-3 p-5">
+                  <div class="h-4 w-1/3 rounded bg-surface"></div>
+                  <div class="h-6 w-3/4 rounded bg-surface"></div>
+                  <div class="h-12 rounded-xl bg-surface"></div>
+                </div>
+              </div>
+            </div>
+            <p data-produk-pesan role="status" hidden class="text-base text-ink-muted"></p>
+            <button
+              type="button"
+              data-produk-ulang
+              hidden
+              class="mt-4 min-h-11 rounded-xl border border-primary px-5 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Muat ulang
+            </button>
+          </div>
         </div>
 
         <div
@@ -313,6 +331,14 @@ const beritaTerbaru = semuaBerita[0];
       </div>
     </div>
   </section>
+  <ProductCard />
+  <ProductDetail />
   <ProductDialogs />
   <NewsDialogs />
+  <script>
+    import { tampilkanProdukUnggulan } from "../lib/tampil-produk.js";
+
+    const wadahProdukUnggulan = document.querySelector("[data-produk-unggulan]");
+    if (wadahProdukUnggulan) tampilkanProdukUnggulan(wadahProdukUnggulan);
+  </script>
 </SiteLayout>

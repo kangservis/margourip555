@@ -2,12 +2,9 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ProductCard from '../components/ProductCard.astro';
+import ProductDetail from '../components/ProductDetail.astro';
 import ProductDialogs from '../components/ProductDialogs.astro';
 import { siteConfig } from '../config/site.js';
-import { getProduk } from '../config/products.js';
-
-const produk = await getProduk();
-const kategori = [...new Set(produk.map((p) => p.kategori))];
 ---
 
 <SiteLayout
@@ -21,72 +18,66 @@ const kategori = [...new Set(produk.map((p) => p.kategori))];
 	/>
 	<section class="bg-surface">
 		<div class="site-container py-16 sm:py-20">
-			{produk.length === 0 ? (
-				<p class="text-center text-base text-ink-muted">[ISI NANTI: produk belum tersedia]</p>
-			) : (
-				<>
-					{kategori.length >= 2 && (
-						<div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter kategori" data-filter>
-							<button
-								type="button"
-								data-filter-chip
-								data-kategori=""
-								aria-pressed="true"
-								class="min-h-11 rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
-							>
-								Semua
-							</button>
-							{kategori.map((k) => (
-								<button
-									type="button"
-									data-filter-chip
-									data-kategori={k}
-									aria-pressed="false"
-									class="min-h-11 rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
-								>
-									{k}
-								</button>
-							))}
+			<div data-produk-wadah>
+				<div data-produk-filter-wadah hidden>
+					<div data-produk-filter role="group" aria-label="Filter kategori" class="mb-8 flex flex-wrap gap-2"></div>
+				</div>
+				<ul data-produk-daftar aria-busy="true" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[4/3] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-12 rounded-xl bg-surface"></div>
 						</div>
-					)}
-					<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-						{produk.map((p) => (
-							<li data-produk-item data-kategori={p.kategori}>
-								<ProductCard produk={p} />
-							</li>
-						))}
-					</ul>
-				</>
-			)}
+					</li>
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[4/3] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-12 rounded-xl bg-surface"></div>
+						</div>
+					</li>
+					<li aria-hidden="true" class="overflow-hidden rounded-xl border border-line bg-white">
+						<div class="aspect-[4/3] border-b border-line bg-surface"></div>
+						<div class="space-y-3 p-5">
+							<div class="h-4 w-1/3 rounded bg-surface"></div>
+							<div class="h-6 w-3/4 rounded bg-surface"></div>
+							<div class="h-12 rounded-xl bg-surface"></div>
+						</div>
+					</li>
+				</ul>
+				<p data-produk-pesan role="status" hidden class="text-center text-base text-ink-muted"></p>
+				<div class="mt-4 text-center">
+					<button
+						type="button"
+						data-produk-ulang
+						hidden
+						class="min-h-11 rounded-xl border border-primary px-5 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					>
+						Muat ulang
+					</button>
+				</div>
+			</div>
 		</div>
 	</section>
+	<template id="tpl-produk-chip">
+		<button
+			type="button"
+			data-filter-chip
+			data-kategori=""
+			aria-pressed="false"
+			class="min-h-11 rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
+		></button>
+	</template>
+	<ProductCard />
+	<ProductDetail />
 	<ProductDialogs />
 	<script>
-		function initializeProductFilter() {
-			const chips = document.querySelectorAll<HTMLButtonElement>('[data-filter-chip]');
-			if (!chips.length) return;
+		import { tampilkanDaftarProduk } from '../lib/tampil-produk.js';
 
-			const items = document.querySelectorAll<HTMLElement>('[data-produk-item]');
-			const filter = document.querySelector<HTMLElement>('[data-filter]');
-			if (!filter) return;
-
-			filter.addEventListener('click', (event) => {
-				const target = event.target;
-				if (!(target instanceof Element)) return;
-
-				const kategoriChip = target.closest<HTMLButtonElement>('[data-filter-chip]');
-				if (!kategoriChip || !filter.contains(kategoriChip)) return;
-
-				const kategoriAktif = kategoriChip.dataset.kategori ?? '';
-				chips.forEach((chip) => {
-					chip.setAttribute('aria-pressed', String(chip === kategoriChip));
-				});
-				items.forEach((item) => {
-					item.hidden = kategoriAktif !== '' && item.dataset.kategori !== kategoriAktif;
-				});
-			});
-		}
-
-		initializeProductFilter();
+		const wadah = document.querySelector('[data-produk-wadah]');
+		if (wadah) tampilkanDaftarProduk(wadah);
 	</script>
 </SiteLayout>
