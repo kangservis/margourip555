@@ -55,6 +55,7 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
 - Akses admin diperiksa dengan membaca dokumen `admin/ping` (hanya terbaca admin menurut Rules); akun yang berhasil login tetapi ditolak langsung dikeluarkan. Daftar UID admin hanya ada di Firestore Rules.
 - Nyaman dipakai dari HP: bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: Produk, Berita, Struktur Organisasi, dan Pengaturan situs. Kerjakan **satu jenis konten per langkah**, mulai dari Produk.
+- Produk: foto disimpan sebagai daftar URL string; produk unggulan dijaga hanya satu lewat `writeBatch` (set produk + update unggulan=false pada produk lain). Dokumen `produk` tanpa `nama` akan membuat penulisan batch ditolak Rules; lengkapi atau hapus dokumen itu.
 - Data teks bebas yang dimasukkan ke HTML harus di-escape (pakai `textContent` bila memungkinkan).
 - Jangan menambah efek berat (`backdrop-blur`, bayangan besar) di halaman admin.
 

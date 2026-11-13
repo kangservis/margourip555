@@ -8,6 +8,7 @@ import {
 import { adminSiap, auth, periksaAdmin } from './firebase.js';
 import { konfirmasi, tampilkanToast } from './ui.js';
 import { mulaiTabSlider, resetTabSlider } from './slider.js';
+import { mulaiTabProduk, resetTabProduk } from './produk.js';
 
 export function mulaiAdmin() {
 	const tampilanMemuat = document.querySelector('[data-view="memuat"]');
@@ -116,6 +117,7 @@ export function mulaiAdmin() {
 	onAuthStateChanged(auth, async (user) => {
 		if (!user) {
 			resetTabSlider();
+			resetTabProduk();
 			tampilView('login');
 			if (pesanLoginTertunda) {
 				pesanLogin.textContent = pesanLoginTertunda;
@@ -154,6 +156,7 @@ export function mulaiAdmin() {
 		pilihTab(tabAwal);
 		tampilView('dashboard');
 		void mulaiTabSlider();
+		void mulaiTabProduk();
 	});
 
 	tombolKeluar.addEventListener('click', async () => {

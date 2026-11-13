@@ -133,7 +133,25 @@ import { siteConfig } from '../config/site.js';
 					>Struktur</button>
 				</div>
 				<section role="tabpanel" id="panel-produk" data-panel="produk" aria-labelledby="tab-produk" hidden class="mt-4">
-					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan produk dibuat di langkah berikutnya]</div>
+					<div class="rounded-xl border border-line bg-white p-5 sm:p-6">
+						<div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+							<label class="block flex-1">
+								<span class="text-sm font-semibold text-ink">Cari produk</span>
+								<input type="search" data-produk-cari placeholder="Nama, kategori, atau produsen" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+							</label>
+							<label class="block sm:w-56">
+								<span class="text-sm font-semibold text-ink">Kategori</span>
+								<select data-produk-filter-kategori class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+									<option value="">Semua kategori</option>
+								</select>
+							</label>
+							<button type="button" data-produk-tambah disabled class="min-h-12 w-full rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60 sm:w-auto">Tambah produk</button>
+						</div>
+						<p data-produk-jumlah role="status" class="mt-4 min-h-5 text-sm text-ink-muted"></p>
+						<ul data-produk-daftar class="mt-3 space-y-3"></ul>
+						<p data-produk-pesan role="status" hidden class="mt-3 text-base text-ink-muted"></p>
+						<button type="button" data-produk-ulang hidden class="mt-3 min-h-11 rounded-xl border border-primary px-5 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Muat ulang</button>
+					</div>
 				</section>
 				<section role="tabpanel" id="panel-berita" data-panel="berita" aria-labelledby="tab-berita" hidden class="mt-4">
 					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan berita dibuat di langkah berikutnya]</div>
@@ -158,6 +176,29 @@ import { siteConfig } from '../config/site.js';
 			<div role="status" data-jenis="info" class="pointer-events-auto w-full max-w-sm rounded-xl border-l-4 border-gold bg-ink px-4 py-3 text-base text-white data-[jenis=galat]:border-white data-[jenis=galat]:bg-primary">
 				<span data-toast-teks></span>
 			</div>
+		</template>
+		<template id="tpl-produk-baris">
+			<li data-baris class="rounded-xl border border-line bg-white p-3 sm:p-4">
+				<div class="flex gap-3 sm:gap-4">
+					<div class="size-16 shrink-0 overflow-hidden rounded-lg border border-line bg-surface sm:size-20">
+						<img data-slot="foto" alt="" class="size-full object-contain" decoding="async" loading="lazy" />
+						<div data-slot="foto-kosong" class="flex size-full items-center justify-center px-1 text-center text-xs text-ink-muted">Tanpa foto</div>
+					</div>
+					<div class="min-w-0 flex-1">
+						<p data-slot="nama" class="break-words text-base font-semibold text-ink"></p>
+						<p data-slot="meta" class="mt-0.5 text-sm text-ink-muted"></p>
+						<div class="mt-2 flex flex-wrap gap-2">
+							<span data-slot="badge-unggulan" class="inline-flex min-h-7 items-center rounded-full border border-gold bg-gold-soft px-3 text-xs font-semibold text-ink">Unggulan</span>
+							<span data-slot="badge-preorder" class="inline-flex min-h-7 items-center rounded-full border border-line bg-white px-3 text-xs font-semibold text-ink">Pre-order</span>
+							<span data-slot="badge-habis" class="inline-flex min-h-7 items-center rounded-full border border-ink bg-ink px-3 text-xs font-semibold text-white">Habis</span>
+						</div>
+					</div>
+				</div>
+				<div class="mt-3 flex gap-2 sm:justify-end">
+					<button type="button" data-aksi="ubah" class="min-h-11 flex-1 rounded-lg border border-primary px-4 text-sm font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:flex-none">Ubah</button>
+					<button type="button" data-aksi="hapus" class="min-h-11 flex-1 rounded-lg border border-line px-4 text-sm font-semibold text-ink transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:flex-none">Hapus</button>
+				</div>
+			</li>
 		</template>
 		<template id="tpl-galeri">
 			<div data-galeri>
@@ -209,6 +250,83 @@ import { siteConfig } from '../config/site.js';
 						data-konfirmasi-ok
 						class="min-h-12 rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
 					></button>
+				</div>
+			</form>
+		</dialog>
+		<dialog id="produk-form-dialog" aria-labelledby="produk-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70">
+			<form data-produk-form novalidate class="flex max-h-[calc(100svh-1rem)] flex-col">
+				<div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
+					<h2 id="produk-form-judul" data-form-judul class="text-xl font-bold text-ink"></h2>
+					<button type="button" data-form-tutup aria-label="Tutup formulir" class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><Icon name="close" class="size-6" /></button>
+				</div>
+				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Nama produk *</span>
+						<input type="text" name="nama" required maxlength="200" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Kategori</span>
+						<input type="text" name="kategori" maxlength="80" list="daftar-kategori-produk" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+						<span class="mt-1 block text-sm text-ink-muted">Ketik kategori baru atau pilih yang sudah ada.</span>
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Status</span>
+						<select name="status" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+							<option value="tersedia">Tersedia</option>
+							<option value="pre-order">Pre-order</option>
+							<option value="habis">Habis</option>
+						</select>
+					</label>
+					<div class="grid gap-4 sm:grid-cols-2">
+						<label class="block">
+							<span class="text-sm font-semibold text-ink">Harga (Rp)</span>
+							<input type="number" name="harga" inputmode="numeric" min="0" step="1" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+							<span class="mt-1 block text-sm text-ink-muted">Kosongkan bila harga ditanyakan lewat WhatsApp (tampil 'Hubungi admin'). Isi angka bulat tanpa titik atau koma.</span>
+						</label>
+						<label class="block">
+							<span class="text-sm font-semibold text-ink">Satuan</span>
+							<input type="text" name="satuan" maxlength="30" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+							<span class="mt-1 block text-sm text-ink-muted">Contoh: kg, pcs, kotak.</span>
+						</label>
+					</div>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Minimal pesan</span>
+						<input type="text" name="minimalPesan" maxlength="100" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Produsen</span>
+						<input type="text" name="produsen" maxlength="100" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Ringkasan</span>
+						<textarea name="ringkasan" rows="2" maxlength="300" class="mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"></textarea>
+						<span class="mt-1 block text-sm text-ink-muted">1-2 kalimat; tampil di popup detail.</span>
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Deskripsi lengkap</span>
+						<textarea name="deskripsi" rows="6" maxlength="5000" class="mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"></textarea>
+					</label>
+					<label class="block">
+						<span class="text-sm font-semibold text-ink">Urutan</span>
+						<input type="number" name="urutan" inputmode="numeric" min="1" step="1" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+						<span class="mt-1 block text-sm text-ink-muted">Angka kecil tampil lebih dulu.</span>
+					</label>
+					<label class="flex min-h-11 items-center gap-3">
+						<input type="checkbox" name="unggulan" class="size-5 accent-primary" />
+						<span class="text-base text-ink">Jadikan produk unggulan (tampil di Beranda; hanya satu)</span>
+					</label>
+					<div>
+						<p class="text-sm font-semibold text-ink">Foto produk</p>
+						<div data-produk-galeri class="mt-2"></div>
+					</div>
+					<datalist id="daftar-kategori-produk"></datalist>
+				</div>
+				<div class="border-t border-line bg-white px-4 py-3 sm:px-6">
+					<p data-form-status role="status" class="min-h-6 text-sm text-ink-muted"></p>
+					<div class="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+						<button type="button" data-form-batal class="min-h-12 rounded-xl border border-line px-5 font-semibold text-ink transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Batal</button>
+						<button type="submit" data-form-simpan class="min-h-12 rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60">Simpan</button>
+					</div>
 				</div>
 			</form>
 		</dialog>
