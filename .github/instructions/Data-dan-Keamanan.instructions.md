@@ -10,8 +10,8 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 ## Status keputusan
 
 Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authentication, paket Spark/gratis)**, foto di **ImgBB** (diunggah lewat fungsi server), dan URL foto dibungkus proxy **wsrv.nl**. Dashboard admin dibuat di `/admin` (belum dibuat; dikerjakan setelah lapisan baca selesai dan atas permintaan pemilik).
-- Halaman publik membaca Firestore lewat REST (`fetch`), TANPA package `firebase`. SDK hanya boleh dipakai di halaman `/admin`, dan hanya setelah pemilik menyetujui.
-- Variabel `PUBLIC_*` yang diizinkan hanya `PUBLIC_FIREBASE_API_KEY` dan `PUBLIC_FIREBASE_PROJECT_ID` (kunci browser dibatasi ke domain situs di Google Cloud Console). Jangan menambah yang lain tanpa persetujuan.
+- Halaman publik membaca Firestore lewat REST (`fetch`), TANPA package `firebase`. Package `firebase` (npm) sudah disetujui pemilik dan hanya boleh di-import dari `src/lib/admin/` untuk halaman `/admin`.
+- Variabel `PUBLIC_*` yang diizinkan hanya `PUBLIC_FIREBASE_API_KEY`, `PUBLIC_FIREBASE_PROJECT_ID`, dan `PUBLIC_FIREBASE_AUTH_DOMAIN` (kunci browser dibatasi ke domain situs di Google Cloud Console). Jangan menambah yang lain tanpa persetujuan.
 - Jangan membuat folder `functions/` atau fungsi upload sebelum pemilik memintanya.
 
 ## Model konten
@@ -52,6 +52,7 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
 
 - `noindex` (meta robots), tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Pemeriksaan hak akses dilakukan di sisi layanan/server, bukan sekadar menyembunyikan halaman.
+- Akses admin diperiksa dengan membaca dokumen `admin/ping` (hanya terbaca admin menurut Rules); akun yang berhasil login tetapi ditolak langsung dikeluarkan. Daftar UID admin hanya ada di Firestore Rules.
 - Nyaman dipakai dari HP: bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: Produk, Berita, Struktur Organisasi, dan Pengaturan situs. Kerjakan **satu jenis konten per langkah**, mulai dari Produk.
 - Data teks bebas yang dimasukkan ke HTML harus di-escape (pakai `textContent` bila memungkinkan).
@@ -71,6 +72,6 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
   - `berita`: judul, slug, tanggal (string YYYY-MM-DD), ringkasan, isi (paragraf dipisah satu baris kosong), fotoSampul (URL string), status (draf / terbit).
   - `struktur`: nama, jabatan, foto (URL string), tingkat (angka), urutan (angka).
   - `pengaturan`: satu dokumen dengan ID `situs` (namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp, email, mapUrl, mediaSosial).
-- Firestore Rules: baca publik untuk `produk`, `struktur`, `pengaturan`; `berita` hanya yang berstatus terbit untuk publik; tulis hanya UID admin yang terdaftar di Rules (bukan sekadar sudah login). Rules dikelola di console Firebase, bukan di repo; ingatkan pemilik mengeceknya setiap ada koleksi atau fitur baru.
+- Firestore Rules: baca publik untuk `produk`, `struktur`, `pengaturan`; `berita` hanya yang berstatus terbit untuk publik; tulis hanya UID admin yang terdaftar di Rules (bukan sekadar sudah login), dengan pemeriksaan bentuk data (foto produk maksimal 5, slider maksimal 5, status dan tipe field). Koleksi `admin` (dokumen `ping`) hanya terbaca admin dan tidak bisa ditulis dari aplikasi. Dokumen `pengaturan/slider` menyimpan foto slider depan dan tidak bisa dihapus. Rules dikelola di console Firebase, bukan di repo; ingatkan pemilik mengeceknya setiap ada koleksi atau fitur baru.
 - Foto: URL ImgBB disimpan sebagai string di dokumen dan SELALU ditampilkan lewat `urlFoto()` / `srcsetFoto()` di `src/lib/foto.js` (proxy wsrv.nl). Kunci ImgBB disimpan sebagai secret `IMGBB_API_KEY` di Cloudflare Pages (tanpa awalan PUBLIC_), dipakai hanya dari fungsi server yang memverifikasi admin yang login; `delete_url` ImgBB tidak pernah disimpan di dokumen yang bisa dibaca publik.
 - Foto produk/berita tidak lagi diproses `astro:assets`; folder `src/assets/produk` dan `src/assets/berita` tidak dipakai lagi.

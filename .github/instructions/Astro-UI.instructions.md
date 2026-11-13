@@ -15,7 +15,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Tanpa UI framework (React/Vue/Svelte), tanpa `client:*`, tanpa `ClientRouter`/View Transitions, tanpa SSR atau adapter.
 - Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser, kecuali data produk dan berita yang harus segera menampilkan perubahan dari Firestore sesuai keputusan pemilik.
 - Halaman dinamis (`/produk/[slug]`, `/berita/[slug]`) memakai `getStaticPaths`. Slug unik dan huruf kecil. Berita berstatus draf tidak dibuatkan halaman.
-- Dashboard admin (jika kelak dibuat): berdiri sendiri di `/admin`, tidak memakai `SiteLayout` (tanpa SiteHeader/SiteFooter/MobileNav), `noindex`, dan tidak masuk sitemap. Jangan mulai sebelum keputusan penyimpanan konten diambil (lihat `data-dan-keamanan.instructions.md`).
+- Dashboard admin: halaman `/admin` berdiri sendiri (tanpa `SiteLayout`, SiteHeader, SiteFooter, MobileNav), `noindex`, tidak masuk sitemap. Kodenya ada di `src/lib/admin/` (package `firebase` hanya boleh di-import dari sana); elemen dibuat dengan template/DOM API, tanpa `innerHTML`. Tab dikelola lewat `role="tab"`/`role="tabpanel"`.
 
 ## Satu sumber kebenaran: `src/config/site.js`
 

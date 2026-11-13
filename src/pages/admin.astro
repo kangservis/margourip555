@@ -1,0 +1,184 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { siteConfig } from '../config/site.js';
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>{`Admin - ${siteConfig.name}`}</title>
+		<Font cssVariable="--font-playfair-display" preload={[{ subset: 'latin', weight: 700, style: 'normal' }]} />
+		<Font cssVariable="--font-plus-jakarta-sans" preload={[{ subset: 'latin', weight: 400, style: 'normal' }]} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+	</head>
+	<body class="min-h-screen bg-surface font-sans text-ink antialiased">
+		<p data-view="memuat" class="px-5 py-20 text-center text-base text-ink-muted">Memuat...</p>
+
+		<section data-view="login" hidden>
+			<div class="flex min-h-svh items-center justify-center px-5 py-10">
+				<div class="w-full max-w-sm overflow-hidden rounded-xl border border-line bg-white">
+					<div class="batik-panel batik-panel-dark batik-panel-slim px-6 py-8 text-center">
+						<p class="text-xs font-semibold uppercase tracking-wide text-white">Panel admin</p>
+						<h1 class="mt-2 text-2xl font-bold text-white">{siteConfig.name}</h1>
+						<div class="ornament ornament-center" aria-hidden="true"></div>
+					</div>
+					<form data-login-form novalidate class="space-y-4 p-6">
+						<p data-login-pesan role="alert" hidden class="rounded-lg border border-primary bg-surface px-4 py-3 text-base text-primary"></p>
+						<div>
+							<label for="login-email" class="block text-sm font-semibold text-ink">Email</label>
+							<input
+								id="login-email"
+								name="email"
+								type="email"
+								autocomplete="username"
+								required
+								class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							/>
+						</div>
+						<div>
+							<label for="login-sandi" class="block text-sm font-semibold text-ink">Kata sandi</label>
+							<input
+								id="login-sandi"
+								name="sandi"
+								type="password"
+								autocomplete="current-password"
+								required
+								class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							/>
+						</div>
+						<button
+							type="submit"
+							data-login-kirim
+							class="min-h-12 w-full rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+						>
+							Masuk
+						</button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<section data-view="dashboard" hidden>
+			<header class="border-b border-line bg-white">
+				<div class="site-container flex flex-wrap items-center justify-between gap-3 py-4">
+					<div class="min-w-0">
+						<p class="text-xs font-semibold uppercase tracking-wide text-primary">Panel admin</p>
+						<h1 class="font-serif text-xl font-bold text-ink">{siteConfig.name}</h1>
+					</div>
+					<div class="flex flex-wrap items-center gap-2">
+						<span data-admin-email class="hidden max-w-[16rem] truncate text-sm text-ink-muted sm:inline"></span>
+						<a
+							href="/"
+							class="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-semibold text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						>
+							Lihat website <Icon name="arrow-right" class="size-4" />
+						</a>
+						<button
+							type="button"
+							data-keluar
+							class="min-h-11 rounded-lg border border-primary px-4 text-sm font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						>
+							Keluar
+						</button>
+					</div>
+				</div>
+			</header>
+			<main class="site-container py-6 sm:py-8">
+				<div role="tablist" aria-label="Bagian admin" class="flex gap-2 overflow-x-auto pb-2">
+					<button
+						type="button"
+						role="tab"
+						id="tab-produk"
+						data-tab="produk"
+						aria-controls="panel-produk"
+						aria-selected="false"
+						tabindex="-1"
+						class="min-h-11 shrink-0 rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+					>Produk</button>
+					<button
+						type="button"
+						role="tab"
+						id="tab-berita"
+						data-tab="berita"
+						aria-controls="panel-berita"
+						aria-selected="false"
+						tabindex="-1"
+						class="min-h-11 shrink-0 rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+					>Berita</button>
+					<button
+						type="button"
+						role="tab"
+						id="tab-slider"
+						data-tab="slider"
+						aria-controls="panel-slider"
+						aria-selected="false"
+						tabindex="-1"
+						class="min-h-11 shrink-0 rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+					>Slider</button>
+					<button
+						type="button"
+						role="tab"
+						id="tab-struktur"
+						data-tab="struktur"
+						aria-controls="panel-struktur"
+						aria-selected="false"
+						tabindex="-1"
+						class="min-h-11 shrink-0 rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+					>Struktur</button>
+				</div>
+				<section role="tabpanel" id="panel-produk" data-panel="produk" aria-labelledby="tab-produk" hidden class="mt-4">
+					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan produk dibuat di langkah berikutnya]</div>
+				</section>
+				<section role="tabpanel" id="panel-berita" data-panel="berita" aria-labelledby="tab-berita" hidden class="mt-4">
+					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan berita dibuat di langkah berikutnya]</div>
+				</section>
+				<section role="tabpanel" id="panel-slider" data-panel="slider" aria-labelledby="tab-slider" hidden class="mt-4">
+					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan slider dibuat di langkah berikutnya]</div>
+				</section>
+				<section role="tabpanel" id="panel-struktur" data-panel="struktur" aria-labelledby="tab-struktur" hidden class="mt-4">
+					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan struktur dibuat di langkah berikutnya]</div>
+				</section>
+			</main>
+		</section>
+
+		<div data-toast-wadah aria-live="polite" class="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex flex-col items-center gap-2"></div>
+		<template id="tpl-toast">
+			<div role="status" data-jenis="info" class="pointer-events-auto w-full max-w-sm rounded-xl border-l-4 border-gold bg-ink px-4 py-3 text-base text-white data-[jenis=galat]:border-white data-[jenis=galat]:bg-primary">
+				<span data-toast-teks></span>
+			</div>
+		</template>
+		<dialog
+			data-konfirmasi
+			aria-labelledby="konfirmasi-judul"
+			class="m-auto w-[calc(100%-2.5rem)] max-w-sm rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70"
+		>
+			<form method="dialog" class="p-6">
+				<h2 id="konfirmasi-judul" data-konfirmasi-judul class="text-xl font-bold text-ink"></h2>
+				<p data-konfirmasi-pesan class="mt-2 text-base leading-7 text-ink-muted"></p>
+				<div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+					<button
+						value="batal"
+						autofocus
+						class="min-h-12 rounded-xl border border-line px-5 font-semibold text-ink transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					>Batal</button>
+					<button
+						value="ok"
+						data-konfirmasi-ok
+						class="min-h-12 rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+					></button>
+				</div>
+			</form>
+		</dialog>
+		<script>
+			import { mulaiAdmin } from '../lib/admin/app.js';
+
+			mulaiAdmin();
+		</script>
+	</body>
+</html>

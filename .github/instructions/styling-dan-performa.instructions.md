@@ -37,6 +37,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - Corak `batik-panel` berupa segitiga bertingkat (conic-gradient) dengan dua nada merah; kekuatannya diatur lewat satu variabel `--batik-strength` di `.batik-panel`. Jangan memakai corak atau gambar lain untuk bidang merah.
 - Kartu produk (`ProductCard.astro`) dipakai seragam di Beranda dan halaman Produk. Badge: Unggulan = `gold-soft` + border `gold`; Pre-order = putih + border `line`; Habis = `ink` + teks putih. Tidak ada warna baru.
 - Kotak penunggu (skeleton) berupa blok `surface` tanpa animasi.
+- Halaman `/admin` memakai token dan gaya yang sama. Notifikasi (toast): info memakai `ink`, galat memakai `primary`; tidak ada warna baru dan tidak ada hijau.
 - Foto di kartu produk dan kartu berita memakai `object-contain` di wadah berasio tetap berlatar `surface` (tidak dipotong). Kartu berita (`NewsCard.astro`) dipakai seragam di Beranda dan halaman Berita.
 - Garis emas atas dan bawah `batik-panel` harus selalu terlihat di semua lebar layar. Jangan menimpa tepi `batik-panel` dengan margin negatif atau elemen berlapis, dan jangan memberi latar pada elemen sesudahnya yang bisa menutupinya.
 - Panel merah yang sangat pendek (mis. footer) memakai tambahan `batik-panel-slim` (garis emas 2px dan sedikit lebih tua) agar proporsinya sama dengan panel tinggi. Ini satu-satunya variasi ketebalan garis emas.

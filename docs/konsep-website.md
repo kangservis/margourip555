@@ -78,6 +78,7 @@ Urutan bagian, dari atas ke bawah:
 
 Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan yang belum diambil"):
 
+- Login memakai Firebase Authentication (email + kata sandi); akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
 - Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
