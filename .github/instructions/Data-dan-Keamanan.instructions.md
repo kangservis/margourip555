@@ -5,14 +5,14 @@ applyTo: "src/config/**,src/content/**,src/lib/**,src/pages/admin/**,functions/*
 
 # Aturan Data & Keamanan — Desa Margourip
 
-File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.md`. Folder seperti `src/content`, `src/lib`, `src/pages/admin`, dan `functions` mungkin belum ada; aturan ini berlaku saat folder itu dibuat.
+File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.md`. Aturan ini berlaku untuk folder data, admin, dan fungsi server yang terkait.
 
 ## Status keputusan
 
-Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authentication, paket Spark/gratis)**, foto di **ImgBB** (diunggah lewat fungsi server), dan URL foto dibungkus proxy **wsrv.nl**. Dashboard admin dibuat di `/admin` (belum dibuat; dikerjakan setelah lapisan baca selesai dan atas permintaan pemilik).
+Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authentication, paket Spark/gratis)**, foto di **ImgBB** (diunggah lewat fungsi server), dan URL foto dibungkus proxy **wsrv.nl**. Dashboard admin berada di `/admin` dan dikerjakan bertahap atas permintaan pemilik.
 - Halaman publik membaca Firestore lewat REST (`fetch`), TANPA package `firebase`. Package `firebase` (npm) sudah disetujui pemilik dan hanya boleh di-import dari `src/lib/admin/` untuk halaman `/admin`.
 - Variabel `PUBLIC_*` yang diizinkan hanya `PUBLIC_FIREBASE_API_KEY`, `PUBLIC_FIREBASE_PROJECT_ID`, dan `PUBLIC_FIREBASE_AUTH_DOMAIN` (kunci browser dibatasi ke domain situs di Google Cloud Console). Jangan menambah yang lain tanpa persetujuan.
-- Jangan membuat folder `functions/` atau fungsi upload sebelum pemilik memintanya.
+- Fungsi upload ada di `functions/api/upload.js` (Cloudflare Pages Function).
 
 ## Model konten
 
@@ -61,9 +61,10 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
 ## Foto dan upload
 
 - Foto produk 1-5 per item (foto pertama = sampul), berita 1 foto sampul.
-- Foto dikecilkan dan diubah ke WebP otomatis sebelum disimpan, dengan batas ukuran jelas (sekitar 200 KB per foto).
+- Foto dikecilkan dan diubah ke WebP otomatis sebelum disimpan (sisi terpanjang maksimal 1600px, target sekitar 250 KB per foto).
 - Kunci layanan penyimpanan foto tidak pernah ada di kode browser. Upload yang memakai kunci harus lewat sisi server, dan server wajib memverifikasi bahwa pemanggilnya admin yang login sebelum endpoint itu dianggap aman.
 - Penyimpanan foto sudah diputuskan: ImgBB, dengan URL publik dibungkus proxy wsrv.nl.
+- Alur upload: admin login -> foto diperkecil di browser (WebP, sisi terpanjang maksimal 1600px, target sekitar 250 KB) -> POST `/api/upload` bersama tiket login -> fungsi memeriksa admin dengan membaca dokumen `admin/ping` lewat Firestore REST memakai tiket itu -> meneruskan ke ImgBB dengan `IMGBB_API_KEY` (secret, tanpa awalan PUBLIC_) -> mengembalikan URL dan ukuran foto tanpa `delete_url` atau kunci. Nama berkas diawali `margourip-`. Variabel `FIREBASE_PROJECT_ID` (tanpa PUBLIC_) dipakai fungsi. `npm run dev` tidak menjalankan fungsi Cloudflare; uji unggah di alamat Cloudflare Pages.
 
 ## Aturan khusus layanan terpilih
 
@@ -72,6 +73,7 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
   - `berita`: judul, slug, tanggal (string YYYY-MM-DD), ringkasan, isi (paragraf dipisah satu baris kosong), fotoSampul (URL string), status (draf / terbit).
   - `struktur`: nama, jabatan, foto (URL string), tingkat (angka), urutan (angka).
   - `pengaturan`: satu dokumen dengan ID `situs` (namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp, email, mapUrl, mediaSosial).
+  - `pengaturan/slider`: satu dokumen berisi `foto`, yaitu daftar `{ url, alt, rasio }` (maksimal 5; urutan = urutan tampil).
 - Firestore Rules: baca publik untuk `produk`, `struktur`, `pengaturan`; `berita` hanya yang berstatus terbit untuk publik; tulis hanya UID admin yang terdaftar di Rules (bukan sekadar sudah login), dengan pemeriksaan bentuk data (foto produk maksimal 5, slider maksimal 5, status dan tipe field). Koleksi `admin` (dokumen `ping`) hanya terbaca admin dan tidak bisa ditulis dari aplikasi. Dokumen `pengaturan/slider` menyimpan foto slider depan dan tidak bisa dihapus. Rules dikelola di console Firebase, bukan di repo; ingatkan pemilik mengeceknya setiap ada koleksi atau fitur baru.
 - Foto: URL ImgBB disimpan sebagai string di dokumen dan SELALU ditampilkan lewat `urlFoto()` / `srcsetFoto()` di `src/lib/foto.js` (proxy wsrv.nl). Kunci ImgBB disimpan sebagai secret `IMGBB_API_KEY` di Cloudflare Pages (tanpa awalan PUBLIC_), dipakai hanya dari fungsi server yang memverifikasi admin yang login; `delete_url` ImgBB tidak pernah disimpan di dokumen yang bisa dibaca publik.
 - Foto produk/berita tidak lagi diproses `astro:assets`; folder `src/assets/produk` dan `src/assets/berita` tidak dipakai lagi.

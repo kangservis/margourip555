@@ -139,7 +139,13 @@ import { siteConfig } from '../config/site.js';
 					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan berita dibuat di langkah berikutnya]</div>
 				</section>
 				<section role="tabpanel" id="panel-slider" data-panel="slider" aria-labelledby="tab-slider" hidden class="mt-4">
-					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan slider dibuat di langkah berikutnya]</div>
+					<div class="rounded-xl border border-line bg-white p-5 sm:p-6">
+						<h2 class="text-xl font-bold text-ink">Slider depan</h2>
+						<p class="mt-1 text-base leading-7 text-ink-muted">Foto yang berganti otomatis di bagian atas Beranda (maksimal 5). Foto nomor 1 tampil lebih dulu. Geser urutan dengan tombol panah. Isi keterangan foto singkat untuk pembaca layar. Tekan Simpan perubahan agar foto dikirim.</p>
+						<div data-slider-galeri class="mt-5"></div>
+						<p data-slider-status role="status" class="mt-4 min-h-6 text-base text-ink-muted"></p>
+						<button type="button" data-slider-simpan disabled class="mt-2 min-h-12 w-full rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60 sm:w-auto">Simpan perubahan</button>
+					</div>
 				</section>
 				<section role="tabpanel" id="panel-struktur" data-panel="struktur" aria-labelledby="tab-struktur" hidden class="mt-4">
 					<div class="rounded-xl border border-line bg-white p-6 text-base text-ink-muted">[ISI NANTI: pengelolaan struktur dibuat di langkah berikutnya]</div>
@@ -152,6 +158,37 @@ import { siteConfig } from '../config/site.js';
 			<div role="status" data-jenis="info" class="pointer-events-auto w-full max-w-sm rounded-xl border-l-4 border-gold bg-ink px-4 py-3 text-base text-white data-[jenis=galat]:border-white data-[jenis=galat]:bg-primary">
 				<span data-toast-teks></span>
 			</div>
+		</template>
+		<template id="tpl-galeri">
+			<div data-galeri>
+				<label class="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-line bg-surface px-4 py-6 text-center text-base text-ink-muted transition-colors hover:border-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
+					<span class="font-semibold text-ink">Pilih foto dari galeri atau kamera</span>
+					<span data-slot="batas" class="text-sm"></span>
+					<input type="file" accept="image/*" data-slot="input" class="sr-only" />
+				</label>
+				<ul data-slot="daftar" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3"></ul>
+			</div>
+		</template>
+		<template id="tpl-galeri-item">
+			<li data-item class="overflow-hidden rounded-xl border border-line bg-white">
+				<div class="relative aspect-[4/3] border-b border-line bg-surface">
+					<img data-slot="gambar" alt="" class="h-full w-full object-contain" decoding="async" />
+					<span data-slot="nomor" class="absolute left-2 top-2 inline-flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white"></span>
+					<div class="absolute right-2 top-2 flex flex-col items-end gap-1">
+						<span data-slot="baru" class="inline-flex min-h-7 items-center rounded-full border border-gold bg-gold-soft px-3 text-xs font-semibold text-ink">Baru</span>
+						<span data-slot="sampul" class="inline-flex min-h-7 items-center rounded-full border border-line bg-white px-3 text-xs font-semibold text-ink">Sampul</span>
+					</div>
+				</div>
+				<div class="flex items-center justify-between gap-2 p-2">
+					<button type="button" data-aksi="kiri" aria-label="Geser ke kiri" class="flex size-11 items-center justify-center rounded-lg border border-line text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-40"><Icon name="arrow-left" class="size-5" /></button>
+					<button type="button" data-aksi="hapus" aria-label="Hapus foto" class="flex size-11 items-center justify-center rounded-lg border border-line text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-40"><Icon name="close" class="size-5" /></button>
+					<button type="button" data-aksi="kanan" aria-label="Geser ke kanan" class="flex size-11 items-center justify-center rounded-lg border border-line text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-40"><Icon name="arrow-right" class="size-5" /></button>
+				</div>
+				<label data-slot="keterangan-wadah" class="block px-2 pb-2">
+					<span class="text-sm font-semibold text-ink">Keterangan foto</span>
+					<input data-slot="keterangan" type="text" maxlength="120" class="mt-1 min-h-11 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+				</label>
+			</li>
 		</template>
 		<dialog
 			data-konfirmasi

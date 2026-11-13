@@ -7,6 +7,7 @@ import {
 } from 'firebase/auth';
 import { adminSiap, auth, periksaAdmin } from './firebase.js';
 import { konfirmasi, tampilkanToast } from './ui.js';
+import { mulaiTabSlider, resetTabSlider } from './slider.js';
 
 export function mulaiAdmin() {
 	const tampilanMemuat = document.querySelector('[data-view="memuat"]');
@@ -114,6 +115,7 @@ export function mulaiAdmin() {
 
 	onAuthStateChanged(auth, async (user) => {
 		if (!user) {
+			resetTabSlider();
 			tampilView('login');
 			if (pesanLoginTertunda) {
 				pesanLogin.textContent = pesanLoginTertunda;
@@ -151,6 +153,7 @@ export function mulaiAdmin() {
 		const tabAwal = tabs.some((tab) => tab.dataset.tab === hashAwal) ? hashAwal : 'produk';
 		pilihTab(tabAwal);
 		tampilView('dashboard');
+		void mulaiTabSlider();
 	});
 
 	tombolKeluar.addEventListener('click', async () => {

@@ -82,7 +82,7 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 - Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
-- Unggah foto: ukuran dikecilkan dan diubah ke WebP otomatis sebelum disimpan, dengan batas ukuran yang jelas.
+- Unggah foto: diperkecil di browser (WebP, sekitar 250 KB) lalu diunggah lewat fungsi server yang memverifikasi admin; foto bernomor, bisa digeser dengan tombol panah dan dihapus; foto pertama = sampul (produk, berita) atau tampil lebih dulu (slider); slider depan maksimal 5 foto dengan keterangan per foto.
 - Perubahan di admin langsung tampil di halaman publik (daftar produk dan berita dimuat dari Firestore di browser dengan kotak penunggu berukuran tetap).
 - Tidak ada secret yang terlihat di browser. Jika memakai layanan pihak ketiga, aturan akses (rules/izin) wajib dibahas sebelum fitur admin dibuat.
 
