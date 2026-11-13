@@ -1,261 +1,253 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import { siteConfig } from '../config/site.js';
-
+// Foto slider diatur dari /admin (tab Slider), disimpan di Firestore (pengaturan/slider), dan dimuat di browser. Tanpa foto tampil placeholder. Kartu menyesuaikan rasio tiap foto (3:4 sampai 2:1); foto di luar rentang itu sedikit terpotong (object-cover).
 // Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
 const INTERVAL_MS = 5000;
 
-// Jumlah foto maksimal di slider. Foto ke-6 dan seterusnya (menurut urutan nama file) diabaikan.
+// Jumlah foto maksimal di slider.
 const MAX_SLIDES = 5;
 
-// Tambahkan maksimal 5 foto ke src/assets/slider-depan/ dengan nama berawalan angka dan deskriptif (contoh: 01-sawah-desa.jpg).
-// Urutan mengikuti nama file; alt otomatis dibuat dari nama file.
-// Kartu slider menyesuaikan rasio setiap foto (transisi halus 500 ms saat berganti).
 // Rasio diklem: minimal 3:4 (potret), maksimal 2:1 (lanskap lebar).
-// Foto di luar rentang itu sedikit terpotong (object-cover).
-// Untuk tampilan terbaik, gunakan foto dengan rasio serupa (misal semua lanskap 16:9 atau 3:2).
-// Saran ukuran foto sumber maksimal sekitar 2000 px lebar.
 const MIN_RATIO = 3 / 4;
 const MAX_RATIO = 2 / 1;
-const modules = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/slider-depan/*.{jpg,jpeg,png,webp,avif}',
-	{ eager: true },
-);
-
-if (Object.keys(modules).length > MAX_SLIDES) {
-	console.warn(`Folder src/assets/slider-depan berisi ${Object.keys(modules).length} foto; hanya ${MAX_SLIDES} foto pertama (menurut urutan nama file) yang dipakai.`);
-}
-
-const slides = Object.entries(modules)
-	.sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-	.slice(0, MAX_SLIDES)
-	.map(([path, module]) => {
-		const fileName = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? '';
-		const alt = fileName.replace(/^\d+[-_ ]*/, '').replace(/[-_]/g, ' ').trim();
-
-		return {
-			src: module.default,
-			alt: alt || `Foto ${siteConfig.name}`,
-			ratio: Math.min(MAX_RATIO, Math.max(MIN_RATIO, module.default.width / module.default.height)),
-		};
-	});
 ---
+
+<!-- Menyiapkan koneksi lebih awal agar foto hero cepat tampil -->
+<link rel="preconnect" href="https://firestore.googleapis.com" />
+<link rel="preconnect" href="https://wsrv.nl" />
 
 <div
 	data-hero-slider
 	data-interval={INTERVAL_MS}
-	class="mx-auto w-full transition-[max-width] duration-500 ease-in-out motion-reduce:transition-none lg:ml-auto lg:mr-0 [--slider-max-h:260px] sm:[--slider-max-h:320px] lg:[--slider-max-h:min(420px,calc(100svh-16rem))]"
-	style={`max-width: min(100%, calc(var(--slider-max-h) * ${slides[0]?.ratio ?? 1.5}));`}
+	class="mx-auto w-full lg:ml-auto lg:mr-0 [--slider-max-h:260px] sm:[--slider-max-h:320px] lg:[--slider-max-h:min(420px,calc(100svh-16rem))]"
+	style="max-width: min(100%, calc(var(--slider-max-h) * 1.5));"
 >
-	{
-		slides.length > 0 ? (
-			<>
-				<div
-					class="batik-panel batik-panel-dark batik-panel-card relative w-full touch-pan-y transition-[aspect-ratio] duration-500 ease-in-out motion-reduce:transition-none"
-					style={`aspect-ratio: ${slides[0].ratio}`}
-					role="region"
-					aria-roledescription="carousel"
-					aria-label={`Foto ${siteConfig.name}`}
-				>
-					{
-						slides.map((slide, index) => (
-							<div
-								data-slide
-								data-ratio={slide.ratio}
-								class:list={[
-									'absolute inset-0 transition-opacity duration-500 motion-reduce:transition-none',
-									index === 0 ? 'opacity-100' : 'opacity-0',
-								]}
-								role="group"
-								aria-roledescription="slide"
-								aria-label={`${index + 1} dari ${slides.length}`}
-								aria-hidden={index === 0 ? 'false' : 'true'}
-							>
-								<Image
-									src={slide.src}
-									alt={slide.alt}
-									format="webp"
-									quality={75}
-									widths={[480, 720, 1080]}
-									sizes="(min-width: 1024px) 900px, 100vw"
-									class="h-full w-full object-cover object-center"
-									decoding="async"
-									loading={index === 0 ? 'eager' : 'lazy'}
-									fetchpriority={index === 0 ? 'high' : 'low'}
-								/>
-							</div>
-						))
-					}
-				</div>
-				<!-- Lebar tombol titik dikecilkan saat 5 foto agar titik lebih rapat (28px, di atas minimum aksesibilitas 24px). -->
-				{
-					slides.length === 1 ? (
-						<div class="mt-3 flex min-h-11 items-center justify-center" aria-hidden="true">
-							<span class="size-2.5 rounded-full bg-gold"></span>
-						</div>
-					) : slides.length >= 2 ? (
-						<div data-dots class="invisible mt-3 flex min-h-11 items-center justify-center">
-							{slides.map((_, index) => (
-								<button
-									type="button"
-									data-dot
-									class:list={[
-										'flex h-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
-										slides.length >= 5 ? 'w-7' : 'w-11',
-									]}
-									aria-label={`Tampilkan foto ${index + 1}`}
-									aria-current={index === 0 ? 'true' : undefined}
-								>
-									<span
-										class:list={[
-											'size-2.5 rounded-full',
-											index === 0 ? 'bg-gold' : 'bg-white/50',
-										]}
-									/>
-								</button>
-							))}
-						</div>
-					) : null
-				}
-			</>
-		) : (
-			<div
-				class="batik-panel batik-panel-dark batik-panel-card flex aspect-[3/2] items-center justify-center p-8 text-center"
-				role="img"
-				aria-label="Placeholder foto asli Desa Margourip"
-			>
-				<p class="text-base font-medium text-white">[ISI NANTI: foto asli Desa Margourip]</p>
-			</div>
-		)
-	}
+	<div
+		data-frame
+		class="batik-panel batik-panel-dark batik-panel-card relative w-full touch-pan-y"
+		style="aspect-ratio: 1.5"
+		aria-busy="true"
+	></div>
+	<div data-dots class="mt-3 flex min-h-11 items-center justify-center"></div>
+	<template data-tpl-slide>
+		<div
+			data-slide
+			class="absolute inset-0 opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+			role="group"
+			aria-roledescription="slide"
+			aria-hidden="true"
+		>
+			<img
+				data-slot="foto"
+				alt=""
+				sizes="(min-width: 1024px) 900px, 100vw"
+				decoding="async"
+				class="h-full w-full object-cover object-center"
+			/>
+		</div>
+	</template>
+	<template data-tpl-titik>
+		<button
+			type="button"
+			data-dot
+			class="flex h-11 w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+			aria-label=""
+		>
+			<span class="size-2.5 rounded-full bg-white/50"></span>
+		</button>
+	</template>
+	<template data-tpl-titik-tunggal>
+		<span class="size-2.5 rounded-full bg-gold" aria-hidden="true"></span>
+	</template>
+	<template data-tpl-placeholder>
+		<div class="absolute inset-0 flex items-center justify-center p-8 text-center">
+			<p class="text-base font-medium text-white">[ISI NANTI: foto asli Desa Margourip]</p>
+		</div>
+	</template>
 </div>
 
 <script>
+	import { muatSlider } from '../lib/data.js';
+	import { urlFoto, srcsetFoto } from '../lib/foto.js';
+	import { siteConfig } from '../config/site.js';
+
+	// Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
+	const INTERVAL_MS = 5000;
+
+	// Jumlah foto maksimal di slider.
+	const MAX_SLIDES = 5;
+
+	// Rasio diklem: minimal 3:4 (potret), maksimal 2:1 (lanskap lebar).
+	const MIN_RATIO = 3 / 4;
+	const MAX_RATIO = 2 / 1;
+
 	function initializeHeroSlider() {
 		const root = document.querySelector<HTMLElement>('[data-hero-slider]');
-		if (!root) return;
+		const frame = root?.querySelector<HTMLElement>('[data-frame]');
+		const wadahTitik = root?.querySelector<HTMLElement>('[data-dots]');
+		const templateSlide = root?.querySelector<HTMLTemplateElement>('[data-tpl-slide]');
+		const templateTitik = root?.querySelector<HTMLTemplateElement>('[data-tpl-titik]');
+		const templateTitikTunggal = root?.querySelector<HTMLTemplateElement>('[data-tpl-titik-tunggal]');
+		const templatePlaceholder = root?.querySelector<HTMLTemplateElement>('[data-tpl-placeholder]');
+		if (!root || !frame || !wadahTitik || !templateSlide || !templateTitik || !templateTitikTunggal || !templatePlaceholder) return;
 
-		const slides = root.querySelectorAll<HTMLElement>('[data-slide]');
-		const dots = root.querySelectorAll<HTMLButtonElement>('[data-dot]');
-		if (slides.length < 2) return;
-
-		const dotsContainer = root.querySelector<HTMLElement>('[data-dots]');
-		const frame = root.querySelector<HTMLElement>('[aria-roledescription="carousel"]');
-		if (!dotsContainer || !frame) return;
-
-		dotsContainer.classList.remove('invisible');
-
-		const configuredInterval = Number(root.dataset.interval);
-		const interval = Number.isFinite(configuredInterval) && configuredInterval > 0
-			? configuredInterval
-			: 5000;
-		let activeIndex = 0;
-		let timer = 0;
-		let touchStartX: number | null = null;
-		let touchStartY: number | null = null;
-
-		function stop() {
-			clearInterval(timer);
-			timer = 0;
-		}
-
-		function show(index: number) {
-			activeIndex = ((index % slides.length) + slides.length) % slides.length;
-
-			// Sesuaikan rasio kartu dengan foto aktif
-			const ratio = slides[activeIndex]?.dataset.ratio;
-			if (ratio) {
-				frame.style.aspectRatio = ratio;
-				root.style.maxWidth = `min(100%, calc(var(--slider-max-h) * ${ratio}))`;
+		async function mulai() {
+			let daftar: Awaited<ReturnType<typeof muatSlider>>;
+			try {
+				daftar = await muatSlider();
+			} catch (galat) {
+				console.error('Gagal memuat slider:', galat instanceof Error ? galat.message : 'Kesalahan tidak diketahui');
+				daftar = [];
 			}
 
-			slides.forEach((slide, slideIndex) => {
-				const isActive = slideIndex === activeIndex;
-				slide.classList.toggle('opacity-100', isActive);
-				slide.classList.toggle('opacity-0', !isActive);
-				slide.setAttribute('aria-hidden', String(!isActive));
+			if (daftar.length === 0) {
+				const placeholder = templatePlaceholder.content.cloneNode(true);
+				frame.append(placeholder);
+				frame.setAttribute('role', 'img');
+				frame.setAttribute('aria-label', 'Placeholder foto asli Desa Margourip');
+				frame.removeAttribute('aria-busy');
+				return;
+			}
+
+			const slidesData = daftar.slice(0, MAX_SLIDES).map((foto) => ({
+				...foto,
+				rasio: Math.min(MAX_RATIO, Math.max(MIN_RATIO, foto.rasio ?? 1.5)),
+			}));
+			const n = slidesData.length;
+			frame.setAttribute('role', 'region');
+			frame.setAttribute('aria-roledescription', 'carousel');
+			frame.setAttribute('aria-label', `Foto ${siteConfig.name}`);
+			frame.removeAttribute('aria-busy');
+
+			const slides = slidesData.map((foto, i) => {
+				const fragmen = templateSlide.content.cloneNode(true);
+				const slide = fragmen.querySelector<HTMLElement>('[data-slide]');
+				const gambar = fragmen.querySelector<HTMLImageElement>('[data-slot="foto"]');
+				if (!slide || !gambar) throw new Error('Template slide foto tidak lengkap.');
+				slide.dataset.ratio = String(foto.rasio);
+				slide.setAttribute('aria-label', `${i + 1} dari ${n}`);
+				slide.classList.toggle('opacity-100', i === 0);
+				slide.classList.toggle('opacity-0', i !== 0);
+				slide.setAttribute('aria-hidden', String(i !== 0));
+				gambar.alt = foto.alt || `Foto ${siteConfig.name}`;
+				gambar.src = urlFoto(foto.url, 720);
+				gambar.srcset = srcsetFoto(foto.url, [480, 720, 1080]);
+				gambar.loading = i === 0 ? 'eager' : 'lazy';
+				gambar.fetchPriority = i === 0 ? 'high' : 'low';
+				frame.append(fragmen);
+				return slide;
 			});
 
-			dots.forEach((dot, dotIndex) => {
-				const isActive = dotIndex === activeIndex;
-				const indicator = dot.querySelector('span');
+			const rasioAwal = slidesData[0].rasio;
+			frame.style.aspectRatio = String(rasioAwal);
+			root.style.maxWidth = `min(100%, calc(var(--slider-max-h) * ${rasioAwal}))`;
+			requestAnimationFrame(() => {
+				frame.classList.add('transition-[aspect-ratio]', 'duration-500', 'ease-in-out', 'motion-reduce:transition-none');
+				root.classList.add('transition-[max-width]', 'duration-500', 'ease-in-out', 'motion-reduce:transition-none');
+			});
 
-				if (indicator) {
-					indicator.classList.toggle('bg-gold', isActive);
-					indicator.classList.toggle('bg-white/50', !isActive);
-				}
+			if (n === 1) {
+				wadahTitik.append(templateTitikTunggal.content.cloneNode(true));
+				return;
+			}
 
-				if (isActive) {
+			const dots = slidesData.map((_, i) => {
+				const fragmen = templateTitik.content.cloneNode(true);
+				const dot = fragmen.querySelector<HTMLButtonElement>('[data-dot]');
+				if (!dot) throw new Error('Template titik slider tidak lengkap.');
+				dot.setAttribute('aria-label', `Tampilkan foto ${i + 1}`);
+				if (i === 0) {
 					dot.setAttribute('aria-current', 'true');
-				} else {
-					dot.removeAttribute('aria-current');
+					dot.querySelector('span')?.classList.replace('bg-white/50', 'bg-gold');
 				}
+				if (n >= 5) dot.classList.replace('w-11', 'w-7');
+				wadahTitik.append(fragmen);
+				return dot;
 			});
-		}
 
-		// Autoplay sengaja tidak dijeda oleh hover/fokus/kurangi-gerakan. Untuk pengguna kurangi-gerakan, perpindahan foto instan (tanpa crossfade) lewat motion-reduce di markup.
-		function start() {
-			stop();
-			// Jeda hanya saat tab browser tidak aktif
-			if (document.visibilityState === 'hidden') return;
-			timer = setInterval(() => show(activeIndex + 1), interval);
-		}
+			const configuredInterval = Number(root.dataset.interval);
+			const interval = Number.isFinite(configuredInterval) && configuredInterval > 0
+				? configuredInterval
+				: INTERVAL_MS;
+			let activeIndex = 0;
+			let timer = 0;
+			let touchStartX: number | null = null;
+			let touchStartY: number | null = null;
 
-		document.addEventListener('visibilitychange', () => {
-			if (document.visibilityState === 'hidden') {
-				stop();
-			} else {
-				start();
+			function stop() {
+				clearInterval(timer);
+				timer = 0;
 			}
-		});
 
-		dots.forEach((dot, index) => {
-			dot.addEventListener('click', () => {
-				show(index);
-				start();
+			function show(index: number) {
+				activeIndex = ((index % slides.length) + slides.length) % slides.length;
+				const ratio = slides[activeIndex]?.dataset.ratio;
+				if (ratio) {
+					frame.style.aspectRatio = ratio;
+					root.style.maxWidth = `min(100%, calc(var(--slider-max-h) * ${ratio}))`;
+				}
+
+				slides.forEach((slide, slideIndex) => {
+					const aktif = slideIndex === activeIndex;
+					slide.classList.toggle('opacity-100', aktif);
+					slide.classList.toggle('opacity-0', !aktif);
+					slide.setAttribute('aria-hidden', String(!aktif));
+				});
+				dots.forEach((dot, dotIndex) => {
+					const aktif = dotIndex === activeIndex;
+					const indikator = dot.querySelector('span');
+					indikator?.classList.toggle('bg-gold', aktif);
+					indikator?.classList.toggle('bg-white/50', !aktif);
+					if (aktif) dot.setAttribute('aria-current', 'true');
+					else dot.removeAttribute('aria-current');
+				});
+			}
+
+			// Autoplay sengaja tidak dijeda oleh hover/fokus/kurangi-gerakan. Untuk pengguna kurangi-gerakan, perpindahan foto instan (tanpa crossfade) lewat motion-reduce di markup.
+			function start() {
+				stop();
+				if (document.visibilityState === 'hidden') return;
+				timer = setInterval(() => show(activeIndex + 1), interval);
+			}
+
+			document.addEventListener('visibilitychange', () => {
+				if (document.visibilityState === 'hidden') stop();
+				else start();
 			});
-		});
-
-		frame.addEventListener(
-			'touchstart',
-			(event) => {
+			dots.forEach((dot, index) => {
+				dot.addEventListener('click', () => {
+					show(index);
+					start();
+				});
+			});
+			frame.addEventListener('touchstart', (event) => {
 				if (event.touches.length !== 1) {
 					touchStartX = null;
 					touchStartY = null;
 					return;
 				}
-
 				touchStartX = event.touches[0].clientX;
 				touchStartY = event.touches[0].clientY;
-			},
-			{ passive: true },
-		);
-		frame.addEventListener(
-			'touchend',
-			(event) => {
+			}, { passive: true });
+			frame.addEventListener('touchend', (event) => {
 				const touch = event.changedTouches[0];
 				if (!touch || touchStartX === null || touchStartY === null) return;
-
 				const deltaX = touch.clientX - touchStartX;
 				const deltaY = touch.clientY - touchStartY;
 				touchStartX = null;
 				touchStartY = null;
-
 				if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
 					show(activeIndex + (deltaX < 0 ? 1 : -1));
 					start();
 				}
-			},
-			{ passive: true },
-		);
+			}, { passive: true });
+			frame.addEventListener('touchcancel', () => {
+				touchStartX = null;
+				touchStartY = null;
+			});
+			start();
+		}
 
-		frame.addEventListener('touchcancel', () => {
-			touchStartX = null;
-			touchStartY = null;
-		});
-
-		start();
+		void mulai();
 	}
 
 	initializeHeroSlider();

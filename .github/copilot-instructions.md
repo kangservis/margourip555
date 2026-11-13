@@ -31,7 +31,7 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 ## Prinsip utama (TIDAK BOLEH DILANGGAR)
 1. **Clean look.** Minimalis, lapang, konsisten. Jangan menambah dekorasi, animasi, atau warna baru tanpa alasan kuat.
 2. **Cepat dan ringan** (prioritas: HP kelas menengah, koneksi biasa). Target: LCP < 2,5 dtk, CLS mendekati 0, INP < 200 ms; JavaScript halaman publik sekecil mungkin (idealnya hanya untuk menu dan hal interaktif yang benar-benar perlu).
-   - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript. Pengecualian yang disetujui pemilik: daftar produk dan berita dimuat dari Firestore di browser (agar perubahan admin langsung tampil), dengan kotak penunggu berukuran tetap; semua bagian lain tetap statis.
+   - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript. Pengecualian yang disetujui pemilik: daftar produk, berita, dan foto slider depan dimuat dari Firestore di browser (agar perubahan admin langsung tampil), dengan kotak penunggu berukuran tetap; semua bagian lain tetap statis.
    - Perpindahan antar halaman harus terasa instan. Tanpa animasi transisi antar halaman, tanpa `ClientRouter`/View Transitions kecuali ada alasan kuat. Gunakan prefetch bawaan Astro bila membantu.
    - Gambar: format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `loading="lazy"` kecuali gambar paling atas (hero), maksimal sekitar 200 KB per foto. Gambar lokal diproses lewat `astro:assets`.
    - Font: Playfair Display (judul) dan Plus Jakarta Sans (teks isi) lewat Astro Fonts API (`fonts` di astro.config.mjs), diunduh saat build dan disajikan dari domain sendiri. Tanpa font dari CDN saat runtime. Subset latin saja, style normal saja, weight seminimal mungkin (Playfair 700; Plus Jakarta Sans 400 dan 600). Menambah keluarga font, weight, atau subset: sebut dampak ukuran dan minta persetujuan.
@@ -55,7 +55,7 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 - Aksesibilitas dasar: `lang="id"`, `alt` pada semua gambar bermakna, fokus keyboard terlihat, kontras teks memadai.
 
 ## Pelajaran dari proyek sebelumnya (hindari)
-- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari). (Pengecualian terbatas yang disetujui pemilik hanya untuk produk dan berita; lihat Prinsip 2 dan data-dan-keamanan.instructions.md.)
+- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari). (Pengecualian terbatas yang disetujui pemilik hanya untuk produk, berita, dan slider depan; lihat Prinsip 2 dan data-dan-keamanan.instructions.md.)
 - Jangan menaruh kunci layanan sebagai `PUBLIC_*` bila seharusnya rahasia.
 - Jangan membungkus semua halaman dengan transisi/animasi antar halaman.
 - Jangan memakai icon font penuh, banyak keluarga font dari CDN, dan `backdrop-blur` di elemen yang berulang.

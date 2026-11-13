@@ -26,10 +26,10 @@ Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authenticat
 ## Pembacaan data di halaman publik
 
 Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produk dan berita dimuat dari Firestore di browser. Aturannya:
-- Hanya data produk dan berita (kartu Beranda, halaman Produk, halaman Berita) yang dimuat di browser. Kerangka halaman, header, judul, dan bagian lain tetap statis (HTML hasil build).
+- Hanya data produk, berita, dan slider depan (kartu Beranda, halaman Produk, halaman Berita, slider hero) yang dimuat di browser. Kerangka halaman, header, judul, dan bagian lain tetap statis (HTML hasil build).
 - Semua akses Firestore lewat `src/lib/firestore.js` (REST `runQuery`) dan `src/lib/data.js`. Jangan memanggil `fetch` ke Firestore langsung dari halaman atau komponen.
 - Selalu tampilkan kotak penunggu berukuran tetap (tanpa animasi) agar tidak ada layout shift, serta pesan galat dan tombol "Muat ulang" bila gagal.
-- Tanpa cache persisten, tanpa listener real-time, tanpa membaca dalam perulangan, dan selalu memakai batas (`limit`). Kuota gratis Firestore 50.000 pembacaan per hari per project: Beranda hanya membaca 1 produk unggulan dan 1 berita terbaru.
+- Tanpa cache persisten, tanpa listener real-time, tanpa membaca dalam perulangan, dan selalu memakai batas (`limit`) untuk query koleksi. Kuota gratis Firestore 50.000 pembacaan per hari per project: Beranda hanya membaca 1 produk unggulan, 1 berita terbaru, dan 1 dokumen slider.
 - Query berita publik WAJIB menyertakan filter `status == 'terbit'` (Rules menolak query tanpa filter itu) dan membutuhkan indeks komposit `berita`: `status` naik, `tanggal` turun.
 
 ## Rahasia dan variabel lingkungan

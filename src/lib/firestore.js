@@ -76,3 +76,28 @@ export async function queryKoleksi({ koleksi, filter = [], urutan, batas }) {
 		clearTimeout(timer);
 	}
 }
+
+// Membaca satu dokumen. Mengembalikan { id, ...bidang }, atau null bila dokumen tidak ada.
+export async function bacaDokumen(koleksi, id) {
+	if (!firestoreSiap()) throw new Error('Konfigurasi Firebase belum diisi (.env).');
+	const pengendali = new AbortController();
+	const timer = setTimeout(() => pengendali.abort(), WAKTU_HABIS_MS);
+	try {
+		const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/${koleksi}/${id}?key=${API_KEY}`;
+		const respons = await fetch(url, { signal: pengendali.signal });
+		if (respons.status === 404) return null;
+		if (!respons.ok) {
+			let rincian = '';
+			try {
+				rincian = (await respons.json())?.error?.message ?? '';
+			} catch {
+				// abaikan: isi galat tidak berupa JSON
+			}
+			throw new Error(`Firestore ${respons.status}: ${rincian}`);
+		}
+		const dok = await respons.json();
+		return { id, ...bacaBidang(dok.fields ?? {}) };
+	} finally {
+		clearTimeout(timer);
+	}
+}

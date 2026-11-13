@@ -1,5 +1,6 @@
-import { queryKoleksi } from './firestore.js';
+import { bacaDokumen, queryKoleksi } from './firestore.js';
 import { petakanProduk, petakanBerita } from './pemetaan.js';
+import { urlAman } from './foto.js';
 
 // Batas pembacaan (hemat kuota gratis Firestore). Naikkan hanya bila perlu.
 const MAKS_PRODUK = 60;
@@ -56,4 +57,18 @@ export async function muatBerita(batas = MAKS_BERITA) {
 
 export async function muatBeritaTerbaru() {
 	return (await muatBerita(1))[0] ?? null;
+}
+
+// Foto slider depan dari dokumen pengaturan/slider: daftar { url, alt, rasio }, maksimal 5 (urutan = urutan tampil).
+export async function muatSlider() {
+	const dok = await bacaDokumen('pengaturan', 'slider');
+	const daftar = Array.isArray(dok?.foto) ? dok.foto : [];
+	return daftar
+		.filter((foto) => foto && urlAman(foto.url))
+		.slice(0, 5)
+		.map((foto) => ({
+			url: foto.url,
+			alt: String(foto.alt ?? ''),
+			rasio: Number(foto.rasio) > 0 ? Number(foto.rasio) : null,
+		}));
 }
