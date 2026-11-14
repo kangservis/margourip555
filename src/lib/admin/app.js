@@ -10,6 +10,7 @@ import { konfirmasi, tampilkanToast } from './ui.js';
 import { mulaiTabSlider, resetTabSlider } from './slider.js';
 import { mulaiTabProduk, resetTabProduk } from './produk.js';
 import { mulaiTabBerita, resetTabBerita } from './berita.js';
+import { mulaiTabStruktur, resetTabStruktur } from './struktur.js';
 
 export function mulaiAdmin() {
 	const tampilanMemuat = document.querySelector('[data-view="memuat"]');
@@ -120,6 +121,7 @@ export function mulaiAdmin() {
 			resetTabSlider();
 			resetTabProduk();
 			resetTabBerita();
+			resetTabStruktur();
 			tampilView('login');
 			if (pesanLoginTertunda) {
 				pesanLogin.textContent = pesanLoginTertunda;
@@ -160,6 +162,7 @@ export function mulaiAdmin() {
 		void mulaiTabSlider();
 		void mulaiTabProduk();
 		void mulaiTabBerita();
+		void mulaiTabStruktur();
 	});
 
 	tombolKeluar.addEventListener('click', async () => {

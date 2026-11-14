@@ -59,7 +59,7 @@ Urutan bagian, dari atas ke bawah:
 ### 4. Struktur Organisasi
 
 - Halaman memakai band judul (`PageHeader`) dan kartu bergaya kertas berisi foto, nama, serta jabatan, dikelompokkan per tingkat dengan garis penghubung antar tingkat.
-- Data anggota berada di frontmatter `src/pages/struktur.astro`. Foto disimpan di `src/assets/struktur/` dengan nama berkas sama dengan `kunci` anggota (misalnya `ketua.jpg`); foto dapat diklik untuk membuka popup, dan tanpa foto tampil placeholder.
+- Data anggota dimuat dari Firestore di browser (koleksi `struktur`) dengan kotak penunggu; bila gagal, tampil pesan dan tombol Muat ulang. Anggota diatur dari admin (tab Struktur), dengan satu foto per anggota; foto dapat diklik untuk membuka popup, dan tanpa foto tampil placeholder.
 - Mobile: daftar vertikal berupa kartu (foto, nama, jabatan), dikelompokkan per tingkat.
 - Desktop: tata letak bertingkat memakai CSS grid. Tanpa library bagan.
 - Data diurutkan berdasarkan field `urutan` dan `tingkat`.
@@ -81,11 +81,12 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 - Login memakai Firebase Authentication (email + kata sandi); akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
 - Tab Produk: daftar (cari + filter kategori), tambah, ubah, hapus, foto 1-5. Hanya satu produk boleh bertanda unggulan: memilih unggulan baru otomatis mencabut yang lama (penulisan batch atomik). Slug dibuat otomatis dari nama saat produk dibuat dan tidak berubah saat nama diedit.
 - Tab Berita: daftar (cari + filter status, terbaru dulu), tambah, ubah, hapus, status draf/terbit (berita baru berstatus draf; draf tidak tampil di website), tanggal lewat pemilih tanggal, foto sampul (satu foto). Slug dibuat otomatis dari judul saat berita dibuat dan tidak berubah saat judul diedit.
+- Tab Struktur: daftar anggota, tambah, ubah, hapus; field nama, jabatan, tingkat (1-4, nama kelompok di `src/lib/format.js`), urutan (kosong = otomatis terakhir di tingkatnya), dan satu foto.
 - Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
 - Unggah foto: diperkecil di browser (WebP, sekitar 250 KB) lalu diunggah lewat fungsi server yang memverifikasi admin; foto bernomor, bisa digeser dengan tombol panah dan dihapus; foto pertama = sampul (produk, berita) atau tampil lebih dulu (slider); slider depan maksimal 5 foto dengan keterangan per foto.
-- Perubahan di admin langsung tampil di halaman publik (daftar produk dan berita dimuat dari Firestore di browser dengan kotak penunggu berukuran tetap).
+- Perubahan di admin langsung tampil di halaman publik (daftar produk, berita, dan struktur dimuat dari Firestore di browser dengan kotak penunggu berukuran tetap).
 - Tidak ada secret yang terlihat di browser. Jika memakai layanan pihak ketiga, aturan akses (rules/izin) wajib dibahas sebelum fitur admin dibuat.
 
 ## Model konten

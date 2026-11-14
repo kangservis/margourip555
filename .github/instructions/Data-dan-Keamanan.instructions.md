@@ -26,7 +26,7 @@ Sudah diputuskan pemilik: konten disimpan di **Firebase (Firestore + Authenticat
 ## Pembacaan data di halaman publik
 
 Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produk dan berita dimuat dari Firestore di browser. Aturannya:
-- Hanya data produk, berita, dan slider depan (kartu Beranda, halaman Produk, halaman Berita, slider hero) yang dimuat di browser. Kerangka halaman, header, judul, dan bagian lain tetap statis (HTML hasil build).
+- Hanya data produk, berita, slider depan, dan struktur organisasi (kartu Beranda, halaman Produk, halaman Berita, slider hero, halaman Struktur) yang dimuat di browser. Kerangka halaman, header, judul, dan bagian lain tetap statis (HTML hasil build).
 - Semua akses Firestore lewat `src/lib/firestore.js` (REST `runQuery`) dan `src/lib/data.js`. Jangan memanggil `fetch` ke Firestore langsung dari halaman atau komponen.
 - Selalu tampilkan kotak penunggu berukuran tetap (tanpa animasi) agar tidak ada layout shift, serta pesan galat dan tombol "Muat ulang" bila gagal.
 - Tanpa cache persisten, tanpa listener real-time, tanpa membaca dalam perulangan, dan selalu memakai batas (`limit`) untuk query koleksi. Kuota gratis Firestore 50.000 pembacaan per hari per project: Beranda hanya membaca 1 produk unggulan, 1 berita terbaru, dan 1 dokumen slider.
@@ -78,4 +78,4 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
   - `pengaturan/slider`: satu dokumen berisi `foto`, yaitu daftar `{ url, alt, rasio }` (maksimal 5; urutan = urutan tampil).
 - Firestore Rules: baca publik untuk `produk`, `struktur`, `pengaturan`; `berita` hanya yang berstatus terbit untuk publik; tulis hanya UID admin yang terdaftar di Rules (bukan sekadar sudah login), dengan pemeriksaan bentuk data (foto produk maksimal 5, slider maksimal 5, status dan tipe field). Koleksi `admin` (dokumen `ping`) hanya terbaca admin dan tidak bisa ditulis dari aplikasi. Dokumen `pengaturan/slider` menyimpan foto slider depan dan tidak bisa dihapus. Rules dikelola di console Firebase, bukan di repo; ingatkan pemilik mengeceknya setiap ada koleksi atau fitur baru.
 - Foto: URL ImgBB disimpan sebagai string di dokumen dan SELALU ditampilkan lewat `urlFoto()` / `srcsetFoto()` di `src/lib/foto.js` (proxy wsrv.nl). Kunci ImgBB disimpan sebagai secret `IMGBB_API_KEY` di Cloudflare Pages (tanpa awalan PUBLIC_), dipakai hanya dari fungsi server yang memverifikasi admin yang login; `delete_url` ImgBB tidak pernah disimpan di dokumen yang bisa dibaca publik.
-- Foto produk/berita tidak lagi diproses `astro:assets`; folder `src/assets/produk` dan `src/assets/berita` tidak dipakai lagi.
+- Foto produk, berita, slider, dan struktur tidak diproses `astro:assets`; folder `src/assets/produk`, `src/assets/berita`, `src/assets/slider-depan`, dan `src/assets/struktur` tidak dipakai lagi.

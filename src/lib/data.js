@@ -1,10 +1,11 @@
 import { bacaDokumen, queryKoleksi } from './firestore.js';
-import { petakanProduk, petakanBerita } from './pemetaan.js';
+import { petakanProduk, petakanBerita, petakanAnggota } from './pemetaan.js';
 import { urlAman } from './foto.js';
 
 // Batas pembacaan (hemat kuota gratis Firestore). Naikkan hanya bila perlu.
 const MAKS_PRODUK = 60;
 const MAKS_BERITA = 24;
+const MAKS_STRUKTUR = 40;
 
 export async function muatProduk() {
 	const dokumen = await queryKoleksi({ koleksi: 'produk', batas: MAKS_PRODUK });
@@ -71,4 +72,13 @@ export async function muatSlider() {
 			alt: String(foto.alt ?? ''),
 			rasio: Number(foto.rasio) > 0 ? Number(foto.rasio) : null,
 		}));
+}
+
+// Seluruh anggota struktur, terurut menurut tingkat, urutan, lalu nama.
+export async function muatStruktur() {
+	const dokumen = await queryKoleksi({ koleksi: 'struktur', batas: MAKS_STRUKTUR });
+	return dokumen
+		.map(petakanAnggota)
+		.filter(Boolean)
+		.sort((a, b) => a.tingkat - b.tingkat || a.urutan - b.urutan || a.nama.localeCompare(b.nama, 'id'));
 }

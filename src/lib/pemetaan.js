@@ -65,3 +65,17 @@ export function petakanBerita(dok) {
 		foto: urlAman(dok.fotoSampul),
 	};
 }
+
+export function petakanAnggota(dok) {
+	const nama = typeof dok?.nama === 'string' ? dok.nama.trim() : '';
+	const jabatan = typeof dok?.jabatan === 'string' ? dok.jabatan.trim() : '';
+	if (!nama || !jabatan) return null;
+	return {
+		id: dok.id ?? '',
+		nama,
+		jabatan,
+		tingkat: Number.isFinite(dok.tingkat) ? dok.tingkat : 99,
+		urutan: Number.isFinite(dok.urutan) ? dok.urutan : 9999,
+		foto: urlAman(dok.foto),
+	};
+}

@@ -1,137 +1,9 @@
 ---
-// CARA MENGGANTI FOTO: taruh file foto di src/assets/struktur/ dengan nama SAMA PERSIS seperti field `kunci` anggota (huruf kecil), contoh ketua.jpg. Format: jpg, jpeg, png, webp, avif. Mengganti foto = timpa file dengan nama yang sama. Foto sebaiknya potret 3:4 (min. 600x800 px), wajah di bagian atas-tengah. Tanpa file foto, kartu menampilkan placeholder.
-// CARA MENAMBAH ANGGOTA: salin satu blok anggota di daftar ANGGOTA, ganti kunci, jabatan, nama, tingkat, urutan. Tingkat 1 = tertinggi; urutan = urutan dalam satu tingkat.
-import { Image, getImage } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Icon from "../components/Icon.astro";
 import { siteConfig } from "../config/site.js";
-
-// Nama tiap tingkat; ubah di sini bila perlu
-const JUDUL_TINGKAT: Record<number, string> = {
-  1: "Pimpinan",
-  2: "Pengurus Inti",
-  3: "Pelaksana",
-  4: "Penunjang",
-};
-
-type DataAnggota = {
-  kunci: string;
-  jabatan: string;
-  nama: string;
-  tingkat: number;
-  urutan: number;
-};
-
-const ANGGOTA: DataAnggota[] = [
-  // ===== KETUA =====
-  // Foto: simpan sebagai src/assets/struktur/ketua.jpg
-  { kunci: "ketua", jabatan: "Ketua", nama: "Seger", tingkat: 1, urutan: 1 },
-
-  // ===== SEKRETARIS =====
-  // Foto: simpan sebagai src/assets/struktur/sekretaris.jpg
-  {
-    kunci: "sekretaris",
-    jabatan: "Sekretaris",
-    nama: "Suyanto",
-    tingkat: 2,
-    urutan: 1,
-  },
-
-  // ===== BENDAHARA =====
-  // Foto: simpan sebagai src/assets/struktur/bendahara.jpg
-  {
-    kunci: "bendahara",
-    jabatan: "Bendahara",
-    nama: "Kuntoro",
-    tingkat: 2,
-    urutan: 2,
-  },
-
-  // ===== KOORDINATOR USAHA =====
-  // Foto: simpan sebagai src/assets/struktur/koordinator-usaha.jpg
-  {
-    kunci: "koordinator-usaha",
-    jabatan: "Koordinator Usaha",
-    nama: "Dwi Ahmadi",
-    tingkat: 3,
-    urutan: 1,
-  },
-
-  // ===== OPERATOR KOMPUTER =====
-  // Foto: simpan sebagai src/assets/struktur/operator-komputer.jpg
-  {
-    kunci: "operator-komputer",
-    jabatan: "Operator Komputer",
-    nama: "Mahendra Rizky Bintang Ramadhan",
-    tingkat: 3,
-    urutan: 2,
-  },
-
-  // ===== SATGAS =====
-  // Foto: simpan sebagai src/assets/struktur/satgas.jpg
-  {
-    kunci: "satgas",
-    jabatan: "Satgas",
-    nama: "Didik Irawan",
-    tingkat: 4,
-    urutan: 1,
-  },
-
-  // ===== OB =====
-  // Foto: simpan sebagai src/assets/struktur/ob.jpg
-  { kunci: "ob", jabatan: "OB", nama: "Kusmani", tingkat: 4, urutan: 2 },
-];
-
-const modulFoto = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/struktur/*.{jpg,jpeg,png,webp,avif}",
-  { eager: true },
-);
-
-// Kunci = nama berkas tanpa ekstensi.
-const fotoPerKunci: Record<string, ImageMetadata> = Object.fromEntries(
-  Object.entries(modulFoto).map(([path, module]) => [
-    path
-      .split("/")
-      .pop()
-      ?.replace(/\.[^.]+$/, "")
-      .toLowerCase() ?? "",
-    module.default,
-  ]),
-);
-
-const anggotaTampil = await Promise.all(
-  ANGGOTA.map(async (anggota) => {
-    const foto = fotoPerKunci[anggota.kunci];
-    const fotoPopup = foto
-      ? (
-          await getImage({
-            src: foto,
-            width: 1000,
-            format: "webp",
-            quality: 75,
-          })
-        ).src
-      : undefined;
-    const alt = `Foto ${anggota.jabatan}${anggota.nama.startsWith("[") ? "" : ` ${anggota.nama}`}`;
-
-    return { ...anggota, foto, fotoPopup, alt };
-  }),
-);
-
-const anggotaTerurut = anggotaTampil.sort(
-  (a, b) => a.tingkat - b.tingkat || a.urutan - b.urutan,
-);
-const kelompokTingkat = [
-  ...new Set(anggotaTerurut.map(({ tingkat }) => tingkat)),
-].map(
-  (tingkat) =>
-    [
-      tingkat,
-      anggotaTerurut.filter((anggota) => anggota.tingkat === tingkat),
-    ] as const,
-);
+// Anggota struktur diatur dari /admin (tab Struktur), disimpan di Firestore (koleksi struktur), dan dimuat di browser. Nama tiap tingkat ada di src/lib/format.js (judulTingkat).
 ---
 
 <SiteLayout
@@ -146,114 +18,78 @@ const kelompokTingkat = [
 
   <section class="bg-surface">
     <div class="site-container py-16 sm:py-20">
-      {
-        kelompokTingkat.map(([tingkat, anggota], index) => (
-          <>
-            {index > 0 && (
-              <div
-                class="mx-auto my-8 h-12 w-0 border-l border-gold"
-                aria-hidden="true"
-              />
-            )}
-            <section aria-labelledby={`tingkat-${tingkat}`}>
-              <h2
-                id={`tingkat-${tingkat}`}
-                class="text-center text-2xl font-bold text-ink"
-              >
-                {JUDUL_TINGKAT[tingkat] ?? `Tingkat ${tingkat}`}
-              </h2>
-              <div class="ornament ornament-center" aria-hidden="true" />
-              <ul
-                class={
-                  anggota.length === 1
-                    ? "mt-8 mx-auto max-w-2xl"
-                    : "mt-8 mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:gap-x-16"
-                }
-              >
-                {anggota.map((data) => {
-                  const pimpinan = anggota.length === 1;
-                  return (
-                    <li>
-                      <div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
-                        <article
-                          class:list={[
-                            "relative flex items-center gap-5 rounded-xl border border-line bg-white p-5 sm:gap-6 sm:p-6 after:pointer-events-none after:absolute after:inset-2 after:rounded-lg after:border after:border-gold after:content-['']",
-                            pimpinan && "sm:p-8 lg:gap-8",
-                          ]}
-                        >
-                          {data.foto && data.fotoPopup ? (
-                            <a
-                              href={data.fotoPopup}
-                              data-foto-buka
-                              data-foto-jabatan={data.jabatan}
-                              data-foto-nama={data.nama}
-                              data-foto-alt={data.alt}
-                              aria-label={`Lihat foto ${data.jabatan} lebih besar`}
-                              class={
-                                pimpinan
-                                  ? "group relative block w-32 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-40 lg:w-48"
-                                  : "group relative block w-28 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-32 lg:w-36"
-                              }
-                            >
-                              <div class="aspect-[3/4]">
-                                <Image
-                                  src={data.foto}
-                                  alt={data.alt}
-                                  format="webp"
-                                  quality={75}
-                                  widths={
-                                    pimpinan ? [256, 384, 512] : [224, 336, 448]
-                                  }
-                                  sizes={
-                                    pimpinan
-                                      ? "(min-width: 1024px) 192px, 128px"
-                                      : "(min-width: 1024px) 144px, 112px"
-                                  }
-                                  class="h-full w-full object-cover object-top"
-                                  decoding="async"
-                                  loading={pimpinan ? "eager" : "lazy"}
-                                />
-                              </div>
-                            </a>
-                          ) : (
-                            <div
-                              role="img"
-                              aria-label={`Placeholder foto ${data.jabatan}`}
-                              class={
-                                pimpinan
-                                  ? "flex aspect-[3/4] w-32 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-40 lg:w-48"
-                                  : "flex aspect-[3/4] w-28 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-32 lg:w-36"
-                              }
-                            >
-                              [ISI NANTI: foto {data.jabatan}]
-                            </div>
-                          )}
-                          <div class="min-w-0">
-                            <span class="inline-flex min-h-7 items-center rounded-full bg-gold-soft px-3 text-xs font-semibold text-ink">
-                              {data.jabatan}
-                            </span>
-                            <h3
-                              class={
-                                pimpinan
-                                  ? "mt-3 break-words text-xl font-semibold leading-7 text-ink sm:text-2xl"
-                                  : "mt-3 break-words text-lg font-semibold leading-7 text-ink sm:text-xl"
-                              }
-                            >
-                              {data.nama}
-                            </h3>
-                          </div>
-                        </article>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          </>
-        ))
-      }
+      <div data-struktur-wadah>
+        <div data-struktur-isi aria-busy="true">
+          <div class="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+            <div aria-hidden="true" class="rounded-xl border border-line bg-white p-5">
+              <div class="flex items-center gap-5">
+                <div class="aspect-[3/4] w-28 shrink-0 rounded-lg bg-surface"></div>
+                <div class="flex-1 space-y-3">
+                  <div class="h-6 w-24 rounded-full bg-surface"></div>
+                  <div class="h-6 w-3/4 rounded bg-surface"></div>
+                </div>
+              </div>
+            </div>
+            <div aria-hidden="true" class="rounded-xl border border-line bg-white p-5">
+              <div class="flex items-center gap-5">
+                <div class="aspect-[3/4] w-28 shrink-0 rounded-lg bg-surface"></div>
+                <div class="flex-1 space-y-3">
+                  <div class="h-6 w-24 rounded-full bg-surface"></div>
+                  <div class="h-6 w-3/4 rounded bg-surface"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p data-struktur-pesan role="status" hidden class="text-center text-base text-ink-muted"></p>
+        <div class="mt-4 text-center">
+          <button type="button" data-struktur-ulang hidden class="min-h-11 rounded-xl border border-primary px-5 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Muat ulang</button>
+        </div>
+      </div>
     </div>
   </section>
+
+  <template id="tpl-anggota-kartu">
+    <li>
+      <div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
+        <article class="relative flex items-center gap-5 rounded-xl border border-line bg-white p-5 sm:gap-6 sm:p-6 after:pointer-events-none after:absolute after:inset-2 after:rounded-lg after:border after:border-gold after:content-['']">
+          <a data-slot="foto-tautan" href="#" data-foto-buka data-foto-jabatan="" data-foto-nama="" data-foto-alt="" aria-label="" class="group relative block w-28 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-32 lg:w-36">
+            <div class="aspect-[3/4]"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 144px, 112px" decoding="async" loading="lazy" class="h-full w-full object-cover object-top" /></div>
+          </a>
+          <div data-slot="foto-kosong" role="img" aria-label="" class="flex aspect-[3/4] w-28 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-32 lg:w-36"></div>
+          <div class="min-w-0">
+            <span data-slot="jabatan" class="inline-flex min-h-7 items-center rounded-full bg-gold-soft px-3 text-xs font-semibold text-ink"></span>
+            <h3 data-slot="nama" class="mt-3 break-words text-lg font-semibold leading-7 text-ink sm:text-xl"></h3>
+          </div>
+        </article>
+      </div>
+    </li>
+  </template>
+  <template id="tpl-anggota-kartu-besar">
+    <li>
+      <div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
+        <article class="relative flex items-center gap-5 rounded-xl border border-line bg-white p-5 sm:gap-6 sm:p-6 after:pointer-events-none after:absolute after:inset-2 after:rounded-lg after:border after:border-gold after:content-[''] sm:p-8 lg:gap-8">
+          <a data-slot="foto-tautan" href="#" data-foto-buka data-foto-jabatan="" data-foto-nama="" data-foto-alt="" aria-label="" class="group relative block w-32 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-40 lg:w-48">
+            <div class="aspect-[3/4]"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 192px, 128px" decoding="async" loading="eager" class="h-full w-full object-cover object-top" /></div>
+          </a>
+          <div data-slot="foto-kosong" role="img" aria-label="" class="flex aspect-[3/4] w-32 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-40 lg:w-48"></div>
+          <div class="min-w-0">
+            <span data-slot="jabatan" class="inline-flex min-h-7 items-center rounded-full bg-gold-soft px-3 text-xs font-semibold text-ink"></span>
+            <h3 data-slot="nama" class="mt-3 break-words text-xl font-semibold leading-7 text-ink sm:text-2xl"></h3>
+          </div>
+        </article>
+      </div>
+    </li>
+  </template>
+  <template id="tpl-tingkat">
+    <section>
+      <h2 data-slot="judul" class="text-center text-2xl font-bold text-ink"></h2>
+      <div class="ornament ornament-center" aria-hidden="true"></div>
+      <ul data-slot="daftar-tunggal" class="mt-8 mx-auto max-w-2xl"></ul>
+      <ul data-slot="daftar-banyak" class="mt-8 mx-auto grid max-w-5xl gap-8 md:grid-cols-2 lg:gap-x-16"></ul>
+    </section>
+  </template>
+  <template id="tpl-penghubung"><div class="mx-auto my-8 h-12 w-0 border-l border-gold" aria-hidden="true"></div></template>
 
   <dialog
     id="foto-dialog"
@@ -327,5 +163,11 @@ const kelompokTingkat = [
     }
 
     initializePhotoDialog();
+  </script>
+  <script>
+    import { tampilkanStruktur } from "../lib/tampil-struktur.js";
+
+    const wadah = document.querySelector("[data-struktur-wadah]");
+    if (wadah) tampilkanStruktur(wadah);
   </script>
 </SiteLayout>

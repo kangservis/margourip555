@@ -12,6 +12,9 @@ export const statusProduk = {
 	habis: { label: 'Habis', tombol: 'Tanya ketersediaan' },
 };
 
+// Nama tiap tingkat di halaman Struktur; satu sumber untuk halaman publik dan admin. Ubah di sini bila perlu.
+export const judulTingkat = { 1: 'Pimpinan', 2: 'Pengurus Inti', 3: 'Pelaksana', 4: 'Penunjang' };
+
 export function formatTanggal(iso) {
 	const d = new Date(`${iso}T00:00:00Z`);
 	if (Number.isNaN(d.getTime())) return '';

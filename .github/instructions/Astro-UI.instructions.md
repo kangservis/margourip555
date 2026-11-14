@@ -11,9 +11,9 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 
 - Pola: **Layout + komponen + halaman**. Halaman publik memakai `src/layouts/SiteLayout.astro`. Komponen statis dibuat sebagai `.astro`.
 - Struktur folder tetap: `src/layouts`, `src/components`, `src/pages`, `src/config`, `src/styles`, `src/lib` (untuk logika data dan helper klien). Jangan menambah folder atau mengganti struktur tanpa izin.
-- Mode statis (multi-halaman). Halaman publik harus sudah berisi konten saat dikirim (HTML hasil build), bukan kosong lalu diisi JavaScript. Pengecualian: daftar produk, berita, dan foto slider depan dimuat dari Firestore di browser lewat `src/lib/data.js`.
+- Mode statis (multi-halaman). Halaman publik harus sudah berisi konten saat dikirim (HTML hasil build), bukan kosong lalu diisi JavaScript. Pengecualian: daftar produk, berita, foto slider depan, dan struktur organisasi dimuat dari Firestore di browser lewat `src/lib/data.js`.
 - Tanpa UI framework (React/Vue/Svelte), tanpa `client:*`, tanpa `ClientRouter`/View Transitions, tanpa SSR atau adapter.
-- Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser, kecuali data produk, berita, dan foto slider depan yang harus segera menampilkan perubahan dari Firestore sesuai keputusan pemilik.
+- Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser, kecuali data produk, berita, foto slider depan, dan struktur organisasi yang harus segera menampilkan perubahan dari Firestore sesuai keputusan pemilik.
 - Halaman dinamis (`/produk/[slug]`, `/berita/[slug]`) memakai `getStaticPaths`. Slug unik dan huruf kecil. Berita berstatus draf tidak dibuatkan halaman.
 - Dashboard admin: halaman `/admin` berdiri sendiri (tanpa `SiteLayout`, SiteHeader, SiteFooter, MobileNav), `noindex`, tidak masuk sitemap. Kodenya ada di `src/lib/admin/` (package `firebase` hanya boleh di-import dari sana); elemen dibuat dengan template/DOM API, tanpa `innerHTML`. Tab dikelola lewat `role="tab"`/`role="tabpanel"`.
 
@@ -60,7 +60,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Gambar lokal diproses lewat `astro:assets` (`<Image>`), format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `decoding="async"`, dan `loading="lazy"` kecuali gambar paling atas (hero) yang dimuat prioritas.
 - Maksimal sekitar 200 KB per foto.
 - Placeholder foto berupa `<div>` dengan `role="img"` dan `aria-label` yang deskriptif, berisi teks `[ISI NANTI: ...]`.
-- Foto anggota struktur ada di `src/assets/struktur/`; nama berkas = field `kunci` anggota (huruf kecil); tanpa berkas tampil placeholder.
+- Foto anggota struktur disimpan di Firestore (koleksi `struktur`) dan diunggah lewat admin; tanpa foto tampil placeholder.
 - Aturan untuk foto yang berasal dari layanan penyimpanan luar menunggu keputusan penyimpanan foto.
 
 ## Aksesibilitas
