@@ -10,7 +10,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 ## Tailwind CSS v4
 
 - CSS-first: `@import "tailwindcss"` di `src/styles/global.css`, token warna lewat `@theme`. **Jangan** membuat `tailwind.config.js`, dan jangan mengubah konfigurasi plugin `@tailwindcss/vite` di `astro.config.mjs` tanpa izin.
-- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `hero-pattern`, `ornament`, `ornament-center`, `batik-panel`, `batik-panel-dark`, `batik-panel-card`, `batik-panel-slim`, `site-container`.
+- Utility class langsung di markup. Gaya yang berulang masuk `global.css`. Kelas kustom yang sudah ada: `skip-link`, `ornament`, `ornament-center`, `batik-panel`, `batik-panel-dark`, `batik-panel-card`, `batik-panel-slim`, `site-container`.
 - Pakai **nama token** (`bg-primary`, `text-ink`, `border-line`, ...), bukan kode hex yang diulang-ulang.
 - Class dinamis harus ditulis **utuh** (mis. `"text-primary"`), jangan dirakit dari potongan (`"text-" + warna`), karena Tailwind hanya mengenali class yang tertulis lengkap.
 
@@ -30,7 +30,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - **Tombol utama** (termasuk "Pesan via WhatsApp"): latar `primary`, teks putih, di atas latar terang. **Di atas latar merah** (hero, band ajakan) tombol utama dibalik: latar putih, teks `primary`. Tombol sekunder di atas merah: outline putih. Jangan menambah warna hijau.
 - Tidak ada warna baru kecuali status fungsional (berhasil/galat) secukupnya.
 - Gaya kartu: border 1px halus (`border-line`), sudut membulat sekitar 12px (`rounded-xl`), bayangan tipis atau tanpa bayangan.
-- Dekorasi hanya yang sudah ada (`batik-panel`, `ornament`, dan `hero-pattern` bila masih dipakai). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
+- Dekorasi hanya yang sudah ada (`batik-panel` dan `ornament`). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
 - Pengecualian dekorasi: bingkai emas tipis (border 1px `gold`) yang digeser 12px di belakang kartu pratinjau di Beranda, dan lingkaran ikon `gold-soft` di atas judul bagian. Kartu bergaya kertas di bagian Tentang desa (lembar belakang miring `gold-soft` + bingkai dalam emas 1px) juga diizinkan. Tidak ada dekorasi lain.
 - Halaman Struktur: kartu anggota memakai gaya kertas yang sama dengan bagian Tentang desa, dan garis penghubung vertikal 1px `gold` (digambar dengan `border-l`) antar tingkat. Tidak ada dekorasi lain.
 - **Bidang merah besar** (hero, kartu foto hero, band ajakan, footer, dan bidang merah lain di masa depan) WAJIB memakai `batik-panel` (garis emas tebal di atas dan bawah + corak batik CSS). Pakai `batik-panel-dark` untuk merah gelap dan `batik-panel-card` untuk kartu bersudut membulat. Tombol, badge, dan teks merah kecil tetap solid tanpa corak.

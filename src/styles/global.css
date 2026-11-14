@@ -42,20 +42,6 @@
 	outline-offset: 2px;
 }
 
-.hero-pattern {
-	background-image:
-		repeating-linear-gradient(
-			45deg,
-			color-mix(in srgb, var(--color-gold) 9%, transparent) 0 1px,
-			transparent 1px 32px
-		),
-		repeating-linear-gradient(
-			-45deg,
-			color-mix(in srgb, var(--color-gold) 9%, transparent) 0 1px,
-			transparent 1px 32px
-		);
-}
-
 /* Corak segitiga bertingkat (bergaya tumpal), murni CSS.
    --s = ukuran ubin. --batik-strength = seberapa terlihat corak (persen emas yang dicampur ke warna dasar merah); naikkan bila terlalu samar, turunkan bila terlalu ramai. */
 .batik-panel {

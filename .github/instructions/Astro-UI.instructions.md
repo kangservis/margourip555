@@ -14,7 +14,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Mode statis (multi-halaman). Halaman publik harus sudah berisi konten saat dikirim (HTML hasil build), bukan kosong lalu diisi JavaScript. Pengecualian: daftar produk, berita, foto slider depan, dan struktur organisasi dimuat dari Firestore di browser lewat `src/lib/data.js`.
 - Tanpa UI framework (React/Vue/Svelte), tanpa `client:*`, tanpa `ClientRouter`/View Transitions, tanpa SSR atau adapter.
 - Pekerjaan yang bisa dilakukan saat build (frontmatter `.astro`) jangan dipindah ke browser, kecuali data produk, berita, foto slider depan, dan struktur organisasi yang harus segera menampilkan perubahan dari Firestore sesuai keputusan pemilik.
-- Halaman dinamis (`/produk/[slug]`, `/berita/[slug]`) memakai `getStaticPaths`. Slug unik dan huruf kecil. Berita berstatus draf tidak dibuatkan halaman.
+- Detail produk dan berita berupa popup (`<dialog>`), bukan halaman sendiri. Bila kelak dibuat halaman detail, pakai `getStaticPaths` dengan slug unik, dan berita draf tidak dibuatkan halaman.
 - Dashboard admin: halaman `/admin` berdiri sendiri (tanpa `SiteLayout`, SiteHeader, SiteFooter, MobileNav), `noindex`, tidak masuk sitemap. Kodenya ada di `src/lib/admin/` (package `firebase` hanya boleh di-import dari sana); elemen dibuat dengan template/DOM API, tanpa `innerHTML`. Tab dikelola lewat `role="tab"`/`role="tabpanel"`.
 
 ## Satu sumber kebenaran: `src/config/site.js`
@@ -57,11 +57,11 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 
 ## Gambar
 
-- Gambar lokal diproses lewat `astro:assets` (`<Image>`), format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `decoding="async"`, dan `loading="lazy"` kecuali gambar paling atas (hero) yang dimuat prioritas.
+- Gambar lokal (bila ada) diproses lewat `astro:assets` (`<Image>`), format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `decoding="async"`, dan `loading="lazy"` kecuali gambar paling atas (hero) yang dimuat prioritas.
+- Foto konten (produk, berita, slider depan, struktur) berasal dari Firestore dan selalu ditampilkan lewat `urlFoto()`/`srcsetFoto()` di `src/lib/foto.js`.
 - Maksimal sekitar 200 KB per foto.
 - Placeholder foto berupa `<div>` dengan `role="img"` dan `aria-label` yang deskriptif, berisi teks `[ISI NANTI: ...]`.
 - Foto anggota struktur disimpan di Firestore (koleksi `struktur`) dan diunggah lewat admin; tanpa foto tampil placeholder.
-- Aturan untuk foto yang berasal dari layanan penyimpanan luar menunggu keputusan penyimpanan foto.
 
 ## Aksesibilitas
 
