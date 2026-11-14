@@ -56,6 +56,7 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
 - Nyaman dipakai dari HP: bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: Produk, Berita, Struktur Organisasi, dan Pengaturan situs. Kerjakan **satu jenis konten per langkah**, mulai dari Produk.
 - Produk: foto disimpan sebagai daftar URL string; produk unggulan dijaga hanya satu lewat `writeBatch` (set produk + update unggulan=false pada produk lain). Dokumen `produk` tanpa `nama` akan membuat penulisan batch ditolak Rules; lengkapi atau hapus dokumen itu.
+- Berita: foto sampul disimpan sebagai satu URL string (`fotoSampul`, kosong bila tanpa foto); tanggal berupa string `YYYY-MM-DD` dari pemilih tanggal; admin membaca semua berita (termasuk draf) sedangkan halaman publik hanya yang berstatus `terbit`.
 - Data teks bebas yang dimasukkan ke HTML harus di-escape (pakai `textContent` bila memungkinkan).
 - Jangan menambah efek berat (`backdrop-blur`, bayangan besar) di halaman admin.
 

@@ -80,6 +80,7 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 
 - Login memakai Firebase Authentication (email + kata sandi); akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
 - Tab Produk: daftar (cari + filter kategori), tambah, ubah, hapus, foto 1-5. Hanya satu produk boleh bertanda unggulan: memilih unggulan baru otomatis mencabut yang lama (penulisan batch atomik). Slug dibuat otomatis dari nama saat produk dibuat dan tidak berubah saat nama diedit.
+- Tab Berita: daftar (cari + filter status, terbaru dulu), tambah, ubah, hapus, status draf/terbit (berita baru berstatus draf; draf tidak tampil di website), tanggal lewat pemilih tanggal, foto sampul (satu foto). Slug dibuat otomatis dari judul saat berita dibuat dan tidak berubah saat judul diedit.
 - Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).

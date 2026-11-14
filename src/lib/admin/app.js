@@ -9,6 +9,7 @@ import { adminSiap, auth, periksaAdmin } from './firebase.js';
 import { konfirmasi, tampilkanToast } from './ui.js';
 import { mulaiTabSlider, resetTabSlider } from './slider.js';
 import { mulaiTabProduk, resetTabProduk } from './produk.js';
+import { mulaiTabBerita, resetTabBerita } from './berita.js';
 
 export function mulaiAdmin() {
 	const tampilanMemuat = document.querySelector('[data-view="memuat"]');
@@ -118,6 +119,7 @@ export function mulaiAdmin() {
 		if (!user) {
 			resetTabSlider();
 			resetTabProduk();
+			resetTabBerita();
 			tampilView('login');
 			if (pesanLoginTertunda) {
 				pesanLogin.textContent = pesanLoginTertunda;
@@ -157,6 +159,7 @@ export function mulaiAdmin() {
 		tampilView('dashboard');
 		void mulaiTabSlider();
 		void mulaiTabProduk();
+		void mulaiTabBerita();
 	});
 
 	tombolKeluar.addEventListener('click', async () => {
