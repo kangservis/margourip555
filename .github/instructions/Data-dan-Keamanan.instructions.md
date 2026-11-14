@@ -53,6 +53,7 @@ Keputusan pemilik: perubahan dari admin harus LANGSUNG tampil, jadi daftar produ
 - `noindex` (meta robots), tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Pemeriksaan hak akses dilakukan di sisi layanan/server, bukan sekadar menyembunyikan halaman.
 - Akses admin diperiksa dengan membaca dokumen `admin/ping` (hanya terbaca admin menurut Rules); akun yang berhasil login tetapi ditolak langsung dikeluarkan. Daftar UID admin hanya ada di Firestore Rules.
+- Login admin memakai username; email = username + domain tetap (`DOMAIN_ADMIN`). Akun hanya untuk akses: semua data tersimpan di Firestore dan sama untuk setiap akun yang UID-nya ada di Rules. Sesi login hanya di memori (`inMemoryPersistence`); tidak ada penyimpanan sesi di browser.
 - Nyaman dipakai dari HP: bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
 - Mengelola: Produk, Berita, Struktur Organisasi, dan Pengaturan situs. Kerjakan **satu jenis konten per langkah**, mulai dari Produk.
 - Produk: foto disimpan sebagai daftar URL string; produk unggulan dijaga hanya satu lewat `writeBatch` (set produk + update unggulan=false pada produk lain). Dokumen `produk` tanpa `nama` akan membuat penulisan batch ditolak Rules; lengkapi atau hapus dokumen itu.

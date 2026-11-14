@@ -21,45 +21,30 @@ import { siteConfig } from '../config/site.js';
 		<p data-view="memuat" class="px-5 py-20 text-center text-base text-ink-muted">Memuat...</p>
 
 		<section data-view="login" hidden>
-			<div class="flex min-h-svh items-center justify-center px-5 py-10">
-				<div class="w-full max-w-sm overflow-hidden rounded-xl border border-line bg-white">
-					<div class="batik-panel batik-panel-dark batik-panel-slim px-6 py-8 text-center">
+			<div class="flex min-h-svh items-center justify-center px-5 py-10 sm:px-8">
+				<div class="w-full max-w-4xl overflow-hidden rounded-2xl border border-gold bg-white md:grid md:min-h-[28rem] md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+					<div class="batik-panel batik-panel-dark flex flex-col items-center justify-center px-6 py-10 text-center md:px-10 md:py-14">
 						<p class="text-xs font-semibold uppercase tracking-wide text-white">Panel admin</p>
-						<h1 class="mt-2 text-2xl font-bold text-white">{siteConfig.name}</h1>
+						<h1 class="mt-3 text-3xl font-bold text-white md:text-4xl">{siteConfig.name}</h1>
 						<div class="ornament ornament-center" aria-hidden="true"></div>
+						<p class="mt-4 max-w-xs text-base leading-7 text-white">Kelola produk, berita, slider, dan struktur organisasi desa.</p>
 					</div>
-					<form data-login-form novalidate class="space-y-4 p-6">
-						<p data-login-pesan role="alert" hidden class="rounded-lg border border-primary bg-surface px-4 py-3 text-base text-primary"></p>
-						<div>
-							<label for="login-email" class="block text-sm font-semibold text-ink">Email</label>
-							<input
-								id="login-email"
-								name="email"
-								type="email"
-								autocomplete="username"
-								required
-								class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-							/>
-						</div>
-						<div>
-							<label for="login-sandi" class="block text-sm font-semibold text-ink">Kata sandi</label>
-							<input
-								id="login-sandi"
-								name="sandi"
-								type="password"
-								autocomplete="current-password"
-								required
-								class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-							/>
-						</div>
-						<button
-							type="submit"
-							data-login-kirim
-							class="min-h-12 w-full rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
-						>
-							Masuk
-						</button>
-					</form>
+					<div class="flex flex-col justify-center p-6 sm:p-10 md:border-y-4 md:border-gold md:p-12">
+						<h2 class="font-serif text-2xl font-bold text-ink md:text-3xl">Masuk</h2>
+						<p class="mt-2 text-base leading-7 text-ink-muted">Masukkan username dan kata sandi pengelola.</p>
+						<form data-login-form novalidate autocomplete="off" class="mt-6 space-y-5">
+							<p data-login-pesan role="alert" hidden class="rounded-lg border border-primary bg-surface px-4 py-3 text-base text-primary"></p>
+							<div>
+								<label for="login-username" class="block text-sm font-semibold text-ink">Username</label>
+								<input id="login-username" name="admin-username" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" required class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+							</div>
+							<div>
+								<label for="login-sandi" class="block text-sm font-semibold text-ink">Kata sandi</label>
+								<input id="login-sandi" name="sandi" type="password" autocomplete="current-password" required class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-4 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
+							</div>
+							<button type="submit" data-login-kirim class="min-h-12 w-full rounded-xl bg-primary px-5 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60">Masuk</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -321,13 +306,13 @@ import { siteConfig } from '../config/site.js';
 				</div>
 			</form>
 		</dialog>
-		<dialog id="produk-form-dialog" aria-labelledby="produk-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70">
-			<form data-produk-form novalidate class="flex max-h-[calc(100svh-1rem)] flex-col">
+		<dialog id="produk-form-dialog" aria-labelledby="produk-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70 h-[calc(100svh-1rem)] sm:h-[min(44rem,calc(100svh-2rem))]">
+			<form data-produk-form novalidate class="flex h-full flex-col">
 				<div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
 					<h2 id="produk-form-judul" data-form-judul class="text-xl font-bold text-ink"></h2>
 					<button type="button" data-form-tutup aria-label="Tutup formulir" class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><Icon name="close" class="size-6" /></button>
 				</div>
-				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6">
 					<label class="block">
 						<span class="text-sm font-semibold text-ink">Nama produk *</span>
 						<input type="text" name="nama" required maxlength="200" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
@@ -398,13 +383,13 @@ import { siteConfig } from '../config/site.js';
 				</div>
 			</form>
 		</dialog>
-		<dialog id="berita-form-dialog" aria-labelledby="berita-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70">
-			<form data-berita-form novalidate class="flex max-h-[calc(100svh-1rem)] flex-col">
+		<dialog id="berita-form-dialog" aria-labelledby="berita-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70 h-[calc(100svh-1rem)] sm:h-[min(44rem,calc(100svh-2rem))]">
+			<form data-berita-form novalidate class="flex h-full flex-col">
 				<div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
 					<h2 id="berita-form-judul" data-berita-form-judul class="text-xl font-bold text-ink"></h2>
 					<button type="button" data-berita-form-tutup aria-label="Tutup formulir" class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><Icon name="close" class="size-6" /></button>
 				</div>
-				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6">
 					<label class="block">
 						<span class="text-sm font-semibold text-ink">Judul berita *</span>
 						<input type="text" name="judul" required maxlength="200" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
@@ -445,13 +430,13 @@ import { siteConfig } from '../config/site.js';
 				</div>
 			</form>
 		</dialog>
-		<dialog id="struktur-form-dialog" aria-labelledby="struktur-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70">
-			<form data-struktur-form novalidate class="flex max-h-[calc(100svh-1rem)] flex-col">
+		<dialog id="struktur-form-dialog" aria-labelledby="struktur-form-judul" class="m-auto max-h-[calc(100svh-1rem)] w-[calc(100%-1rem)] max-w-2xl overflow-hidden rounded-xl border border-gold bg-white p-0 text-ink backdrop:bg-ink/70 h-[calc(100svh-1rem)] sm:h-[min(44rem,calc(100svh-2rem))]">
+			<form data-struktur-form novalidate class="flex h-full flex-col">
 				<div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
 					<h2 id="struktur-form-judul" data-struktur-form-judul class="text-xl font-bold text-ink"></h2>
 					<button type="button" data-struktur-form-tutup aria-label="Tutup formulir" class="flex size-11 items-center justify-center rounded-lg text-primary hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><Icon name="close" class="size-6" /></button>
 				</div>
-				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+				<div class="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6">
 					<label class="block">
 						<span class="text-sm font-semibold text-ink">Nama *</span>
 						<input type="text" name="nama" required maxlength="120" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />

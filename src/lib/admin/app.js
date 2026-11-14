@@ -1,7 +1,5 @@
 import {
-	browserSessionPersistence,
 	onAuthStateChanged,
-	setPersistence,
 	signInWithEmailAndPassword,
 	signOut,
 } from 'firebase/auth';
@@ -12,13 +10,25 @@ import { mulaiTabProduk, resetTabProduk } from './produk.js';
 import { mulaiTabBerita, resetTabBerita } from './berita.js';
 import { mulaiTabStruktur, resetTabStruktur } from './struktur.js';
 
+// Username diubah menjadi email dengan domain tetap. Domain ini harus sama dengan akun di Firebase Authentication.
+const DOMAIN_ADMIN = 'sayasendiri.com';
+const POLA_USERNAME = /^[a-z0-9._-]{1,64}$/;
+
+function usernameKeEmail(username) {
+	return `${username}@${DOMAIN_ADMIN}`;
+}
+
+function emailKeUsername(email) {
+	return String(email ?? '').split('@')[0];
+}
+
 export function mulaiAdmin() {
 	const tampilanMemuat = document.querySelector('[data-view="memuat"]');
 	const tampilanLogin = document.querySelector('[data-view="login"]');
 	const tampilanDashboard = document.querySelector('[data-view="dashboard"]');
 	const formLogin = document.querySelector('[data-login-form]');
 	const pesanLogin = document.querySelector('[data-login-pesan]');
-	const emailInput = document.querySelector('#login-email');
+	const usernameInput = document.querySelector('#login-username');
 	const sandiInput = document.querySelector('#login-sandi');
 	const tombolMasuk = document.querySelector('[data-login-kirim]');
 	const emailAdmin = document.querySelector('[data-admin-email]');
@@ -31,7 +41,7 @@ export function mulaiAdmin() {
 		!tampilanMemuat || !tampilanLogin || !tampilanDashboard
 		|| !(formLogin instanceof HTMLFormElement)
 		|| !pesanLogin
-		|| !(emailInput instanceof HTMLInputElement)
+		|| !(usernameInput instanceof HTMLInputElement)
 		|| !(sandiInput instanceof HTMLInputElement)
 		|| !(tombolMasuk instanceof HTMLButtonElement)
 		|| !emailAdmin
@@ -51,7 +61,13 @@ export function mulaiAdmin() {
 		if (view) view.hidden = false;
 	}
 
+	function kosongkanFormLogin() {
+		usernameInput.value = '';
+		sandiInput.value = '';
+	}
+
 	if (!adminSiap() || !auth) {
+		kosongkanFormLogin();
 		tampilView('login');
 		pesanLogin.textContent = 'Konfigurasi Firebase belum diisi (.env).';
 		pesanLogin.hidden = false;
@@ -60,6 +76,13 @@ export function mulaiAdmin() {
 	}
 
 	let pesanLoginTertunda = '';
+
+	// Halaman yang dipulihkan dari cache tombol kembali tetap membawa status lamanya; paksa keluar agar login diminta lagi.
+	globalThis.addEventListener('pageshow', (event) => {
+		if (!event.persisted) return;
+		kosongkanFormLogin();
+		if (auth.currentUser) void signOut(auth);
+	});
 
 	function pilihTab(nama, { fokus = false } = {}) {
 		const tabTerpilih = tabs.find((tab) => tab.dataset.tab === nama);
@@ -82,10 +105,20 @@ export function mulaiAdmin() {
 		pesanLogin.hidden = true;
 		pesanLogin.textContent = '';
 
-		const email = emailInput.value.trim();
+		const username = usernameInput.value.trim().toLowerCase();
 		const sandi = sandiInput.value;
-		if (!email || !sandi) {
-			pesanLogin.textContent = 'Isi email dan kata sandi.';
+		if (!username || !sandi) {
+			pesanLogin.textContent = 'Isi username dan kata sandi.';
+			pesanLogin.hidden = false;
+			return;
+		}
+		if (username.includes('@')) {
+			pesanLogin.textContent = 'Isi username saja, tanpa tanda @ dan domain.';
+			pesanLogin.hidden = false;
+			return;
+		}
+		if (!POLA_USERNAME.test(username)) {
+			pesanLogin.textContent = 'Username hanya boleh berisi huruf, angka, titik, garis bawah, dan tanda hubung.';
 			pesanLogin.hidden = false;
 			return;
 		}
@@ -93,17 +126,15 @@ export function mulaiAdmin() {
 		tombolMasuk.disabled = true;
 		tombolMasuk.textContent = 'Memproses...';
 		try {
-			// Sesi berakhir saat tab ditutup; ganti ke browserLocalPersistence bila ingin tetap login.
-			await setPersistence(auth, browserSessionPersistence);
-			await signInWithEmailAndPassword(auth, email, sandi);
+			await signInWithEmailAndPassword(auth, usernameKeEmail(username), sandi);
 		} catch (galat) {
 			const kode = typeof galat?.code === 'string' ? galat.code : '';
 			console.error(kode || 'auth/unknown');
 			const pesan = {
-				'auth/invalid-credential': 'Email atau kata sandi salah.',
-				'auth/wrong-password': 'Email atau kata sandi salah.',
-				'auth/user-not-found': 'Email atau kata sandi salah.',
-				'auth/invalid-email': 'Email atau kata sandi salah.',
+				'auth/invalid-credential': 'Username atau kata sandi salah.',
+				'auth/wrong-password': 'Username atau kata sandi salah.',
+				'auth/user-not-found': 'Username atau kata sandi salah.',
+				'auth/invalid-email': 'Username atau kata sandi salah.',
 				'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi beberapa menit lagi.',
 				'auth/network-request-failed': 'Tidak ada koneksi internet. Periksa koneksi lalu coba lagi.',
 			}[kode] ?? 'Gagal masuk. Coba lagi.';
@@ -122,13 +153,13 @@ export function mulaiAdmin() {
 			resetTabProduk();
 			resetTabBerita();
 			resetTabStruktur();
+			kosongkanFormLogin();
 			tampilView('login');
 			if (pesanLoginTertunda) {
 				pesanLogin.textContent = pesanLoginTertunda;
 				pesanLogin.hidden = false;
 				pesanLoginTertunda = '';
 			}
-			sandiInput.value = '';
 			return;
 		}
 
@@ -146,6 +177,7 @@ export function mulaiAdmin() {
 			} catch (galatKeluar) {
 				const kodeKeluar = typeof galatKeluar?.code === 'string' ? galatKeluar.code : '';
 				console.error('Gagal mengeluarkan akun:', kodeKeluar || 'auth/unknown');
+				kosongkanFormLogin();
 				tampilView('login');
 				pesanLogin.textContent = pesanLoginTertunda;
 				pesanLogin.hidden = false;
@@ -154,7 +186,7 @@ export function mulaiAdmin() {
 			return;
 		}
 
-		emailAdmin.textContent = user.email ?? '';
+		emailAdmin.textContent = emailKeUsername(user.email);
 		const hashAwal = location.hash.slice(1);
 		const tabAwal = tabs.some((tab) => tab.dataset.tab === hashAwal) ? hashAwal : 'produk';
 		pilihTab(tabAwal);

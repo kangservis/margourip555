@@ -42,6 +42,7 @@ Urutan bagian, dari atas ke bawah:
 - Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
 - Klik di mana saja pada kartu produk (kecuali tombol WhatsApp) membuka popup detail berisi galeri foto (hingga 5), ringkasan, deskripsi, rincian, dan tombol WhatsApp; foto utama di popup dapat diklik untuk membuka popup foto yang lebih besar. Detail produk memakai popup, bukan halaman `/produk/[slug]`.
 - Jika produk memiliki lebih dari satu foto, popup detail memakai tombol panah kiri/kanan (*hover to see*) di atas foto utama untuk menavigasi foto.
+- Rincian popup produk ditampilkan berurutan: minimal pesan, satuan, produsen.
 - Lightbox foto produk besar mendukung tombol panah kiri/kanan (*hover to see*) dan tombol panah keyboard di desktop, serta gesture usap (*swipe*) satu per satu dengan ambang batas 50px di mobile.
 - Tombol WhatsApp memakai nomor dari `src/config/site.js` dan pesan awal berisi nama produk. Tautan halaman produk di dalam pesan ditunda sampai `site` URL diatur.
 - Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP).
@@ -78,7 +79,7 @@ Urutan bagian, dari atas ke bawah:
 
 Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan yang belum diambil"):
 
-- Login memakai Firebase Authentication (email + kata sandi); akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
+- Login memakai Firebase Authentication dengan username (domain email tetap di kode: `DOMAIN_ADMIN` di `src/lib/admin/app.js`) + kata sandi; sesi hanya di memori halaman, jadi meninggalkan `/admin` lalu kembali (atau memuat ulang) meminta login lagi; akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
 - Tab Produk: daftar (cari + filter kategori), tambah, ubah, hapus, foto 1-5. Hanya satu produk boleh bertanda unggulan: memilih unggulan baru otomatis mencabut yang lama (penulisan batch atomik). Slug dibuat otomatis dari nama saat produk dibuat dan tidak berubah saat nama diedit.
 - Tab Berita: daftar (cari + filter status, terbaru dulu), tambah, ubah, hapus, status draf/terbit (berita baru berstatus draf; draf tidak tampil di website), tanggal lewat pemilih tanggal, foto sampul (satu foto). Slug dibuat otomatis dari judul saat berita dibuat dan tidak berubah saat judul diedit.
 - Tab Struktur: daftar anggota, tambah, ubah, hapus; field nama, jabatan, tingkat (1-4, nama kelompok di `src/lib/format.js`), urutan (kosong = otomatis terakhir di tingkatnya), dan satu foto.
