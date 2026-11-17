@@ -5,10 +5,10 @@ import Icon from './Icon.astro';
 
 <template id="tpl-produk-kartu">
 	<article
-		class="relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-primary"
+		class="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-primary"
 		data-produk-kartu
 	>
-		<div class="relative aspect-[4/3] border-b border-line bg-surface">
+		<div class="relative z-10 aspect-[4/3] touch-pan-y border-b border-line bg-surface select-none" data-kartu-galeri>
 			<img
 				data-slot="foto"
 				alt=""
@@ -17,7 +17,8 @@ import Icon from './Icon.astro';
 				sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw"
 				decoding="async"
 				loading="lazy"
-				class="h-full w-full object-contain object-center"
+				draggable="false"
+				class="pointer-events-none h-full w-full object-contain object-center select-none"
 			/>
 			<div
 				data-slot="foto-kosong"
@@ -27,7 +28,26 @@ import Icon from './Icon.astro';
 			>
 				[ISI NANTI: foto produk]
 			</div>
-			<div class="absolute left-3 top-3 flex flex-wrap gap-2">
+			<!-- Panah navigasi galeri kartu (hanya tampil jika lebih dari 1 foto) -->
+			<button
+				type="button"
+				data-kartu-prev
+				aria-label="Foto sebelumnya"
+				class="absolute left-1.5 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-primary opacity-0 shadow-sm transition-opacity hover:bg-white focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary sm:flex group-hover:opacity-100"
+			>
+				<Icon name="arrow-left" class="size-4" />
+			</button>
+			<button
+				type="button"
+				data-kartu-next
+				aria-label="Foto berikutnya"
+				class="absolute right-1.5 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-primary opacity-0 shadow-sm transition-opacity hover:bg-white focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary sm:flex group-hover:opacity-100"
+			>
+				<Icon name="arrow-right" class="size-4" />
+			</button>
+			<!-- Titik indikator posisi foto (hanya tampil jika lebih dari 1 foto) -->
+			<div data-kartu-dots class="pointer-events-none absolute bottom-2 left-0 right-0 z-10 hidden justify-center gap-1.5"></div>
+			<div class="pointer-events-none absolute left-3 top-3 flex flex-wrap gap-2">
 				<span
 					data-slot="badge-unggulan"
 					class="inline-flex min-h-7 items-center rounded-full border border-gold bg-gold-soft px-3 text-xs font-semibold text-ink"

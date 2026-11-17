@@ -147,9 +147,39 @@ function buatKartu(produk) {
 		gambar.src = urlFoto(foto[0], 640);
 		gambar.srcset = srcsetFoto(foto[0]);
 		gambar.alt = `Foto ${produk.nama}`;
+
+		// Galeri mini kartu: hanya aktifkan jika lebih dari 1 foto
+		if (foto.length > 1) {
+			const galeriWadah = kartu.querySelector('[data-kartu-galeri]');
+			if (galeriWadah) {
+				const daftarUrl = foto.map((url) => ({
+					src: urlFoto(url, 640),
+					srcset: srcsetFoto(url),
+				}));
+				galeriWadah.dataset.fotos = JSON.stringify(daftarUrl);
+				galeriWadah.dataset.index = '0';
+				galeriWadah.dataset.total = String(foto.length);
+
+				const dotsWadah = galeriWadah.querySelector('[data-kartu-dots]');
+				if (dotsWadah instanceof HTMLElement) {
+					dotsWadah.classList.remove('hidden');
+					dotsWadah.classList.add('flex');
+					for (let i = 0; i < foto.length; i++) {
+						const titik = document.createElement('span');
+						titik.className = `size-1.5 rounded-full ${i === 0 ? 'bg-primary' : 'bg-ink/30'}`;
+						titik.dataset.kartuDot = String(i);
+						dotsWadah.appendChild(titik);
+					}
+				}
+			}
+		} else {
+			// Jika hanya 1 foto, hapus elemen navigasi galeri kartu agar tidak muncul saat hover
+			kartu.querySelectorAll('[data-kartu-prev], [data-kartu-next], [data-kartu-dots]').forEach((el) => el.remove());
+		}
 	} else {
 		hapus(kartu, 'foto');
 		wajibSlot(kartu, 'foto-kosong').setAttribute('aria-label', `Placeholder foto ${produk.nama}`);
+		kartu.querySelectorAll('[data-kartu-prev], [data-kartu-next], [data-kartu-dots]').forEach((el) => el.remove());
 	}
 
 	isiWa(wajibSlot(kartu, 'wa'), produk);
@@ -171,6 +201,119 @@ function buatChip(teks, kategori, aktif) {
 	chip.setAttribute('aria-pressed', String(aktif));
 	chip.textContent = teks;
 	return chip;
+}
+
+// Galeri mini pada kartu produk: navigasi klik (panah), klik foto, dan sentuh (geser/swipe)
+function pasangGaleriKartu(akar) {
+	let touchStartX = null;
+	let touchStartY = null;
+	let touchTarget = null;
+	let abaikanKlikSetelahGeser = false;
+	let timerKlikGeser = 0;
+
+	akar.addEventListener('click', (event) => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+		const galeriTarget = target.closest('[data-kartu-galeri]');
+		if (abaikanKlikSetelahGeser && galeriTarget) {
+			abaikanKlikSetelahGeser = false;
+			clearTimeout(timerKlikGeser);
+			event.stopPropagation();
+			event.preventDefault();
+			return;
+		}
+
+		const panahPrev = target.closest('[data-kartu-prev]');
+		const panahNext = target.closest('[data-kartu-next]');
+		if (panahPrev || panahNext) {
+			event.stopPropagation();
+			event.preventDefault();
+
+			const wadah = (panahPrev || panahNext)?.closest('[data-kartu-galeri]');
+			if (!(wadah instanceof HTMLElement)) return;
+			const fotos = JSON.parse(wadah.dataset.fotos || '[]');
+			const total = fotos.length;
+			if (total < 2) return;
+
+			let idx = Number(wadah.dataset.index) || 0;
+			if (panahPrev) idx = (idx - 1 + total) % total;
+			else idx = (idx + 1) % total;
+
+			perbaruiGaleriKartu(wadah, fotos, idx);
+			return;
+		}
+
+		// Klik foto biasa tetap membuka detail produk.
+		if (galeriTarget) {
+			const kartu = galeriTarget.closest('[data-produk-kartu]');
+			const pemicuDetail = kartu?.querySelector('[data-produk-buka]');
+			if (pemicuDetail instanceof HTMLElement) pemicuDetail.click();
+		}
+	});
+
+	akar.addEventListener('touchstart', (event) => {
+		abaikanKlikSetelahGeser = false;
+		clearTimeout(timerKlikGeser);
+		const galeri = event.target?.closest?.('[data-kartu-galeri]');
+		if (!(galeri instanceof HTMLElement) || !galeri.dataset.fotos) return;
+		if (event.touches.length !== 1) {
+			touchStartX = null;
+			touchStartY = null;
+			touchTarget = null;
+			return;
+		}
+		touchStartX = event.touches[0].clientX;
+		touchStartY = event.touches[0].clientY;
+		touchTarget = galeri;
+	}, { passive: true });
+
+	akar.addEventListener('touchend', (event) => {
+		const touch = event.changedTouches[0];
+		if (!touch || touchStartX === null || touchStartY === null || !(touchTarget instanceof HTMLElement)) return;
+		const deltaX = touch.clientX - touchStartX;
+		const deltaY = touch.clientY - touchStartY;
+		const galeri = touchTarget;
+		touchStartX = null;
+		touchStartY = null;
+		touchTarget = null;
+
+		// Ambang batas geser horizontal 35px
+		if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+			const fotos = JSON.parse(galeri.dataset.fotos || '[]');
+			const total = fotos.length;
+			if (total < 2) return;
+
+			let idx = Number(galeri.dataset.index) || 0;
+			idx = deltaX < 0 ? (idx + 1) % total : (idx - 1 + total) % total;
+			perbaruiGaleriKartu(galeri, fotos, idx);
+			abaikanKlikSetelahGeser = true;
+			clearTimeout(timerKlikGeser);
+			timerKlikGeser = setTimeout(() => {
+				abaikanKlikSetelahGeser = false;
+			}, 500);
+		}
+	}, { passive: true });
+
+	akar.addEventListener('touchcancel', () => {
+		touchStartX = null;
+		touchStartY = null;
+		touchTarget = null;
+	});
+}
+
+function perbaruiGaleriKartu(wadah, fotos, idx) {
+	wadah.dataset.index = String(idx);
+	const gambar = wadah.querySelector('[data-slot="foto"]');
+	if (gambar instanceof HTMLImageElement) {
+		gambar.src = fotos[idx].src;
+		gambar.srcset = fotos[idx].srcset || '';
+	}
+
+	wadah.querySelectorAll('[data-kartu-dot]').forEach((titik) => {
+		const aktif = titik.dataset.kartuDot === String(idx);
+		titik.classList.toggle('bg-primary', aktif);
+		titik.classList.toggle('bg-ink/30', !aktif);
+	});
 }
 
 export function tampilkanDaftarProduk(wadah) {
@@ -248,6 +391,7 @@ export function tampilkanDaftarProduk(wadah) {
 
 	ulang.addEventListener('click', () => void muat());
 	void muat();
+	pasangGaleriKartu(wadah);
 }
 
 export function tampilkanProdukUnggulan(wadah) {
@@ -287,4 +431,5 @@ export function tampilkanProdukUnggulan(wadah) {
 
 	ulang.addEventListener('click', () => void muat());
 	void muat();
+	pasangGaleriKartu(wadah);
 }

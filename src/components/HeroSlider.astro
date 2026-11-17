@@ -31,7 +31,7 @@ const MAX_RATIO = 2 / 1;
 	<template data-tpl-slide>
 		<div
 			data-slide
-			class="absolute inset-0 opacity-0 transition-opacity duration-500 motion-reduce:transition-none"
+			class="absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-500 motion-reduce:transition-none"
 			role="group"
 			aria-roledescription="slide"
 			aria-hidden="true"
@@ -127,6 +127,8 @@ const MAX_RATIO = 2 / 1;
 				slide.setAttribute('aria-label', `${i + 1} dari ${n}`);
 				slide.classList.toggle('opacity-100', i === 0);
 				slide.classList.toggle('opacity-0', i !== 0);
+				slide.classList.toggle('pointer-events-auto', i === 0);
+				slide.classList.toggle('pointer-events-none', i !== 0);
 				slide.setAttribute('aria-hidden', String(i !== 0));
 				gambar.alt = foto.alt || `Foto ${siteConfig.name}`;
 				gambar.src = urlFoto(foto.url, 720);
@@ -190,6 +192,8 @@ const MAX_RATIO = 2 / 1;
 					const aktif = slideIndex === activeIndex;
 					slide.classList.toggle('opacity-100', aktif);
 					slide.classList.toggle('opacity-0', !aktif);
+					slide.classList.toggle('pointer-events-auto', aktif);
+					slide.classList.toggle('pointer-events-none', !aktif);
 					slide.setAttribute('aria-hidden', String(!aktif));
 				});
 				dots.forEach((dot, dotIndex) => {
