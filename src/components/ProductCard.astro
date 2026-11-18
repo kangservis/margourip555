@@ -8,7 +8,7 @@ import Icon from './Icon.astro';
 		class="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-primary"
 		data-produk-kartu
 	>
-		<div class="relative z-10 aspect-[4/3] touch-pan-y border-b border-line bg-surface select-none" data-kartu-galeri>
+		<div class="relative z-10 aspect-[4/3] touch-pan-y overflow-hidden border-b border-line bg-surface select-none" data-kartu-galeri>
 			<img
 				data-slot="foto"
 				alt=""
@@ -18,13 +18,13 @@ import Icon from './Icon.astro';
 				decoding="async"
 				loading="lazy"
 				draggable="false"
-				class="pointer-events-none h-full w-full object-contain object-center select-none"
+				class="pointer-events-none absolute inset-0 h-full w-full object-contain object-center select-none"
 			/>
 			<div
 				data-slot="foto-kosong"
 				role="img"
 				aria-label=""
-				class="flex size-full items-center justify-center px-4 text-center text-base font-medium text-ink-muted"
+				class="absolute inset-0 flex items-center justify-center px-4 text-center text-base font-medium text-ink-muted"
 			>
 				[ISI NANTI: foto produk]
 			</div>

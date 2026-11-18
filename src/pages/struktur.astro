@@ -54,7 +54,7 @@ import { siteConfig } from "../config/site.js";
       <div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
         <article class="relative flex items-center gap-5 rounded-xl border border-line bg-white p-5 sm:gap-6 sm:p-6 after:pointer-events-none after:absolute after:inset-2 after:rounded-lg after:border after:border-gold after:content-['']">
           <a data-slot="foto-tautan" href="#" data-foto-buka data-foto-jabatan="" data-foto-nama="" data-foto-alt="" aria-label="" class="group relative block w-28 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-32 lg:w-36">
-            <div class="aspect-[3/4]"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 144px, 112px" decoding="async" loading="lazy" class="h-full w-full object-cover object-top" /></div>
+            <div class="relative aspect-[3/4] overflow-hidden"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 144px, 112px" decoding="async" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-top" /></div>
           </a>
           <div data-slot="foto-kosong" role="img" aria-label="" class="flex aspect-[3/4] w-28 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-32 lg:w-36"></div>
           <div class="min-w-0">
@@ -70,7 +70,7 @@ import { siteConfig } from "../config/site.js";
       <div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
         <article class="relative flex items-center gap-5 rounded-xl border border-line bg-white p-5 sm:gap-6 sm:p-6 after:pointer-events-none after:absolute after:inset-2 after:rounded-lg after:border after:border-gold after:content-[''] sm:p-8 lg:gap-8">
           <a data-slot="foto-tautan" href="#" data-foto-buka data-foto-jabatan="" data-foto-nama="" data-foto-alt="" aria-label="" class="group relative block w-32 shrink-0 overflow-hidden rounded-lg border border-line focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-40 lg:w-48">
-            <div class="aspect-[3/4]"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 192px, 128px" decoding="async" loading="eager" class="h-full w-full object-cover object-top" /></div>
+            <div class="relative aspect-[3/4] overflow-hidden"><img data-slot="foto-gambar" alt="" sizes="(min-width: 1024px) 192px, 128px" decoding="async" loading="eager" class="absolute inset-0 h-full w-full object-cover object-top" /></div>
           </a>
           <div data-slot="foto-kosong" role="img" aria-label="" class="flex aspect-[3/4] w-32 shrink-0 items-center justify-center rounded-lg border border-line bg-surface p-2 text-center text-xs font-medium text-ink-muted sm:w-40 lg:w-48"></div>
           <div class="min-w-0">
