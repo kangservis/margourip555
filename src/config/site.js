@@ -1,6 +1,6 @@
 export const siteConfig = {
 	name: 'Desa Margourip',
-	description: 'Profil dan katalog produk unggulan Desa Margourip.',
+	description: 'Profil dan katalog produk unggulan Desa Margourip, disponsori oleh Ikatan Persaudaraan 555.',
 	tagline: 'Pusat Komoditas Pertanian Unggulan dan Hasil Bumi Alami dari Jantung Kecamatan Ngancar.',
 	address: 'Dsn.Sumberlumbu, Ds.Margourip, Kec.Ngancar',
 	whatsapp: '6285158233200',
@@ -9,6 +9,26 @@ export const siteConfig = {
 	email: '',
 	// Kredit desain opsional untuk footer, mis. 'Design by ...'. Kosong = baris kredit tidak ditampilkan.
 	credit: 'Design by. BINDOETT',
+	// Sponsor (organisasi di balik website ini). Satu sumber untuk header, footer, bagian komunitas di Beranda, dan halaman admin.
+	sponsor: {
+		nama: 'Ikatan Persaudaraan 555',
+		label: 'Disponsori oleh',
+		catatan: 'Website ini bukan situs resmi pemerintah desa.',
+		pengantar: 'Website ini dikelola secara swasta dan disponsori oleh Ikatan Persaudaraan 555, organisasi yang mengangkat potensi sumber daya alam dan sumber daya manusia desa agar ekonomi desa berputar.',
+		visi: {
+			awal: 'Menjadi organisasi yang solid, kompak dan bermartabat serta berperan aktif dalam',
+			kunci: 'membangun kebersamaan, kesejahteraan dan keadilan sosial bagi seluruh masyarakat',
+			akhir: 'menuju Indonesia maju dan bermartabat.',
+		},
+		misi: [
+			'Mempererat tali persaudaraan dan membangun solidaritas tanpa memandang perbedaan suku, agama, ras dan golongan.',
+			'Menjunjung tinggi nilai-nilai Pancasila, UUD 1945 dan semangat Bhinneka Tunggal Ika.',
+			'Berperan aktif dalam kegiatan sosial, kemanusiaan dan pemberdayaan masyarakat.',
+			'Meningkatkan kesejahteraan anggota dan keluarga melalui kebersamaan, gotong royong dan kegiatan ekonomi yang bermanfaat.',
+			'Menjadi mitra strategis pemerintah dan stakeholder dalam mendukung pembangunan daerah dan kemaslahatan bangsa.',
+		],
+		slogan: ['Solid', 'Kompak', 'Bermartabat'],
+	},
 };
 
 export const navigationItems = [

@@ -7,12 +7,13 @@ const { currentPath = '/' } = Astro.props;
 <header class="border-b border-line bg-white md:sticky md:top-0 md:z-30">
 	<div class="site-container flex min-h-16 items-center justify-between gap-6">
 		<a
-			class="inline-flex min-h-11 items-center rounded-sm font-serif text-lg font-bold text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+			class="flex min-h-11 min-w-0 flex-col justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
 			href="/"
 		>
-			{siteConfig.name}
+			<span class="font-serif text-lg font-bold leading-6 text-primary">{siteConfig.name}</span>
+			<span class="truncate text-xs font-medium leading-4 text-ink-muted">{siteConfig.sponsor.label} {siteConfig.sponsor.nama}</span>
 		</a>
-		<nav class="hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
+		<nav class="hidden shrink-0 items-center gap-1 md:flex" aria-label="Navigasi utama">
 			{
 				navigationItems.map((item) => (
 					<a

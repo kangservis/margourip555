@@ -8,10 +8,11 @@ import NewsCard from "../components/NewsCard.astro";
 import NewsDetail from "../components/NewsDetail.astro";
 import ProductDialogs from "../components/ProductDialogs.astro";
 import NewsDialogs from "../components/NewsDialogs.astro";
+import VisiMisi from "../components/VisiMisi.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
 ---
 
-<SiteLayout title={siteConfig.name} description={siteConfig.description}>
+<SiteLayout title={`${siteConfig.name} - ${siteConfig.sponsor.label} ${siteConfig.sponsor.nama}`} description={siteConfig.description}>
   <!-- Hero memenuhi satu layar di semua ukuran: tinggi layar dikurangi tinggi header (65px = min-h-16 + border) dan, di mobile, dikurangi bottom nav (4rem = tinggi MobileNav). Jika tinggi header atau MobileNav berubah, perbarui angka ini. -->
   <section
     id="beranda"
@@ -228,7 +229,7 @@ import { getContactLink, siteConfig } from "../config/site.js";
           </h2>
           <div class="ornament" aria-hidden="true"></div>
           <p class="mt-5 max-w-md text-base leading-7 text-ink-muted">
-            Kabar dan informasi resmi dari desa.
+            Kabar dan informasi terbaru dari desa.
           </p>
         </div>
 
@@ -271,6 +272,8 @@ import { getContactLink, siteConfig } from "../config/site.js";
       </div>
     </div>
   </section>
+
+  <VisiMisi />
 
   <section aria-labelledby="contact-cta-title" class="batik-panel">
     <div

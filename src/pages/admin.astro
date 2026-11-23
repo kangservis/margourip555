@@ -27,6 +27,7 @@ import { siteConfig } from '../config/site.js';
 						<p class="text-xs font-semibold uppercase tracking-wide text-white">Panel admin</p>
 						<h1 class="mt-3 text-3xl font-bold text-white md:text-4xl">{siteConfig.name}</h1>
 						<div class="ornament ornament-center" aria-hidden="true"></div>
+						<p class="mt-4 text-sm font-medium text-white">{siteConfig.sponsor.label} {siteConfig.sponsor.nama}</p>
 						<p class="mt-4 max-w-xs text-base leading-7 text-white">Kelola produk, berita, slider, dan struktur organisasi desa.</p>
 					</div>
 					<div class="flex flex-col justify-center p-6 sm:p-10 md:border-y-4 md:border-gold md:p-12">
@@ -55,6 +56,7 @@ import { siteConfig } from '../config/site.js';
 					<div class="min-w-0">
 						<p class="text-xs font-semibold uppercase tracking-wide text-primary">Panel admin</p>
 						<h1 class="font-serif text-xl font-bold text-ink">{siteConfig.name}</h1>
+						<p class="text-xs text-ink-muted">{siteConfig.sponsor.label} {siteConfig.sponsor.nama}</p>
 					</div>
 					<div class="flex flex-wrap items-center gap-2">
 						<span data-admin-email class="hidden max-w-[16rem] truncate text-sm text-ink-muted sm:inline"></span>

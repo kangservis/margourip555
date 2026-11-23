@@ -7,12 +7,12 @@ import { siteConfig } from "../config/site.js";
 
 <SiteLayout
   title={`Kontak - ${siteConfig.name}`}
-  description={`Informasi alamat dan kontak ${siteConfig.name}.`}
+  description={`Alamat kantor dan kontak ${siteConfig.sponsor.nama}.`}
 >
   <PageHeader
     eyebrow="Hubungi kami"
     title="Kontak"
-    description={`Informasi alamat dan kontak ${siteConfig.name}.`}
+    description={`Alamat kantor dan kontak ${siteConfig.sponsor.nama}.`}
   />
   <section class="bg-surface">
     <div class="site-container py-16 sm:py-20">
@@ -26,13 +26,13 @@ import { siteConfig } from "../config/site.js";
           <Icon name="map-pin" class="size-6" />
         </span>
         <h2 id="office-address-title" class="mt-4 text-xl font-bold text-ink">
-          Alamat Kantor
+          Alamat Kantor Komunitas
         </h2>
         <p class="mt-2 text-base leading-7 text-ink-muted">
           {
             siteConfig.address && !siteConfig.address.startsWith("[")
               ? siteConfig.address
-              : "[ISI NANTI: alamat kantor desa]"
+              : "[ISI NANTI: alamat kantor komunitas]"
           }
         </p>
         {
@@ -65,6 +65,7 @@ import { siteConfig } from "../config/site.js";
             referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </section>
+      <p class="mx-auto mt-10 max-w-2xl text-center text-base leading-7 text-ink-muted">{siteConfig.sponsor.label} {siteConfig.sponsor.nama}. {siteConfig.sponsor.catatan}</p>
     </div>
   </section>
 </SiteLayout>

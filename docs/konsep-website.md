@@ -11,9 +11,9 @@ Dokumen acuan untuk agent. Berisi rincian halaman dan model konten. Aturan kerja
 
 Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
-- Header berisi logo/nama desa + menu. Menu aktif ditandai jelas.
+- Header berisi nama desa dan baris kecil "Disponsori oleh Ikatan Persaudaraan 555" + menu. Menu aktif ditandai jelas.
 - Tab di atas (desktop) dan menempel di bagian atas saat halaman digulir (*sticky*). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
-- Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): satu baris hak cipta (tahun + nama desa) dan, bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
+- Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): hak cipta (tahun + nama desa), baris sponsor "Disponsori oleh Ikatan Persaudaraan 555", catatan "Website ini bukan situs resmi pemerintah desa", dan bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
 - Kerangka semua halaman publik dihasilkan statis dan berpindah instan; daftar produk dan berita dimuat di browser.
 - Semua bagian memakai kelas `site-container` (lebar maksimal 1280px, 1440px mulai lg, 1760px mulai 2xl).
 - Band judul halaman dalam berukuran ramping (*compact*).
@@ -28,8 +28,9 @@ Urutan bagian, dari atas ke bawah:
 2. **Tentang desa:** judul di sisi kiri dan isi dalam kartu bergaya kertas di sisi kanan (desktop), dengan tautan ke Struktur Organisasi atau Kontak. Isi dari saya, jangan dikarang.
 3. **Produk unggulan:** 1 kartu produk bertanda "unggulan" (yang pertama menurut urutan) bersama blok judul bergaya etalase (dua kolom di desktop, selang-seling dengan bagian Berita), tombol "Lihat semua produk".
 4. **Berita terbaru:** 1 berita terbaru dengan tata letak dua kolom yang dicerminkan, tombol "Lihat semua berita". Tombol CTA "Hubungi via WhatsApp" pada bagian "Mari terhubung" disejajarkan secara vertikal di desktop dengan tombol ini melalui grid dua kolom.
-5. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
-6. **Lokasi singkat:** nama desa yang ditonjolkan dan tautan ke Google Maps; jangan tampilkan placeholder alamat.
+5. **Komunitas sponsor:** pengantar, Visi dalam kartu merah bercorak batik, Misi dalam kartu bergaya kertas bernomor 1-5, dan slogan; ditempatkan setelah Berita terbaru dan sebelum ajakan bertindak.
+6. **Ajakan bertindak:** ajakan menghubungi admin via WhatsApp (untuk pembelian, kerja sama, atau ekspor).
+7. **Lokasi singkat:** nama desa yang ditonjolkan dan tautan ke Google Maps; jangan tampilkan placeholder alamat.
 
 - Semua bidang merah besar (hero, kartu foto hero, ajakan bertindak, footer) memakai `batik-panel`: motif batik CSS yang halus + garis emas di sisi atas dan bawah.
 
@@ -59,7 +60,7 @@ Urutan bagian, dari atas ke bawah:
 
 ### 4. Struktur Organisasi
 
-- Halaman memakai band judul (`PageHeader`) dan kartu bergaya kertas berisi foto, nama, serta jabatan, dikelompokkan per tingkat dengan garis penghubung antar tingkat.
+- Struktur Organisasi adalah milik komunitas sponsor Ikatan Persaudaraan 555. Halaman memakai band judul (`PageHeader`) dan kartu bergaya kertas berisi foto, nama, serta jabatan, dikelompokkan per tingkat dengan garis penghubung antar tingkat.
 - Data anggota dimuat dari Firestore di browser (koleksi `struktur`) dengan kotak penunggu; bila gagal, tampil pesan dan tombol Muat ulang. Anggota diatur dari admin (tab Struktur), dengan satu foto per anggota; foto dapat diklik untuk membuka popup, dan tanpa foto tampil placeholder.
 - Mobile: daftar vertikal berupa kartu (foto, nama, jabatan), dikelompokkan per tingkat.
 - Desktop: tata letak bertingkat memakai CSS grid. Tanpa library bagan.
@@ -68,8 +69,8 @@ Urutan bagian, dari atas ke bawah:
 ### 5. Kontak
 
 - Halaman memakai band judul `PageHeader` (dengan judul dan ornamen di tengah).
-- Kartu alamat kantor desa dengan placeholder `[ISI NANTI: alamat kantor desa]` sampai alamat asli diberikan.
-- Kartu alamat kantor desa memiliki tombol "Buka di Google Maps" yang mengarah ke `siteConfig.mapUrl`.
+- Kartu alamat kantor komunitas sponsor dengan placeholder `[ISI NANTI: alamat kantor komunitas]` sampai alamat asli diberikan.
+- Kartu alamat kantor komunitas memiliki tombol "Buka di Google Maps" yang mengarah ke `siteConfig.mapUrl`.
 - Di bawah kartu alamat, tampilkan iframe peta Google Maps berukuran ringkas (`max-w-2xl` dengan rasio tetap) agar ringan.
 - Semua ajakan kontak admin yang dapat diklik diarahkan ke WhatsApp melalui `getWhatsAppLink()` atau `getContactLink()` dan nomor di `src/config/site.js`; jangan gunakan tautan `mailto:`.
 - Semua nilai kontak dibaca dari `src/config/site.js`.

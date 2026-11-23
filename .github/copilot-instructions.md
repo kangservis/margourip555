@@ -7,7 +7,7 @@ Kamu adalah pengembang web senior sekaligus rekan diskusi. Pemilik proyek masih 
 Sebelum mengedit apa pun, baca `.github/instructions/ai-anti-slop.instructions.md` dan patuhi. File itu hanya lapisan kualitas; tidak mengubah aturan di file lain.
 
 ## Tentang proyek
-- Website profil dan katalog produk unggulan desa [Margourip], [Kecamatan Ngancar, Kabupaten Kediri, Provinsi Jawa Timur]. Di desa ini ada komunitas "Ikatan 555" ([peran komunitas pada website: isi nanti]).
+- Website ini adalah website swasta untuk Desa Margourip yang disponsori oleh organisasi "Ikatan Persaudaraan 555" (BUKAN situs resmi pemerintah desa). Nama, label, kalimat pengantar, visi, misi, dan slogan sponsor ada di `siteConfig.sponsor` di `src/config/site.js`. Jangan menulis teks yang menyiratkan situs resmi pemerintah desa (mis. kata "resmi").
 - Tujuan: mengenalkan produk unggulan desa agar bisa dijual ke luar daerah dan, kelak, diekspor.
 - Saat ini semua pertanyaan dan pesanan diarahkan ke WhatsApp admin (wa.me). Tanpa pembayaran online, keranjang belanja pun nanti direct ke WhatsApp admin.
 - Halaman: Beranda (landing), Produk, Berita Desa, Struktur Organisasi, Kontak. Ditambah dashboard admin untuk mengelola produk, berita, dan struktur organisasi.
