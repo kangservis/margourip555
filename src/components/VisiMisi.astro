@@ -16,8 +16,8 @@ const { sponsor } = siteConfig;
 
 		<div class="mt-12 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-stretch lg:gap-x-16 xl:gap-x-24 2xl:gap-x-40">
 			<div class="batik-panel batik-panel-dark batik-panel-card flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-12">
-				<p class="text-sm font-semibold uppercase tracking-wide text-white">Visi</p>
-				<div class="ornament" aria-hidden="true"></div>
+				<h3 class="text-center text-2xl font-bold text-white">Visi</h3>
+				<div class="ornament ornament-center" aria-hidden="true"></div>
 				<p class="mt-6 font-serif text-xl leading-9 text-white sm:text-2xl sm:leading-10">
 					{sponsor.visi.awal} <strong class="font-bold text-gold">{sponsor.visi.kunci}</strong> {sponsor.visi.akhir}
 				</p>
@@ -26,8 +26,8 @@ const { sponsor } = siteConfig;
 			<!-- Kartu bergaya kertas (sama seperti bagian Tentang desa): lembar belakang miring + bingkai dalam emas tipis -->
 			<div class="relative isolate w-full before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-2 before:rounded-xl before:border before:border-line before:bg-gold-soft before:content-['']">
 				<article class="relative rounded-xl border border-line bg-white p-6 sm:p-10 after:pointer-events-none after:absolute after:inset-3 after:rounded-lg after:border after:border-gold after:content-['']">
-					<h3 class="text-2xl font-bold text-ink">Misi</h3>
-					<div class="ornament" aria-hidden="true"></div>
+					<h3 class="text-center text-2xl font-bold text-ink">Misi</h3>
+					<div class="ornament ornament-center" aria-hidden="true"></div>
 					<ol class="mt-6">
 						{sponsor.misi.map((teks, i) => (
 							<li class={i === 0 ? 'flex gap-4' : 'mt-5 flex gap-4 border-t border-line pt-5'}>
