@@ -1,0 +1,36 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { siteConfig } from "../config/site.js";
+---
+
+<SiteLayout
+  title={`Halaman tidak ditemukan - ${siteConfig.name}`}
+  description="Halaman yang kamu cari tidak ditemukan."
+  noindex={true}
+>
+  <PageHeader
+    eyebrow="Kesalahan 404"
+    title="Halaman tidak ditemukan"
+    description="Alamat yang kamu buka tidak ada atau sudah dipindahkan."
+  />
+
+  <section class="bg-surface">
+    <div class="site-container py-16 text-center sm:py-20">
+      <div class="flex flex-wrap justify-center gap-3">
+        <a
+          href="/"
+          class="inline-flex min-h-12 items-center justify-center rounded-xl bg-primary px-5 py-3 font-semibold text-white transition-colors hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          Kembali ke Beranda
+        </a>
+        <a
+          href="/produk"
+          class="inline-flex min-h-12 items-center justify-center rounded-xl border border-primary px-5 py-3 font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        >
+          Lihat produk
+        </a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

@@ -9,6 +9,8 @@ export const siteConfig = {
 	email: '',
 	// Kredit desain opsional untuk footer, mis. 'Design by ...'. Kosong = baris kredit tidak ditampilkan.
 	credit: 'Design by. BINDOETT',
+	// Gambar pratinjau tautan (Open Graph), jalur dari folder public, mis. '/og-default.jpg' (disarankan 1200x630, ringan). Kosong = tag og:image tidak dipasang.
+	ogImage: '',
 	// Sponsor (organisasi di balik website ini). Satu sumber untuk header, footer, bagian komunitas di Beranda, dan halaman admin.
 	sponsor: {
 		nama: 'Ikatan Persaudaraan 555',
@@ -67,4 +69,14 @@ export function getWhatsAppLink(message = '') {
 
 export function getContactLink(message = '') {
 	return getWhatsAppLink(message) || '/kontak';
+}
+
+// Cloudflare Pages menyajikan halaman Astro berbentuk folder (produk/index.html) dengan garis miring di akhir (/produk/). Jika kenyataannya tanpa garis miring, ubah menjadi false.
+export const garisMiringAkhir = true;
+
+// Bentuk alamat halaman yang dipakai untuk canonical dan sitemap.
+export function jalurKanonik(jalur) {
+	const bersih = jalur.replace(/\/+$/, '');
+	if (!bersih) return '/';
+	return garisMiringAkhir ? `${bersih}/` : bersih;
 }

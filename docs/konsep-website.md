@@ -137,8 +137,7 @@ namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp (angka internasional tanp
 
 ## SEO dasar
 
-- Judul dan deskripsi unik per halaman, `lang="id"`, tag Open Graph, `robots` yang benar (admin `noindex`).
-- Sitemap dan JSON-LD sederhana (nama desa, alamat) boleh diusulkan, tetapi pasang hanya setelah saya setujui dan dampaknya disebutkan.
+- Judul dan deskripsi unik per halaman, `lang="id"`, canonical dan Open Graph (nama situs, url, gambar bila `siteConfig.ogImage` diisi), `sitemap.xml` dan `robots.txt` dibuat dari kode (alamat dari `site` di astro.config.mjs), halaman 404 dengan `noindex`, data terstruktur situs web (sponsor = organisasi) hanya di Beranda, dan halaman admin `noindex`. Alamat khusus per produk/berita belum ada (detail berupa popup).
 - Judul dan alt gambar memakai kata kunci alami (nama produk + nama desa).
 
 ## Urutan pengerjaan yang disarankan (bahas dulu sebelum mulai)

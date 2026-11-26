@@ -10,9 +10,23 @@ import ProductDialogs from "../components/ProductDialogs.astro";
 import NewsDialogs from "../components/NewsDialogs.astro";
 import VisiMisi from "../components/VisiMisi.astro";
 import { getContactLink, siteConfig } from "../config/site.js";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteConfig.name,
+  url: Astro.site?.href,
+  inLanguage: "id",
+  description: siteConfig.description,
+  sponsor: { "@type": "Organization", name: siteConfig.sponsor.nama },
+};
 ---
 
-<SiteLayout title={`${siteConfig.name} - ${siteConfig.sponsor.label} ${siteConfig.sponsor.nama}`} description={siteConfig.description}>
+<SiteLayout
+  title={`${siteConfig.name} - ${siteConfig.sponsor.label} ${siteConfig.sponsor.nama}`}
+  description={siteConfig.description}
+  jsonLd={jsonLd}
+>
   <!-- Hero memenuhi satu layar di semua ukuran: tinggi layar dikurangi tinggi header (65px = min-h-16 + border) dan, di mobile, dikurangi bottom nav (4rem = tinggi MobileNav). Jika tinggi header atau MobileNav berubah, perbarui angka ini. -->
   <section
     id="beranda"

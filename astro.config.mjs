@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+	// Alamat situs resmi (dipakai canonical, Open Graph, dan sitemap). Ganti bila memakai domain sendiri.
+	site: 'https://margourip555.pages.dev',
 	fonts: [
 		{
 			provider: fontProviders.google(),

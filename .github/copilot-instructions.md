@@ -30,6 +30,7 @@ Sebelum mengedit apa pun, baca `.github/instructions/ai-anti-slop.instructions.m
 - JANGAN mengubah mode render (static/SSR), menambah adapter, atau mengganti hosting tanpa izin.
 - JANGAN menjalankan perintah destruktif (`rm -rf`, `git reset --hard`, force push) tanpa konfirmasi saya. Sarankan commit sebelum perubahan besar.
 - JANGAN membaca, menampilkan, atau meng-commit isi `.env`. Pastikan `.env` ada di `.gitignore`.
+- Pengecualian yang disetujui pemilik: properti `site` di `astro.config.mjs` (alamat situs untuk canonical dan sitemap).
 
 ## Prinsip utama (TIDAK BOLEH DILANGGAR)
 1. **Clean look.** Minimalis, lapang, konsisten. Jangan menambah dekorasi, animasi, atau warna baru tanpa alasan kuat.

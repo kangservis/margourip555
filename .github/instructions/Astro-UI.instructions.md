@@ -32,6 +32,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 - Band judul halaman dalam memakai komponen `PageHeader.astro` (eyebrow opsional, `<h1>`, `ornament-center`, deskripsi opsional; tata letak rata tengah dan ramping `py-8 sm:py-10`).
 - Teks ditulis agar mudah diterjemahkan nanti, tetapi jangan menambah sistem i18n.
 - Kategori produk dan status (tersedia / pre-order / habis) didefinisikan di satu tempat. Sebelum daftar kategori ditetapkan pemilik, jangan mengarang kategori.
+- Canonical dan Open Graph dibuat otomatis oleh `SiteLayout`. Halaman publik baru wajib masuk `navigationItems` (agar muncul di sitemap); halaman non-publik memakai prop `noindex`.
 
 ## JavaScript (vanilla, seminimal mungkin)
 

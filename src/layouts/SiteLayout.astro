@@ -3,14 +3,23 @@ import { Font } from "astro:assets";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import MobileNav from "../components/MobileNav.astro";
-import { siteConfig } from "../config/site.js";
+import { siteConfig, jalurKanonik } from "../config/site.js";
 import "../styles/global.css";
 
 const {
   title = siteConfig.name,
   description = siteConfig.description,
   currentPath = Astro.url.pathname,
+  noindex = false,
+  jsonLd = undefined,
+  image = undefined,
 } = Astro.props;
+
+const dasar = Astro.site ?? Astro.url;
+const kanonik = !noindex && Astro.site ? new URL(jalurKanonik(Astro.url.pathname), Astro.site).href : '';
+const jalurGambar = image ?? siteConfig.ogImage;
+const gambarOg = jalurGambar ? new URL(jalurGambar, dasar).href : '';
+const jsonLdTeks = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 ---
 
 <!doctype html>
@@ -27,6 +36,14 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="id_ID" />
+    <!-- warna token primary -->
+    <meta name="theme-color" content="#8B1D1D" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    {kanonik && <link rel="canonical" href={kanonik} />}
+    {kanonik && <meta property="og:url" content={kanonik} />}
+    {gambarOg && <meta property="og:image" content={gambarOg} />}
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {jsonLdTeks && <script type="application/ld+json" is:inline set:html={jsonLdTeks} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
   </head>
