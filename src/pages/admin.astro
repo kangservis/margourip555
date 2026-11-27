@@ -368,7 +368,7 @@ import { siteConfig } from '../config/site.js';
 						<span class="mt-1 block text-sm text-ink-muted">Angka kecil tampil lebih dulu.</span>
 					</label>
 					<label class="flex min-h-11 items-center gap-3">
-						<input type="checkbox" name="unggulan" class="size-5 accent-primary" />
+						<input type="checkbox" name="unggulan" class="size-5 accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" />
 						<span class="text-base text-ink">Jadikan produk unggulan (tampil di Beranda; hanya satu)</span>
 					</label>
 					<div>
@@ -450,9 +450,7 @@ import { siteConfig } from '../config/site.js';
 					</label>
 					<label class="block">
 						<span class="text-sm font-semibold text-ink">Tingkat</span>
-						<select name="tingkat" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-							<option value=""></option>
-						</select>
+						<select name="tingkat" class="mt-1 min-h-12 w-full rounded-lg border border-line bg-white px-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"></select>
 						<span class="mt-1 block text-sm text-ink-muted">Menentukan kelompok di halaman Struktur. 1 = tertinggi.</span>
 					</label>
 					<label class="block">

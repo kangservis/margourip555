@@ -209,7 +209,6 @@ export function buatGaleri(wadah, { maks = 5, denganKeterangan = false, tandaiSa
 	render();
 	return {
 		setFoto,
-		ambilFoto: () => item.map((foto) => ({ ...foto })),
 		jumlah: () => item.length,
 		adaBelumTersimpan: () => kotor,
 		tandaiBersih,

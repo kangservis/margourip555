@@ -160,7 +160,7 @@ function bukaForm(anggota = null) {
 		opsi.dataset.strukturSementara = '';
 		tingkatInput.appendChild(opsi);
 	}
-	tingkatInput.value = String(anggota?.tingkat ?? tingkatInput.options[1]?.value ?? tingkatInput.options[0]?.value ?? '');
+	tingkatInput.value = String(anggota?.tingkat ?? tingkatInput.options[0]?.value ?? '');
 	ambilInput('urutan').value = anggota && anggota.urutan !== 9999 ? String(anggota.urutan) : '';
 	galeri.setFoto(anggota?.foto ? [{ url: anggota.foto, alt: '', rasio: null }] : []);
 	kotor = false;
