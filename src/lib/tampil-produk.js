@@ -361,6 +361,12 @@ export function tampilkanDaftarProduk(wadah) {
 				li.appendChild(buatKartu(p));
 				return li;
 			});
+			// Foto kartu pertama di daftar dimuat prioritas (kandidat LCP); sisanya tetap lazy.
+			const fotoPertama = item[0]?.querySelector('img[data-slot="foto"]');
+			if (fotoPertama) {
+				fotoPertama.loading = 'eager';
+				fotoPertama.fetchPriority = 'high';
+			}
 			daftar.replaceChildren(...item);
 
 			const kategori = [...new Set(produk.map((p) => p.kategori).filter(Boolean))];

@@ -121,6 +121,14 @@ export function tampilkanStruktur(wadah) {
 				if (!(penghubung instanceof HTMLElement)) throw new Error('Isi template penghubung tidak valid.');
 				return [penghubung, kelompok];
 			});
+			// Foto kartu pertama di daftar dimuat prioritas (kandidat LCP); sisanya tetap lazy.
+			const fotoPertama = isiKelompok
+				.map((elemen) => elemen.querySelector('img[data-slot="foto-gambar"]'))
+				.find(Boolean);
+			if (fotoPertama) {
+				fotoPertama.loading = 'eager';
+				fotoPertama.fetchPriority = 'high';
+			}
 			isi.replaceChildren(...isiKelompok);
 		}
 

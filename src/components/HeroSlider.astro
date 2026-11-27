@@ -2,13 +2,6 @@
 // Foto slider diatur dari /admin (tab Slider), disimpan di Firestore (pengaturan/slider), dan dimuat di browser. Tanpa foto tampil placeholder. Kartu menyesuaikan rasio tiap foto (3:4 sampai 2:1); foto di luar rentang itu sedikit terpotong (object-cover).
 // Jeda antar foto (milidetik). Ubah angka ini untuk mengatur kecepatan.
 const INTERVAL_MS = 5000;
-
-// Jumlah foto maksimal di slider.
-const MAX_SLIDES = 5;
-
-// Rasio diklem: minimal 3:4 (potret), maksimal 2:1 (lanskap lebar).
-const MIN_RATIO = 3 / 4;
-const MAX_RATIO = 2 / 1;
 ---
 
 <!-- Menyiapkan koneksi lebih awal agar foto hero cepat tampil -->
