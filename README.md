@@ -1,43 +1,27 @@
-# Astro Starter Kit: Minimal
+# Website Desa Margourip
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Website swasta untuk Desa Margourip yang disponsori oleh Ikatan Persaudaraan 555 (bukan situs resmi pemerintah desa). Memperkenalkan produk unggulan desa dan memudahkan pembeli menghubungi admin lewat WhatsApp.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Teknologi
 
-## 🚀 Project Structure
+Astro (statis, multi-halaman), Tailwind CSS v4, JavaScript vanilla. Konten disimpan di Firebase (Firestore + Authentication), foto di ImgBB lewat proxy wsrv.nl, hosting Cloudflare Pages.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Halaman
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Beranda, Produk, Berita, Struktur, dan Kontak. Admin di `/admin` (noindex, wajib login) untuk mengelola slider depan, produk, berita, dan struktur.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Menjalankan di komputer
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+`npm install`, salin `.env.example` menjadi `.env` lalu isi nilainya, kemudian `npm run dev`. Perintah lain: `npm run build` dan `npm run preview`. Fungsi unggah foto (`functions/api/upload.js`) hanya berjalan di Cloudflare Pages, bukan di `npm run dev`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Variabel lingkungan (hanya nama; jangan pernah meng-commit nilainya)
 
-## 🧞 Commands
+Untuk build dan `.env`: `PUBLIC_FIREBASE_API_KEY`, `PUBLIC_FIREBASE_PROJECT_ID`, `PUBLIC_FIREBASE_AUTH_DOMAIN`. Untuk fungsi server (diisi di Cloudflare Pages): `IMGBB_API_KEY` (secret) dan `FIREBASE_PROJECT_ID`.
 
-All commands are run from the root of the project, from a terminal:
+## Struktur folder
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+`src/pages` (halaman), `src/components`, `src/layouts`, `src/config` (data situs dan sponsor), `src/lib` (akses data publik), `src/lib/admin` (khusus `/admin`), `functions/api` (fungsi upload), `docs` dan `.github` (aturan proyek).
 
-## 👀 Want to learn more?
+## Dokumentasi proyek
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Rincian halaman dan model konten: `docs/konsep-website.md`. Aturan kerja: `.github/copilot-instructions.md` dan `.github/instructions/`.

@@ -1,6 +1,6 @@
 ---
 description: Aturan data konten, rahasia, dashboard admin, dan upload foto untuk website Desa Margourip
-applyTo: "src/config/**,src/content/**,src/lib/**,src/pages/admin/**,functions/**"
+applyTo: "src/config/**,src/lib/**,src/pages/admin.astro,functions/**"
 ---
 
 # Aturan Data & Keamanan — Desa Margourip

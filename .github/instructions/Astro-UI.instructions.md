@@ -61,7 +61,7 @@ File ini melengkapi `.github/copilot-instructions.md` dan `docs/konsep-website.m
 
 - Gambar lokal (bila ada) diproses lewat `astro:assets` (`<Image>`), format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `decoding="async"`, dan `loading="lazy"` kecuali gambar paling atas (hero) yang dimuat prioritas.
 - Foto konten (produk, berita, slider depan, struktur) berasal dari Firestore dan selalu ditampilkan lewat `urlFoto()`/`srcsetFoto()` di `src/lib/foto.js`.
-- Maksimal sekitar 200 KB per foto.
+- Maksimal sekitar 250 KB per foto.
 - Placeholder foto berupa `<div>` dengan `role="img"` dan `aria-label` yang deskriptif, berisi teks `[ISI NANTI: ...]`.
 - Foto anggota struktur disimpan di Firestore (koleksi `struktur`) dan diunggah lewat admin; tanpa foto tampil placeholder.
 

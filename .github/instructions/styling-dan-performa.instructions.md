@@ -27,7 +27,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 | `line` | `#E7E2DA` | garis dan border |
 
 - **Emas** TIDAK boleh dipakai untuk teks biasa di atas putih (kontras terlalu rendah), dan tidak untuk teks kecil di atas merah tua. Teks kecil di atas merah tua memakai putih.
-- **Tombol utama** (termasuk "Pesan via WhatsApp"): latar `primary`, teks putih, di atas latar terang. **Di atas latar merah** (hero, band ajakan) tombol utama dibalik: latar putih, teks `primary`. Tombol sekunder di atas merah: outline putih. Jangan menambah warna hijau.
+- **Tombol utama** (termasuk "Pesan via WhatsApp"): latar `primary`, teks putih, di atas latar terang. **Di atas latar merah**, tombol utama putih (teks `primary`) dipakai untuk aksi utama di hero, sedangkan pada band ajakan dan tombol sekunder hero dipakai gaya outline putih (`border-white/80 bg-white/10`, teks putih). Jangan menambah warna hijau.
 - Tidak ada warna baru kecuali status fungsional (berhasil/galat) secukupnya.
 - Gaya kartu: border 1px halus (`border-line`), sudut membulat sekitar 12px (`rounded-xl`), bayangan tipis atau tanpa bayangan.
 - Dekorasi hanya yang sudah ada (`batik-panel` dan `ornament`). Jangan menambah elemen dekoratif lain tanpa alasan kuat.
@@ -35,7 +35,7 @@ File ini melengkapi `.github/copilot-instructions.md`. Jika ada pertentangan, be
 - Halaman Struktur: kartu anggota memakai gaya kertas yang sama dengan bagian Tentang desa, dan garis penghubung vertikal 1px `gold` (digambar dengan `border-l`) antar tingkat. Tidak ada dekorasi lain.
 - **Bidang merah besar** (hero, kartu foto hero, band ajakan, footer, dan bidang merah lain di masa depan) WAJIB memakai `batik-panel` (garis emas tebal di atas dan bawah + corak batik CSS). Pakai `batik-panel-dark` untuk merah gelap dan `batik-panel-card` untuk kartu bersudut membulat. Tombol, badge, dan teks merah kecil tetap solid tanpa corak.
 - Corak `batik-panel` berupa segitiga bertingkat (conic-gradient) dengan dua nada merah; kekuatannya diatur lewat satu variabel `--batik-strength` di `.batik-panel`. Jangan memakai corak atau gambar lain untuk bidang merah.
-- Kartu produk (`ProductCard.astro`) dipakai seragam di Beranda dan halaman Produk. Badge: Unggulan = `gold-soft` + border `gold`; Pre-order = putih + border `line`; Habis = `ink` + teks putih. Tidak ada warna baru.
+- Kartu produk (`ProductCard.astro`) dipakai seragam di Beranda dan halaman Produk. Badge: Unggulan = `gold-soft` + border `gold`; Tersedia (di popup detail produk) = `surface` + border `line` + teks `ink`; Pre-order = putih + border `line`; Habis = `ink` + teks putih. Tidak ada warna baru.
 - Kotak penunggu (skeleton) berupa blok `surface` tanpa animasi.
 - Komponen foto admin: nomor posisi pada lingkaran `primary`, penanda 'Baru' memakai `gold-soft` + border `gold`, geser posisi lewat tombol panah; tidak ada warna baru.
 - Halaman `/admin` memakai token dan gaya yang sama. Notifikasi (toast): info memakai `ink`, galat memakai `primary`; tidak ada warna baru dan tidak ada hijau.
@@ -58,7 +58,7 @@ Target Lighthouse mobile: LCP < 2,5 dtk, CLS mendekati 0, INP < 200 ms.
 
 - **Hindari di mobile**: `backdrop-blur`, bayangan besar, elemen `fixed` berukuran besar (mis. watermark), `will-change` berlebihan, `transition: all`, dan animasi yang memicu layout.
 - Animasi hanya bila benar-benar perlu, hanya `transform` dan `opacity`, singkat. Untuk hover cukup `transition-colors`.
-- Satu-satunya animasi yang ada: crossfade `opacity` 500 ms dan transisi `aspect-ratio` 500 ms pada slider foto hero, dimatikan oleh `motion-reduce` (foto berganti instan dan kartu langsung berubah ukuran, autoplay tetap berjalan). Autoplay tidak dijeda oleh hover atau fokus; klik titik atau geser hanya mengulang hitungan.
+- Animasi yang ada: crossfade `opacity` 500 ms serta transisi `aspect-ratio` dan `max-width` pada slider hero, dan transisi `opacity` singkat pada panah galeri saat hover. Semuanya dimatikan oleh `motion-reduce` (foto berganti instan dan kartu langsung berubah ukuran, autoplay tetap berjalan; autoplay tidak dijeda oleh hover atau fokus, klik titik atau geser hanya mengulang hitungan).
 - Tanpa animasi transisi antar halaman. Perpindahan halaman harus terasa instan.
 - Gambar: `astro:assets`, WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit (atau wadah dengan rasio tetap seperti `aspect-[4/3]`) agar tidak ada layout shift, `loading="lazy"` kecuali gambar paling atas.
 - Jangan menambah font, ikon, library, atau skrip CDN baru. Jika benar-benar perlu: sebut ukurannya (KB gzip), alasannya, alternatif vanilla, dan minta persetujuan. Versi CDN wajib dipin (bukan `@latest`).

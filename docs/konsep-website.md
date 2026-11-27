@@ -1,10 +1,10 @@
-# Konsep Website Desa [Margourip]
+# Konsep Website Desa Margourip
 
 Dokumen acuan untuk agent. Berisi rincian halaman dan model konten. Aturan kerja, prinsip, dan palet warna ada di `.github/copilot-instructions.md`. Data yang belum ada ditandai [CONTOH] atau [ISI NANTI]; jangan mengarang isinya.
 
 ## Tujuan dan pengunjung
 
-- Mengenalkan produk unggulan desa kepada pembeli di luar daerah (kelak luar negeri), memudahkan mereka menghubungi admin via WhatsApp, dan menjadi tempat berita resmi desa.
+- Mengenalkan produk unggulan desa kepada pembeli di luar daerah (kelak luar negeri), memudahkan mereka menghubungi admin via WhatsApp, dan menjadi tempat berita desa.
 - Pengunjung utama: pembeli dan calon mitra yang membuka lewat HP, serta warga yang mencari berita dan kontak desa.
 
 ## Navigasi
@@ -12,7 +12,7 @@ Dokumen acuan untuk agent. Berisi rincian halaman dan model konten. Aturan kerja
 Beranda | Produk | Berita Desa | Struktur Organisasi | Kontak
 
 - Header berisi nama desa dan baris kecil "Disponsori oleh Ikatan Persaudaraan 555" + menu. Menu aktif ditandai jelas.
-- Tab di atas (desktop) dan menempel di bagian atas saat halaman digulir (*sticky*). Untuk mobile, pilihan menu atau bottom nav diputuskan lewat rencana (lihat instruksi).
+- Tab di atas (desktop) dan menempel di bagian atas saat halaman digulir (*sticky*). Di mobile navigasi memakai bottom nav (`MobileNav`) dan footer hanya tampil di desktop (sudah diputuskan).
 - Footer: hanya tampil di desktop (`md:` ke atas); di mobile navigasi memakai bottom nav dan footer tidak ditampilkan. Isinya panel merah gelap ramping bercorak batik (`batik-panel-dark`): hak cipta (tahun + nama desa), baris sponsor "Disponsori oleh Ikatan Persaudaraan 555", catatan "Website ini bukan situs resmi pemerintah desa", dan bila `siteConfig.credit` terisi, satu baris kredit desain. Tanpa tautan menu, tanpa tombol WhatsApp, tanpa alamat.
 - Kerangka semua halaman publik dihasilkan statis dan berpindah instan; daftar produk dan berita dimuat di browser.
 - Semua bagian memakai kelas `site-container` (lebar maksimal 1280px, 1440px mulai lg, 1760px mulai 2xl).
@@ -38,6 +38,7 @@ Urutan bagian, dari atas ke bawah:
 
 - Data produk dimuat dari Firestore di browser (kotak penunggu berukuran tetap; bila gagal tampil pesan dan tombol Muat ulang). Filter kategori dibuat dari kategori yang ada di data dan hanya tampil bila ada 2 kategori atau lebih.
 - Kartu produk yang seragam dipakai di Beranda dan halaman Produk: foto, kategori, nama, harga atau "Hubungi admin", badge (Unggulan, Pre-order, Habis), dan tombol konsultasi via WhatsApp (label mengikuti status). Ringkasan hanya tampil di popup detail.
+- Kartu produk dengan lebih dari satu foto memiliki galeri mini (tombol panah di desktop, geser/swipe di mobile, dan titik penanda foto aktif).
 - Foto di kartu produk ditampilkan utuh (fit) di dalam kotak berasio tetap.
 - Hanya satu produk boleh bertanda unggulan.
 - Filter kategori berupa tombol chip. Dirancang agar bekerja tanpa memuat ulang data.
@@ -46,7 +47,7 @@ Urutan bagian, dari atas ke bawah:
 - Rincian popup produk ditampilkan berurutan: minimal pesan, satuan, produsen.
 - Lightbox foto produk besar mendukung tombol panah kiri/kanan (*hover to see*) dan tombol panah keyboard di desktop, serta gesture usap (*swipe*) satu per satu dengan ambang batas 50px di mobile.
 - Tombol WhatsApp memakai nomor dari `src/config/site.js` dan pesan awal berisi nama produk. Tautan halaman produk di dalam pesan ditunda sampai `site` URL diatur.
-- Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP).
+- Jika produk banyak: tampilkan sebagian dulu + "Muat lebih banyak" (hemat data HP; rencana; belum ada).
 
 ### 3. Berita Desa
 
@@ -78,7 +79,7 @@ Urutan bagian, dari atas ke bawah:
 
 ## Dashboard admin
 
-Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan yang belum diambil"):
+Persyaratan (sudah diputuskan: data di Firebase, foto di ImgBB; navigasi mobile memakai bottom nav `MobileNav` dan footer hanya tampil di desktop):
 
 - Login memakai Firebase Authentication dengan username (domain email tetap di kode: `DOMAIN_ADMIN` di `src/lib/admin/app.js`) + kata sandi; sesi hanya di memori halaman, jadi meninggalkan `/admin` lalu kembali (atau memuat ulang) meminta login lagi; akses admin diperiksa lewat dokumen penanda. Tab: Produk, Berita, Slider, Struktur (diisi bertahap).
 - Tab Produk: daftar (cari + filter kategori), tambah, ubah, hapus, foto 1-5. Hanya satu produk boleh bertanda unggulan: memilih unggulan baru otomatis mencabut yang lama (penulisan batch atomik). Slug dibuat otomatis dari nama saat produk dibuat dan tidak berubah saat nama diedit.
@@ -86,7 +87,7 @@ Persyaratan (cara penyimpanan data diputuskan lewat rencana; lihat "Keputusan ya
 - Tab Struktur: daftar anggota, tambah, ubah, hapus; field nama, jabatan, tingkat (1-4, nama kelompok di `src/lib/format.js`), urutan (kosong = otomatis terakhir di tingkatnya), dan satu foto.
 - Alamat di bawah `/admin`, `noindex`, tidak masuk sitemap, wajib login. Cukup 1-2 akun admin.
 - Nyaman dipakai dari HP, bahasa sederhana, tombol besar, konfirmasi sebelum menghapus.
-- Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (kontak, alamat, jam pelayanan, teks hero).
+- Mengelola: **Produk**, **Berita**, **Struktur Organisasi**, dan **Pengaturan situs** (rencana; saat ini data situs ada di `src/config/site.js`).
 - Unggah foto: diperkecil di browser (WebP, sekitar 250 KB) lalu diunggah lewat fungsi server yang memverifikasi admin; foto bernomor, bisa digeser dengan tombol panah dan dihapus; foto pertama = sampul (produk, berita) atau tampil lebih dulu (slider); slider depan maksimal 5 foto dengan keterangan per foto.
 - Perubahan di admin langsung tampil di halaman publik (daftar produk, berita, dan struktur dimuat dari Firestore di browser dengan kotak penunggu berukuran tetap).
 - Tidak ada secret yang terlihat di browser. Jika memakai layanan pihak ketiga, aturan akses (rules/izin) wajib dibahas sebelum fitur admin dibuat.
@@ -100,7 +101,7 @@ Sumber data: Firebase Firestore (koleksi `produk`, `berita`, `struktur`, `pengat
 |---|---|
 | nama | wajib |
 | slug | otomatis dari nama, unik |
-| kategori | dari daftar kategori [ISI NANTI] |
+| kategori | diisi bebas dari admin (saran dari kategori yang sudah ada); daftar resmi belum ditetapkan |
 | ringkasan | 1-2 kalimat untuk kartu |
 | deskripsi | teks lengkap untuk halaman detail |
 | foto | 1-5 foto, foto pertama = sampul |
@@ -132,7 +133,7 @@ Sumber data: Firebase Firestore (koleksi `produk`, `berita`, `struktur`, `pengat
 | tingkat | angka (1 = tertinggi) untuk pengelompokan |
 | urutan | urutan dalam satu tingkat |
 
-**Pengaturan situs** (satu dokumen)
+**Pengaturan situs** (satu dokumen — rencana; saat ini data situs ada di `src/config/site.js`)
 namaDesa, tagline, alamat, jamPelayanan, nomorWhatsApp (angka internasional tanpa `+`, untuk `wa.me`), email, mapUrl, mediaSosial[].
 
 ## SEO dasar

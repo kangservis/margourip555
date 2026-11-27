@@ -12,7 +12,7 @@ Sebelum mengedit apa pun, baca `.github/instructions/ai-anti-slop.instructions.m
 - Saat ini semua pertanyaan dan pesanan diarahkan ke WhatsApp admin (wa.me). Tanpa pembayaran online, keranjang belanja pun nanti direct ke WhatsApp admin.
 - Halaman: Beranda (landing), Produk, Berita Desa, Struktur Organisasi, Kontak. Ditambah dashboard admin untuk mengelola produk, berita, dan struktur organisasi.
 - Rincian halaman dan model konten ada di `docs/konsep-website.md`. Baca file itu saat mengerjakan halaman atau fitur terkait.
-- JANGAN mengarang fakta tentang desa (sejarah, jumlah penduduk, nama pejabat, harga, alamat, nomor kontak). Gunakan placeholder bertanda [CONTOH] sampai saya memberi data asli.
+- JANGAN mengarang fakta tentang desa (sejarah, jumlah penduduk, nama pejabat, harga, alamat, nomor kontak). Gunakan placeholder bertanda [ISI NANTI] sampai saya memberi data asli.
 
 ## Cara kerja (WAJIB)
 1. Anggap setiap permintaan fitur atau perubahan sebagai permintaan RENCANA, kecuali saya menulis "kerjakan", "lanjut", atau "setuju". Pada tahap rencana: JANGAN mengedit file dan JANGAN menjalankan perintah terminal yang mengubah sesuatu.
@@ -37,7 +37,7 @@ Sebelum mengedit apa pun, baca `.github/instructions/ai-anti-slop.instructions.m
 2. **Cepat dan ringan** (prioritas: HP kelas menengah, koneksi biasa). Target: LCP < 2,5 dtk, CLS mendekati 0, INP < 200 ms; JavaScript halaman publik sekecil mungkin (idealnya hanya untuk menu dan hal interaktif yang benar-benar perlu).
    - Halaman publik harus sudah berisi konten saat dikirim ke pengunjung (HTML statis hasil build), bukan kosong lalu diisi JavaScript. Pengecualian yang disetujui pemilik: daftar produk, berita, foto slider depan, dan struktur organisasi dimuat dari Firestore di browser (agar perubahan admin langsung tampil), dengan kotak penunggu berukuran tetap; semua bagian lain tetap statis.
    - Perpindahan antar halaman harus terasa instan. Tanpa animasi transisi antar halaman, tanpa `ClientRouter`/View Transitions kecuali ada alasan kuat. Gunakan prefetch bawaan Astro bila membantu.
-   - Gambar: format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `loading="lazy"` kecuali gambar paling atas (hero), maksimal sekitar 200 KB per foto. Gambar lokal (bila ada) diproses lewat `astro:assets`; foto konten dari Firestore ditampilkan lewat `urlFoto()`.
+   - Gambar: format WebP/AVIF, ukuran sesuai tampil, `width`/`height` eksplisit, `loading="lazy"` kecuali gambar paling atas (hero), maksimal sekitar 250 KB per foto. Gambar lokal (bila ada) diproses lewat `astro:assets`; foto konten dari Firestore ditampilkan lewat `urlFoto()` (`src/lib/foto.js`).
    - Font: Playfair Display (judul) dan Plus Jakarta Sans (teks isi) lewat Astro Fonts API (`fonts` di astro.config.mjs), diunduh saat build dan disajikan dari domain sendiri. Tanpa font dari CDN saat runtime. Subset latin saja, style normal saja, weight seminimal mungkin (Playfair 700; Plus Jakarta Sans 400 dan 600). Menambah keluarga font, weight, atau subset: sebut dampak ukuran dan minta persetujuan.
    - Ikon: satu sumber, yaitu paket Remix Icon (npm `remixicon`, Apache 2.0), dipakai hanya lewat komponen `src/components/Icon.astro` yang meng-inline SVG saat build. Gaya outline (`-line`). Tanpa icon font (`remixicon.css`, class `ri-*`), tanpa @remixicon/react atau /vue, tanpa paket ikon kedua. Ikon baru = tambah satu import dan satu entri di Icon.astro.
    - Hindari di mobile: `backdrop-blur`, bayangan besar, animasi yang memicu layout (pakai `transform`/`opacity` saja), elemen `fixed` berukuran besar (mis. watermark), `will-change` berlebihan, `transition: all`.
@@ -59,20 +59,20 @@ Sebelum mengedit apa pun, baca `.github/instructions/ai-anti-slop.instructions.m
 - Aksesibilitas dasar: `lang="id"`, `alt` pada semua gambar bermakna, fokus keyboard terlihat, kontras teks memadai.
 
 ## Pelajaran dari proyek sebelumnya (hindari)
-- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari). (Pengecualian terbatas yang disetujui pemilik hanya untuk produk, berita, dan slider depan; lihat Prinsip 2 dan data-dan-keamanan.instructions.md.)
+- Jangan mengambil data dari database di browser setiap pindah halaman (terasa loading, boros kuota gratis, tidak terbaca mesin pencari). (Pengecualian terbatas yang disetujui pemilik hanya untuk produk, berita, slider depan, dan struktur organisasi; lihat Prinsip 2 dan data-dan-keamanan.instructions.md.)
 - Jangan menaruh kunci layanan sebagai `PUBLIC_*` bila seharusnya rahasia.
 - Jangan membungkus semua halaman dengan transisi/animasi antar halaman.
 - Jangan memakai icon font penuh, banyak keluarga font dari CDN, dan `backdrop-blur` di elemen yang berulang.
 - Jangan menyalin nilai penting (nomor WhatsApp, nama desa) di banyak file. Simpan di satu tempat: `src/config/site.js`.
 
 ## Keputusan proyek (bahas yang belum diputuskan di mode Plan sebelum membangun)
-1. Penyimpanan konten + admin: SUDAH diputuskan, Firebase (Firestore + Authentication). Dashboard admin dikerjakan setelah lapisan baca selesai.
+1. Penyimpanan konten + admin: SUDAH diputuskan, Firebase (Firestore + Authentication). Dashboard admin sudah ada di `/admin` (Slider, Produk, Berita, Struktur).
 2. Penyimpanan foto: SUDAH diputuskan, ImgBB (lewat fungsi server) dengan proxy wsrv.nl.
 3. Navigasi mobile: SUDAH diputuskan, memakai bottom nav (`MobileNav`); footer hanya tampil di desktop.
 4. Versi bahasa Inggris untuk keperluan ekspor (belum sekarang; cukup tulis teks agar mudah diterjemahkan nanti, jangan menambah sistem i18n).
 
 ## Gaya kode
-- Pertahankan arsitektur sederhana: `src/layouts`, `src/components`, `src/pages`, `src/config`, `src/styles`.
+- Pertahankan arsitektur sederhana: `src/layouts`, `src/components`, `src/pages`, `src/config`, `src/styles`, `src/lib`.
 - Komponen statis dibuat sebagai `.astro`. JavaScript klien hanya untuk interaksi kecil (menu mobile, filter) dan ditulis vanilla.
 - Utility class Tailwind langsung di markup; gaya yang berulang dikumpulkan di `global.css`.
 - Komentar kode dalam Bahasa Indonesia. Nama file/variabel/fungsi dalam bahasa Inggris atau Indonesia secara konsisten (pilih satu saat pertama kali, lalu pertahankan).
